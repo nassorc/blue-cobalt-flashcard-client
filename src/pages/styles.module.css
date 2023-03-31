@@ -1,0 +1,85 @@
+:root {
+    --secondary-color: rgb(196, 53, 37);
+}
+
+html {
+    box-sizing: border-box;
+}
+/* body {
+    background-color: rgb(228, 237, 230);
+}
+   */
+h1,h2,h3,h4, p {
+    margin: 0;
+}
+a, a:active{
+    color: white;
+    text-decoration: none;
+}
+
+input {
+    margin-bottom: 1rem;
+    padding-block: 0.8rem;
+}
+input:not(input[type="submit"]) {
+    padding-left: 1rem;
+    font-size: 1rem;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+.formContainer {
+    margin-top: 8rem;
+    margin-inline: auto;
+    padding-block: 1rem;
+    max-width: 480px;
+}
+.formContainer > * {
+    margin-inline: 2.8rem;
+}
+.formContainer-header, .formContainer-footer {
+    text-align: center;
+}
+.formContainer-header {
+    margin-bottom: 2rem;
+}
+.register-button {
+    appearance: none;
+    border: none;
+    background-color: var(--secondary-color);
+    height: 2.6rem;
+    /* padding-block: 0.8rem; */
+    cursor: pointer;
+    border-radius: 4px;
+    color:white;
+}
+.login-button {
+    appearance: none;
+    border: none;
+    padding-block: 0.8rem;
+    background-color: rgb(35,35,35);
+    cursor: pointer;
+    border-radius: 4px;
+    color:white;
+}
+.register-button:hover {
+    background-color: rgb(222, 98, 84);
+}
+.login-button:hover {
+    background-color: rgb(60,60,60);
+}
+.or {
+    text-align: center;
+    margin-bottom: 0.8rem;
+    font-weight: bold;
+}
+
+.formContainer-notification {
+    margin-block: 1rem;
+    padding: 1.6rem 1rem;
+    background-color: rgb(245, 233, 196);
+    border: 1px solid rgb(237, 222, 175);
+    border-radius: 4px;
+
+}
