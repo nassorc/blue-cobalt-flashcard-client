@@ -1,4 +1,4 @@
-import styles from '../pages/styles.module.css';
+import styles from '../assets/styles.module.css';
 
 export default function FormNotification({msg}) {
     return (
