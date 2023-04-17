@@ -1,4 +1,11 @@
-export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, setShowMeaningProp, cards, setCards, updateReviewList }) {
+import updateReviewList from './updateReviewList';
+
+export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, setShowMeaningProp, cards, setCards }) {
+    const handleGradeButton = (grade) => {
+        gradeCardProp(cardDetails._id, grade);
+        setShowMeaningProp(!showMeaningProp);
+        updateReviewList(grade, cardDetails._id, cards, setCards)
+    }
     return(
         <div>
             <div className="practice-header">
@@ -6,12 +13,12 @@ export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, 
                     <div className="back">{cardDetails.back}</div>
                 </div>
                 <div className="practice-buttons">
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 0); setShowMeaningProp(!showMeaningProp); updateReviewList(0, cardDetails._id, cards, setCards)}}>Blackout</button>
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 1); setShowMeaningProp(!showMeaningProp); updateReviewList(1, cardDetails._id, cards, setCards)}}>Very Hard</button>
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 2); setShowMeaningProp(!showMeaningProp); updateReviewList(2, cardDetails._id, cards, setCards)}}>Hard</button>
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 3); setShowMeaningProp(!showMeaningProp); updateReviewList(3, cardDetails._id, cards, setCards)}}>Easy but struggled a bit</button>
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 4); setShowMeaningProp(!showMeaningProp); updateReviewList(4, cardDetails._id, cards, setCards)}}>Easy but hesitated</button>
-                    <button onClick={(e) => {gradeCardProp(cardDetails._id, 5); setShowMeaningProp(!showMeaningProp); updateReviewList(5, cardDetails._id, cards, setCards)}}>Flawless</button>
+                    <button onClick={(e) => handleGradeButton(0)}>Blackout</button>
+                    <button onClick={(e) => handleGradeButton(1)}>Very Hard</button>
+                    <button onClick={(e) => handleGradeButton(2)}>Hard</button>
+                    <button onClick={(e) => handleGradeButton(3)}>Easy but struggled a bit</button>
+                    <button onClick={(e) => handleGradeButton(4)}>Easy but hesitated</button>
+                    <button onClick={(e) => handleGradeButton(5)}>Flawless</button>
             </div>
         </div>
     )

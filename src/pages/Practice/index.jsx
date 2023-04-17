@@ -4,15 +4,20 @@ import AuthContext from '../../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import Card from './Card';
 import useFetchData from '../../hooks/useFetchData';
-import updateReviewList from './removeCard';
+import createReviewSession from './createReviewSession';
+import filterDeckById from '../../utils/filterDeckById';
+import {GET_DECKS_ENDPOINT, GRADE_CARD_ENDPOINT} from '../../utils/api';
+
 import styles from '../../assets/styles.module.css';
 
 // log:
-// added new data to work with, all tagged as new.
-// current objectives are to test if the sort function works.
-// need to set the due dates of the cards by reviewing
+// Edit component pages contains better code to fetch deck data
 
-// log:
+
+// TODO:
+//        (4) add card image to reviewing process.
+//            * prerequisites: must implement way to store images as URLS.
+// COMPLETE ===========================================================================
 //       (2) extract cards from review list
 //       (3) depending on user settings (right now using hardcoded values),
 //           combined N review cards and N new cards.
@@ -22,117 +27,81 @@ import styles from '../../assets/styles.module.css';
 //              sort them by due date. So cards that have shorter due dates, meaning
 //              they struggle with the card, will be priortize in the list. Allowing
 //              users to see flashcards that are considered hard for them.
-//        (4) add card image to reviewing process.
-//            * prerequisites: must implement way to store images as URLS.
 //        (5) Add logic that compiles the review cards and new cards.
 //            * User schema should have a settings object field
 //            * when user logs in, we query the user settings and set it with context
 //            * use context to provide global access to the review process settings.
 //        (6) add links to edit and add cards
+//        (7) use user settings from database
+
+// sorting
+//          Create a sort algorithm that sorts the due dates of the review list cards. 
+//          randomly inject or introduce cards that are flagged as 'new'.
+//          step 1: get reviewList cards and new cards. new cards are slice depending on the amount of
+//                  new cards added per review session.
+//          step 2: before combining the reviewlist and new cards, sort the reviewlist by due date, then
+//                  slice depending on the amount of review cards added per review session
+//          step 3: combine review and new
+//          Grading:
+//          step 4: if grade is [0|1|2], add to list, 0 closer to the top, 1 at the middle, 2 and the back
+//          step 5: if grade is [3|4|5], a complete review, removed from the reviewlist
+
+//          Use reviewlist to display the cards that needs to be reviewed
+//          randomly select cards from the new pile
+//          maybe create a usecontext to
 
 
-// Create a sort algorithm that sorts the due dates of the review list cards. 
-// randomly inject or introduce cards that are flag as 'new'.
-// step 1: get reviewList cards and new cards. new cards are slice depending on the amount of
-//         new cards added per review session.
-// step 2: before combining the reviewlist and new cards, sort the reviewlist by due date, then
-//         slice depending on the amount of review cards added per review session
-// step 3: combine review and new
-// step 4: if grade is [0|1|2], add to list, 0 closer to the top, 1 at the middle, 2 and the back
-// step 5: if grade is [3|4|5], a complete review, removed from the reviewlist
+export default function PracticePage() {
+    const navigate = useNavigate();
+    const authContext = useContext(AuthContext);
+    const { id } = useParams();
+    
+    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECKS_ENDPOINT(authContext.auth.userId)}`;
+    const options = { method: 'GET', headers: {'Authorization': `Bearer ${authContext.auth.token}`}}
+    const deckList = useFetchData(url, options)
 
-// Use reviewlist to display the cards that needs to be reviewed
-// randomly select cards from the new pile
-// maybe create a usecontext to
+    const [deck, setDeck] = useState();
+    const [cards, setCards] = useState([]);
 
-function sortByDueDate(deck) {
-    return deck ? deck.sort((a,b) => (new Date(a.dueDate)) - (new Date(b.dueDate))) : [];
-}
-function createReviewSession(reviewCards, newCards, nReview, nNew) {
-    let reviewCardList = sortByDueDate(reviewCards).slice(0, nReview);
-    let newCardList = newCards ? newCards.slice(0, nNew) : [];
-    return [...reviewCardList, ...newCardList];
-}
-    /** Grades
-     * grade https://www.npmjs.com/package/supermemo:
-     * 5: perfect response.                                                   Flawless
-     * 4: correct response after a hesitation.                                very Good | Hesitant
-     * 3: correct response recalled with serious difficulty.                  Good |Struggled
-     * 2: incorrect response; where the correct one seemed easy to recall.    Failed
-     * 1: incorrect response; the correct one remembered.                     Incoorect
-     * 0: complete blackout.                                                  Blackout
-     */
-    /** Grading Process
-     * [0 | 1 | 2] - won't be considered a complete review. Depending on what difficult the
-     *               user picks, the card will be placed in the pile, closer to the front.
-     *             - shouldn't update the current reviewlist, but can make a request to update
-     *               the fields needed for the algorithm
-     * [3 | 4 | 5] - considered a complete review. Card will be removed from the current cards
-     *               being reviewed.
-     *             - everytime the user reviews a card, the review list is updated. if a card
-     *               is considered very easy, then that card, depending on the sort algorithm
-     *               will be placed behind cards that the user considers difficult.
-     */
-function makeGradeCard({auth} = {}) {
-    return async (cardId, grade) => {
+    useEffect(() => {        
+        // set deck and extract new and reviewed cards
+        let d = filterDeckById(deckList, id);
+        let reviewCards = d?.cards?.filter(card => card.status === 'reviewed')
+        let newCards = d?.cards?.filter(card => card.status === 'new')
+        // set state
+        let rCount = d?.deckSettings?.reviewCards || 10
+        let nCount = d?.deckSettings?.newCards || 5
+        setDeck(d);
+        setCards(createReviewSession(reviewCards, newCards, rCount, nCount));
+        
+    }, [deckList])
+
+    const gradeCard = async (cardId, grade) => {
         // make request to api, send grade and card id
         try {
-            const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/deck/cards/grade`, {
+            const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${GRADE_CARD_ENDPOINT()}`, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${auth.token}`
+                    'Authorization': `Bearer ${authContext.auth.token}`
                 },
                 body: JSON.stringify({cardId, grade})
             })
-            const data = await res.json()
         }
         catch(err) {
             throw new Error(err.message)
         }
         
     }
-}
-    
-
-export default function PracticePage() {
-    const authContext = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    const { id } = useParams();
-    
-    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}/deck/${authContext.auth.userId}`;
-    const options = { method: 'GET', headers: {'Authorization': `Bearer ${authContext.auth.token}`}}
-    const deckList = useFetchData(url, options)
-    
-    const [deck, setDeck] = useState();
-    const [cards, setCards] = useState([]);
-
-    // grade card function
-    const gradeCard = makeGradeCard({ auth: authContext.auth })
 
     const handleEditClick = (e) => {
 		navigate(`/edit/${deck._id}`);
 	};
-    useEffect(() => {
-        const getDeckById = (deckList, id) => {
-            if(!deckList) return '';
-            return deckList?.reduce((current, elm) => (elm._id === id) ? elm : current);
-        }
-        // set deck, and extract card data
-        let d = getDeckById(deckList, id);
-        let reviewCards = d?.cards?.filter(card => card.status === 'reviewed')
-        let newCards = d?.cards?.filter(card => card.status === 'new')
 
-        // set state
-        setDeck(d);
-        setCards(createReviewSession(reviewCards, newCards, 5, 2));
-        
-    }, [deckList])
-    console.log(cards)
+    // flashcard components
     let CardComponents = (cards) 
         ? cards.map(card => {
-            return <Card cardDetails={card} gradeCard={gradeCard} handleEditClick={handleEditClick} cards={cards} setCards={setCards} updateReviewList={updateReviewList} key={card._id}/>
+            return <Card cardDetails={card} gradeCard={gradeCard} handleEditClick={handleEditClick} cards={cards} setCards={setCards} key={card._id}/>
         })
         : [];
 
