@@ -1,3 +1,3 @@
-export default displayImage() {
-    
+export default function displayImage() {
+
 }
