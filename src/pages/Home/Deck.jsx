@@ -54,9 +54,10 @@ export default function Deck({ deck}) {
 		: <h3 className={styles['deck-name']} onMouseOver={() => {
 			console.log('hovering')
 		}}>{ name }</h3>;
-		
+	
+	let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`} : {backgroundColor: "rgb(40,40,40)"}
 	return(
-		<div className={styles['deck']}>
+		<div className={styles['deck']} style={backgroundImage}>
 			<div>
 				<div>
 					{deckHeaderName}

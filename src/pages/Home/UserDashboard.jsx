@@ -24,11 +24,9 @@ export default function UserDashboard() {
 				window.localStorage.setItem('decks', JSON.stringify(data?.details))
 			});
 	}, []);
-
+	// console.log(deckList[1]?.deckImage)
 	// map data from fetch request to react component
 	deckElements = deckList.map(deck => {
-		console.log(deck)
-		// deckName={deck.deckName} cards={deck.cards} id={deck._id} 
 		return <Deck deck={deck} key={deck._id}/>;
 	});
 
