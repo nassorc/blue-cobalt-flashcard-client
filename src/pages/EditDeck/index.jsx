@@ -229,11 +229,15 @@ export default function EditDeckPage() {
             </div>
             <div>
                 <p>update deck image</p>
-                <input type="file" onChange={async (e) => {
-                    const {handleUploadImageEvent} = await import('../../utils/uploadImage')
-                    handleUploadImageEvent(e.target.files, setDeckImage)
-                }}/>
-                <div style={{width: "100px", height: "100px", overflow: "hidden"}}>
+                <input 
+                    type="file" accept=".jpg, .jpeg, .png" 
+                    id="img-field"
+                    onChange={async (e) => {
+                        const {handleUploadImageEvent} = await import('../../utils/uploadImage')
+                        handleUploadImageEvent(e.target.files, setDeckImage)
+                    }}
+                />
+                <div style={{width: "200px", height: "200px", overflow: "hidden"}}>
                     {DeckImageComponent}
                 </div>
             </div>
