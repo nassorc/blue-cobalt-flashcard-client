@@ -1,9 +1,10 @@
 import styles from '../assets/styles.module.css';
+import { FormAlert } from './styles/Form.styled';
 
-export default function FormNotification({msg}) {
+export default function FormNotification({msg, bg, borderColor, color}) {
     return (
-        <div className={styles["formContainer-notification"]}>
+        <FormAlert bg={bg} borderColor={borderColor} color={color}>
             <p>{msg}</p>
-        </div>
+        </FormAlert>
     )
 }

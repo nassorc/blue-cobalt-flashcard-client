@@ -39,8 +39,7 @@ export default function LoginPage() {
 			});
 			const data = await res.json();
 			const { message, details } = data;
-
-			if(res.status >= 200 && res.status <= 399) {
+			if(res.ok) {
 				const { token, userId } = details; 
 				// // save token and user id
 				window.localStorage.setItem('userId', userId);
@@ -67,7 +66,7 @@ export default function LoginPage() {
 					<h2>Welcome back</h2>
 					<p>Enter email and password to sign in</p>
 				</div>
-				{responseMsg ? <FormNotification msg={responseMsg} /> : null}
+				{responseMsg ? <FormNotification msg={responseMsg} bg="rgb(245, 233, 196)" borderColor="rgb(237, 222, 175)"/> : null}
 				<Form onSubmit={handleLoginSubmit}>
 					<Input
 						type="email" 
