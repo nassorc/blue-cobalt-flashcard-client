@@ -53,12 +53,6 @@ export default function Deck({ deck}) {
 			Edit
 		</button>;
 
-	// switch between card name, and input box for editing
-	// let deckHeaderName = (isEditing) 
-	// 	? <DeckNameEditor initialValue={name} setValue={setName} /> 
-	// 	: <h3 className={styles['deck-name']}>{ name }</h3>;
-	
-
 	// Function uses the current deck image and extracts the dominant color
 	// Used to set the background color of a component if deck image doesn't
 	// fill the entire component.
