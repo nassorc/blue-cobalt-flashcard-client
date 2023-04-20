@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {Input} from '../../components/styles/Input.styled';
 import {FormContainer, Form} from '../../components/styles/Form.styled';
 import { Button } from '../../components/styles/Button.styled';
-
+import FormNotification from '../../components/FormNotification';
 
 export default function RegisterPage() { 
 	const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ export default function RegisterPage() {
 	const [first, setFirst] = useState('');
 	const [last, setLast] = useState('');
 	const [responseMsg, setResponseMsg] = useState('');
-	const [statusCode, setStatusCode] = useState(0);
+	const [responseOk, setResponseOk] = useState(false);
 
 	const handleRegisterSubmit = async (event) => {
 		event.preventDefault();
@@ -26,20 +26,27 @@ export default function RegisterPage() {
 		});
 		const { message } = await res.json();
 		setResponseMsg(message);
-		if(300 <= res.status <= 600) {
+
+		if(res.ok) {
+			setResponseOk(true);
+		}
+		else {
+			setResponseOk(false);
 			setEmail('');
 			setPassword('');
-		} 
+		}
 	};
     
 	return (
 		<>
-			{responseMsg ? <h4>{responseMsg}</h4> : null}
+			{/* {responseMsg ? <h4>{responseMsg}</h4> : null} */}
 			<FormContainer>
 				<div className={styles['formContainer-header']}>
 					<h2>Register</h2>
 					<p>Enter information to create an account</p>
 				</div>
+				{(responseMsg && responseOk) ? <FormNotification msg={responseMsg} bg="rgb(164, 237, 166)" borderColor="rgb(70, 143, 73)" color="rgb(70, 143, 73)"/> : null}
+				{(responseMsg && !responseOk) ? <FormNotification msg={responseMsg} bg="rgb(245, 233, 196)" borderColor="rgb(237, 222, 175)" color="rgb(82, 81, 11)" /> : null}
 				<Form onSubmit={handleRegisterSubmit}>
 					<Input 
 						type="text" 

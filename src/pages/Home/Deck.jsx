@@ -5,8 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import DeckNameEditor from './DeckNameEditor';
 import styles from '../../assets/styles.module.css';
+import { ButtonSm } from '../../components/styles/Button.styled';
+import { Badge } from '../../components/styles/Badge.styled';
+import textTruncation from '../../utils/textTruncation';
+import ColorThief from 'colorthief'
 
 export default function Deck({ deck}) {
+	const colorthief = new ColorThief()
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 
@@ -49,43 +54,60 @@ export default function Deck({ deck}) {
 		</button>;
 
 	// switch between card name, and input box for editing
-	let deckHeaderName = (isEditing) 
-		? <DeckNameEditor initialValue={name} setValue={setName} /> 
-		: <h3 className={styles['deck-name']} onMouseOver={() => {
-			console.log('hovering')
-		}}>{ name }</h3>;
+	// let deckHeaderName = (isEditing) 
+	// 	? <DeckNameEditor initialValue={name} setValue={setName} /> 
+	// 	: <h3 className={styles['deck-name']}>{ name }</h3>;
 	
-	let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`} : {backgroundColor: "rgb(40,40,40)"}
+
+	// Function uses the current deck image and extracts the dominant color
+	// Used to set the background color of a component if deck image doesn't
+	// fill the entire component.
+	const extractDominantColor = () => {
+		let rgb = [0,0,0]
+		if(deck?.deckImage) {
+			const img = document.createElement('img')
+			img.src = `${deck?.deckImage}`
+			rgb = colorthief.getColor(img)
+			return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		}
+		return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+	}
+
+	let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`, backgroundColor: extractDominantColor()} : {backgroundColor: "darkseagreen"}
 	return(
 		<div className={styles['deck']} style={backgroundImage}>
 			<div>
 				<div>
-					{deckHeaderName}
+					<h3 className={styles['deck-name']}>{textTruncation(name, 20)}</h3>
 				</div>
 				<div className={styles['deck-footer']}>
 					<div>
-						<div className={styles['badge']} data-text="total cards">
-							<FontAwesomeIcon icon={faLayerGroup} />
+						<Badge>
+							<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
 							<p>{deck?.cards?.length}</p>
-						</div>
-						<div className={styles['badge']} data-text="reviewed cards">
-							<FontAwesomeIcon icon={faGraduationCap} />
+						</Badge>
+						<Badge>
+							<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>
 							<p>{deck?.reviewList?.length}</p>
-						</div>
+						</Badge>
 					</div>
 					<div className={styles['button-container']}>
-						<button
-							className={styles['deck-button']} 
+						<ButtonSm
+							bg="white"
+							color="black"
+							borderColor="rgba(0,0,0,0.5)"
 							onClick={handlePracticeClick}
 						>
 							Practice
-						</button>
-						<button
-							className={styles['deck-button']}
+						</ButtonSm>
+						<ButtonSm
+							bg="white"
+							color="black"
+							borderColor="rgba(0,0,0,0.5)"
 							onClick={handleEditClick}
 						>
 							Edit
-						</button>
+						</ButtonSm>
 					</div>
 				</div>
 			</div>

@@ -197,7 +197,7 @@ input:not(input[type="submit"]) {
 .deck-name-input > input {
   width: 100%;
 }
-.badge {
+/* .badge {
   margin-right: 6px;
   padding: 2px 4px;
   display: inline-flex;
@@ -213,7 +213,7 @@ input:not(input[type="submit"]) {
 }
 .badge > *:not(:last-child) {
   margin-right: 2px;
-}
+} */
 
 .deck-footer {
   display: flex;

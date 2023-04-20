@@ -9,6 +9,7 @@ export const Button = styled.button`
     padding-block: 0.8rem;
     cursor: pointer;
     border-radius: 4px;
+    border: 1px solid ${props => props.borderColor ? props.borderColor : 'black'};
     color: ${props => props.color ? props.color : 'black'};
 
     &:hover {
@@ -17,5 +18,4 @@ export const Button = styled.button`
 `
 export const ButtonSm = styled(Button)`
     padding: 3px 8px;
-    border: 1px solid black;
 `
