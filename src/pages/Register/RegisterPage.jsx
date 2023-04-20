@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import styles from '../../assets/styles.module.css';
 import { Link } from 'react-router-dom';
+import {Input} from '../../components/styles/Input.styled';
+import {FormContainer, Form} from '../../components/styles/Form.styled';
+import { Button } from '../../components/styles/Button.styled';
+
+
 export default function RegisterPage() { 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState(''); 
@@ -30,13 +35,13 @@ export default function RegisterPage() {
 	return (
 		<>
 			{responseMsg ? <h4>{responseMsg}</h4> : null}
-			<div className={styles.formContainer}>
+			<FormContainer>
 				<div className={styles['formContainer-header']}>
 					<h2>Register</h2>
 					<p>Enter information to create an account</p>
 				</div>
-				<form onSubmit={handleRegisterSubmit}>
-					<input 
+				<Form onSubmit={handleRegisterSubmit}>
+					<Input 
 						type="text" 
 						placeholder="first name"
 						value={first}
@@ -44,7 +49,7 @@ export default function RegisterPage() {
 							setFirst(e.target.value);
 						}}
 					/>
-					<input 
+					<Input 
 						type="text" 
 						placeholder="last name"
 						value={last}
@@ -52,7 +57,7 @@ export default function RegisterPage() {
 							setLast(e.target.value);
 						}}
 					/>
-					<input 
+					<Input 
 						type="email" 
 						placeholder="email"
 						value={email}
@@ -60,7 +65,7 @@ export default function RegisterPage() {
 							setEmail(e.target.value);
 						}}
 					/>
-					<input 
+					<Input 
 						type="password" 
 						placeholder="password"
 						value={password}
@@ -68,12 +73,12 @@ export default function RegisterPage() {
 							setPassword(e.target.value);
 						}}
 					/>
-					<button type="submit" className={styles['register-button']}>Create new account</button>
+					<Button bg="var(--secondary-color)" color="white" type="submit">Create new account</Button>
 					<div className={styles['formContainer-footer']}>
 						<div style={{marginTop:'1rem'}}>Have an account? <Link to="/login" style={{color: 'var(--secondary-color)', textDecoration: 'underline'}}>Sign in</Link></div>
 					</div>
-				</form>
-			</div>
+				</Form>
+			</FormContainer>
 		</>
 	);
 }

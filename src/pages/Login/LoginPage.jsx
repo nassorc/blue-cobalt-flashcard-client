@@ -4,6 +4,11 @@ import styles from '../../assets/styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import FormNotification from '../../components/FormNotification';
 
+import {Input} from '../../components/styles/Input.styled';
+import {FormContainer, Form} from '../../components/styles/Form.styled';
+import { Button } from '../../components/styles/Button.styled';
+
+
 export default function LoginPage() {
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
@@ -57,14 +62,14 @@ export default function LoginPage() {
 	};
 	return (
 		<>
-			<div className={styles.formContainer}>
+			<FormContainer>
 				<div className={styles['formContainer-header']}>
 					<h2>Welcome back</h2>
 					<p>Enter email and password to sign in</p>
 				</div>
 				{responseMsg ? <FormNotification msg={responseMsg} /> : null}
-				<form onSubmit={handleLoginSubmit}>
-					<input
+				<Form onSubmit={handleLoginSubmit}>
+					<Input
 						type="email" 
 						placeholder="email"
 						autoComplete="off"
@@ -75,7 +80,7 @@ export default function LoginPage() {
 						}}
 						required
 					/>
-					<input 
+					<Input 
 						type="password" 
 						placeholder="password"
 						value={password}
@@ -84,18 +89,26 @@ export default function LoginPage() {
 						}}
 						required
 					/>
-					<input type="submit" value="Sign in" className={styles['login-button']} onSubmit={handleLoginSubmit}/>
+					<Button
+						bg="var(--primary-color)"
+						color= "white"
+						type="submit"
+						onSubmit={handleLoginSubmit}
+					>
+						Sign in
+					</Button>
 					<div className={styles['or']}>or</div>
-					<button 
-						className={styles['register-button']}
+					<Button
+						bg="var(--secondary-color)"
+						color="white"
 						onClick={(e) => {
 							navigate('/register')
 						}}
 					>
 						Create new account
-					</button>
-				</form>
-			</div>
+					</Button>
+				</Form>
+			</FormContainer>
 		</>
 	);
 }
