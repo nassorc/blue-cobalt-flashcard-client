@@ -3,9 +3,8 @@ export function handleUploadImageEvent(upload, setDeckImg) {
     let file = upload[0];
     console.log(file)
     new Compressor(file, {
-        quality: 0.4,
+        quality: 0.2,
         success(result) {
-            console.log(result)
             const handleFile = (e) => {
                 const blob = e.target.result;
                 setDeckImg(blob)
