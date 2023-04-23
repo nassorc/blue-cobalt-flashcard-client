@@ -36,7 +36,7 @@ function App() {
 							<Route path="/" element={<UserDashboard />} exact/>
 							<Route path="/add" element={<AddDeckPage />} exact />
 							<Route path="/practice/:id" element={<PracticePage />} exact />
-							<Route path="/edit/:id" element={<EditDeckPage />} exact />
+							<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
 						</Route>
 						<Route path="/login" element={<LoginPage/>} />
 						<Route path="/register" element={<RegisterPage />}/>

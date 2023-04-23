@@ -3,11 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import { useParams } from 'react-router-dom';
 import useFetchData from '../../hooks/useFetchData';
-import { GET_DECKS_ENDPOINT, UPDATE_DECK_ENDPOINT, DELETE_DECK_ENDPOINT } from '../../utils/api'
+
+// import instance of firebase storage
+import { storage } from '../../services/firebase';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+
+import InputCard from './InputCard';
+import {InputSm} from '../../components/styles/Input.styled'
+import Card from './Card';
+import { Group } from '../../components/styles/Group.styled';
+
+import { GET_DECK_ENDPOINT, UPDATE_DECK_ENDPOINT, DELETE_DECK_ENDPOINT } from '../../utils/api'
 
 import styles from '../../assets/styles.module.css';
 
+
+
 // Log:
+//      (1) When changing avatars, delete the old one.
+//      (2) Using urls broke the getDominantColor function in /Home/Deck
+//      (3) make cards list a scrollable container?
+//      (4) Refactor /EditDeck/page too much clutter
+//      (5) Add delete deck at the bottom, show popup to confirm operation
+//      (6) Show popup to confirm cancel
+//      (5-6) create a popup component to confirm process 
+
+
+// COMPLETE
 // Todo: (1) cardlist
 //           (*) can edit individual field of card
 //               front: definition  edit button
@@ -25,165 +47,98 @@ import styles from '../../assets/styles.module.css';
 //       (5) save button at the bottom. 
 //       (6) notify user of the update
 
-function InputCard({ setModifiedCards }) {    
-    const [front, setFront] = useState('');
-    const [back, setBack] = useState('');
-
-    const handleAdd = (e) => {
-        console.log('clicking')
-        const newCard = {
-            front,
-            back,
-        }
-        setModifiedCards(prevState => {
-            return [newCard,...prevState]
-        })
-        setFront('')
-        setBack('')
-    }
-    return(
-        <div>
-            <div>
-                <label htmlFor='front'>front</label>
-                <input type='text' value={front} onChange={(e) => {
-                    setFront(e.target.value);
-                }}/>
-            </div>
-            <div>
-                <label htmlFor='back'>back</label>
-                <input type='text' value={back} onChange={(e) => {
-                    setBack(e.target.value);
-                }}/>
-            </div>
-            <div>
-                <button onClick={handleAdd}>add</button>
-            </div>
-        </div>
-    )
-}
-
-function Card({id, front, back, setModifiedCards}) {
-    const [isEdit, setIsEdit] = useState(false);
-    const [frontField, setFrontField] = useState(front.slice());
-    const [backField, setBackField] = useState(back.slice());
-    const handleDelete = (e) => {
-        setModifiedCards(prevState => {
-            let updated = prevState.filter((card) => card._id !== id)
-            return [...updated]
-        })
-    }
-    const handleEdit = (e) => {
-        setFrontField(front)
-        setBackField(back)
-        setIsEdit(!isEdit)
-    }
-    const handleUpdate = (e) => {
-        setModifiedCards(prevState => {
-
-            let card = prevState.reduce((current, elm) => (elm._id === id) ? elm : current);
-            let temp = {...card}
-            temp.front = frontField;
-            temp.back = backField;
-
-            return [temp, ...prevState.filter((card) => card._id !== id)]
-        })
-        setIsEdit(!isEdit)
-    }
-    const handleCancel = (e) => {
-        setIsEdit(!isEdit)
-
-    }
-    let cardComponent = (!isEdit) ? 
-            <div>
-                <div>
-                    <span>Front:</span><span> {front}</span>
-                </div>
-                
-                <div>
-                    <span>back:</span><span> {back}</span>
-                </div>
-
-                <div>
-                    <button onClick={handleDelete}>Delete</button>
-                    <button onClick={handleEdit}>edit</button>
-                </div>
-            </div>
-            :
-            <div>
-                <label>front:</label>
-                <input value={frontField} onChange={(e) => {setFrontField(e.target.value)}}/>
-                <br />
-                <label>back:</label>
-                <input value={backField} onChange={(e) => {setBackField(e.target.value)}}/>
-                <div>
-                    <button onClick={handleUpdate}>update</button>
-                    <button onClick={handleCancel}>cancel</button>
-                </div>
-            </div>
-    return (
-        <div>
-            {cardComponent}
-        </div>
-    )
-}
-
 export default function EditDeckPage() {
     const authContext = useContext(AuthContext)
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { deckId } = useParams();
+    // fetch deck using url param
+    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECK_ENDPOINT(deckId)}`;
+    const deck = useFetchData(url, {
+        headers: {'Authorization': `Bearer ${authContext.auth.token}`}
+    });
 
-    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECKS_ENDPOINT(authContext.auth.userId)}`;
-    const options = { method: 'GET', headers: {'Authorization': `Bearer ${authContext.auth.token}`}}
-    const deck = useFetchData(url, options)?.reduce((current, elm) => (elm._id === id) ? elm : current);
-    const [cards, setCards] = useState([]);
-    const [modifiedCards, setModifiedCards] = useState([]);
+    // input data
+    const [deckName, setDeckName] = useState('')                        // deck name
+    const [newCardCount, setNewCardCount] = useState(0);                // number of type 'new' cards added to review session
+    const [reviewedCardCount, setReviewedCardCount] = useState(0);      // number of type 'reviewed' cards added to review session
+    const [deckImage, setDeckImage] = useState('');                     
+    const [deckImageName, setDeckImageName] = useState('');             // deck image name. Used to query image in firebase storage.
+    const [deckImageFile, setDeckImageFile] = useState('');             // image upload file
+    const [deckImageURL, setDeckImageURL] = useState('');               // deck image. Contains download url produdced by firebase
+    const [modifiedCards, setModifiedCards] = useState([]);             // contains the modified card list
 
-    // input fields
-    const [deckName, setDeckName] = useState('')
-    const [newCardCount, setNewCardCount] = useState(0);
-    const [reviewedCardCount, setReviewedCardCount] = useState(0);
-    const [deckImage, setDeckImage] = useState('');
-
+    // set intitial value of the fields when fetch returns data
     useEffect(() => {
         setDeckName(deck?.deckName)
         setNewCardCount(deck?.deckSettings?.newCards)
         setReviewedCardCount(deck?.deckSettings?.reviewCards)
-        setCards(deck?.cards);
         setModifiedCards(deck?.cards);
     }, [deck])
 
+    // creates a list of cards
     let CardList = (modifiedCards)
         ? modifiedCards?.map(card => {
                 return <Card id={card._id} front={card.front} back={card.back} setModifiedCards={setModifiedCards} key={card._id} />
             })
         : [];
-
+    
     let DeckImageComponent = (deckImage) ? <img src={deckImage}/> : null
 
     const handleSaveDeck = async (e) => {
-        const updatedDeck = {
-            deckName,
-            deckImage: (deckImage) ? deckImage : deck?.deckImage,
-            cards: modifiedCards,
-            deckSettings: {
-                reviewCards: reviewedCardCount,
-                newCards: newCardCount
+        // if user uploaded an image
+        if(deckImageFile) {  // upload to firebase
+            // if user has a deck image, delete current one in firebase, and create new download url.
+            if(deck?.deckImage && deck?.deckImageName) {
+                const deleteImageRef = ref(storage, `decks/${deck?.deckImageName}`);
+                try {
+                    await deleteObject(deleteImageRef);
+                }
+                catch(err) {
+                    throw new Error(err.message);
+                }
             }
+            // upload new image to firebase
+            const imageRef = ref(storage, `decks/${deckImageName}`);
+            await uploadBytes(imageRef, deckImageFile).then((snapshot) => {
+                getDownloadURL(imageRef).then(async (url) => {
+                    setDeckImageURL(url)
+
+                    // deck saved to database
+                    const updatedDeck = {
+                        deckName,
+                        deckImage: (url) ? url : deck?.deckImage || '',
+                        deckImageName: (deckImageName) ? deckImageName : deck?.deckImageName || '',
+                        cards: modifiedCards,
+                        deckSettings: {
+                            reviewCards: reviewedCardCount,
+                            newCards: newCardCount
+                        }
+                    }
+                    
+                    // request update
+                    try {
+                        const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${UPDATE_DECK_ENDPOINT(deckId)}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authContext.auth.token}`
+                            },
+                            body: JSON.stringify({details: updatedDeck})
+                        });
+                        navigate('/');
+
+                    }
+                    catch(err) {
+                        throw new Error(err.message);
+                    }
+
+                })
+            })
         }
-        const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${UPDATE_DECK_ENDPOINT(id)}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authContext.auth.token}`
-            },
-            body: JSON.stringify({details: updatedDeck})
-        });
-        const data = await res.json();
-        navigate('/');
     }
     const handleDeleteDeck = async () => {
         // make delete request 
-        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${DELETE_DECK_ENDPOINT(id)}`, {
+        await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${DELETE_DECK_ENDPOINT(deckId)}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,56 +150,85 @@ export default function EditDeckPage() {
     const handleCancel = () => {
         navigate('/');
     }
+
     return(
         <section className={styles['container']}>
-            <h1>Edit Deck</h1>
-            <button onClick={handleSaveDeck}>Save</button>
-            <button onClick={handleCancel}>Cancel</button>
-            <button onClick={handleDeleteDeck}>Delete</button>
-            <div>
+            <Group>
                 <div>
-                    {
-                        (deck?.deckImage)
-                        ? <img src={deck?.deckImage} alt="deck image"/>
-                        : ""
-                    }
-                    
+                    <h1>Edit Deck</h1>
+                    <p>Edit deck and click the save button to save any changes.</p>
                 </div>
                 <div>
-                    <label>Deck Name</label>
-                    <input type="text" value={deckName} onChange={(e) => {
-                        setDeckName(e.target.value);
-                    }}/>
+                    <button onClick={handleSaveDeck}>Save</button>
+                    <button onClick={handleCancel}>Cancel</button>
+                    <button onClick={handleDeleteDeck}>Delete</button>
                 </div>
-            </div>
-            <p>Review settings</p>
-            <div>
-                <p>Number of cards added each review session</p>
-                <div><label>new cards:</label> <input type="input" value={newCardCount} onChange={(e) => {
-                    setNewCardCount(e.target.value)
-                }}/></div>
-                <div><label>reviewed cards:</label><input type="input" value={reviewedCardCount} onChange={(e) => {
-                    setReviewedCardCount(e.target.value)
-                }}/></div>
-            </div>
-            <div>
-                <p>update deck image</p>
-                <input 
-                    type="file" accept=".jpg, .jpeg, .png" 
-                    id="img-field"
-                    onChange={async (e) => {
-                        const {handleUploadImageEvent} = await import('../../utils/uploadImage')
-                        handleUploadImageEvent(e.target.files, setDeckImage)
-                    }}
-                />
-                <div style={{width: "200px", height: "200px", overflow: "hidden"}}>
-                    {DeckImageComponent}
+            </Group>
+            
+
+            <Group>
+                <div>
+                    <div>
+                        {
+                            (deck?.deckImage)
+                            ? <img src={deck?.deckImage} width="10%" alt="deck image"/>
+                            : null
+                        }
+                        {
+                            (deckImageURL)
+                            ? <img src={deckImageURL} width="10%" alt="deck image"/>
+                            : null
+                        }
+                        
+                    </div>
+                    <div>
+                        <label>Deck Name</label>
+                        <input type="text" value={deckName} onChange={(e) => {
+                            setDeckName(e.target.value);
+                        }}/>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <InputCard  setModifiedCards={setModifiedCards}/>
-                {CardList}
-            </div>
+                
+            </Group>
+            <Group>
+                <h3>Deck Settings</h3>
+
+            </Group>
+            <Group shadow={true}>
+                <div>
+                    <p>Number of cards added each review session</p>
+                    <div><label>new cards:</label> <InputSm type="input" value={newCardCount} onChange={(e) => {
+                        setNewCardCount(e.target.value)
+                    }}/></div>
+                    <div><label>reviewed cards:</label><InputSm type="input" value={reviewedCardCount} onChange={(e) => {
+                        setReviewedCardCount(e.target.value)
+                    }}/></div>
+
+                    <div>
+                        <p>update deck image</p>
+                        <input 
+                            type="file" accept=".jpg, .jpeg, .png" 
+                            id="img-field"
+                            onChange={async (e) => {
+                                setDeckImageFile(e.target.files[0])
+                                const {handleUploadImageEvent} = await import('../../utils/uploadImage')
+                                handleUploadImageEvent(e.target.files, setDeckImage, setDeckImageName)
+                            }}
+                        />
+                        <div style={{width: "100px", height: "100px", overflow: "hidden"}}>
+                            {DeckImageComponent}
+                        </div>
+                    </div>
+                </div>
+                
+            </Group>
+            <Group><h3>Cards</h3></Group>
+            <Group>
+                <div>
+                    <InputCard  setModifiedCards={setModifiedCards}/>
+                    {CardList}
+                </div>
+            </Group>
         </section>
     )
 }

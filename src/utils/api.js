@@ -5,8 +5,9 @@ export const POST_REGISTER_ENDPOINT = () => '/register/';
 
 // Deck and Card endpoints
 // export const GET_DECKS_ENDPOINT = () => '/deck/';
-export const GET_DECKS_ENDPOINT = (id) => `/deck/${id}`;
-export const UPDATE_DECK_ENDPOINT = (id) => `/deck/update/${id}`;
-export const DELETE_DECK_ENDPOINT = (id) => `/deck/delete/${id}`;
+export const GET_DECKS_ENDPOINT = (userId) => `/deck/${userId}`;
+export const GET_DECK_ENDPOINT = (deckId) => `/deck/get/${deckId}`
+export const UPDATE_DECK_ENDPOINT = (deckId) => `/deck/update/${deckId}`;
+export const DELETE_DECK_ENDPOINT = (deckId) => `/deck/delete/${deckId}`;
 
 export const GRADE_CARD_ENDPOINT = () => '/deck/cards/grade';
