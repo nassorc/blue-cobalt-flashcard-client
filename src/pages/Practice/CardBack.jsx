@@ -1,4 +1,5 @@
 import updateReviewList from './updateReviewList';
+import { Back } from '../../components/styles/Flashcard.styled';
 
 export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, setShowMeaningProp, cards, setCards }) {
     const handleGradeButton = (grade) => {
@@ -7,7 +8,7 @@ export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, 
         updateReviewList(grade, cardDetails._id, cards, setCards)
     }
     return(
-        <div>
+        <Back>
             <div className="practice-header">
                     <div className="front">{cardDetails.front}</div> 
                     <div className="back">{cardDetails.back}</div>
@@ -20,6 +21,6 @@ export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, 
                     <button onClick={(e) => handleGradeButton(4)}>Easy but hesitated</button>
                     <button onClick={(e) => handleGradeButton(5)}>Flawless</button>
             </div>
-        </div>
+        </Back>
     )
 }

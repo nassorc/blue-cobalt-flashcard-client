@@ -1,9 +1,12 @@
+import { Front } from '../../components/styles/Flashcard.styled';
+
 export default function CardFront({ cardDetails, showMeaningProp, setShowMeaningProp, handleEditClick }) {
     const handleShowClick = (e) => {
         setShowMeaningProp(!showMeaningProp);
+
     }
     return(
-        <div>
+        <Front>
             <div className="practice-header">
                     <div className="front">{cardDetails.front}</div>
                 </div>
@@ -11,6 +14,6 @@ export default function CardFront({ cardDetails, showMeaningProp, setShowMeaning
                     <button onClick={handleShowClick}>Show</button>
                     <button onClick={handleEditClick}>Edit deck</button>
             </div>
-        </div>
+        </Front>
     );
 }

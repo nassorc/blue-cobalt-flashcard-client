@@ -45,7 +45,9 @@ export default function RegisterPage() {
 					<h2>Register</h2>
 					<p>Enter information to create an account</p>
 				</div>
-				{(responseMsg && responseOk) ? <FormNotification msg={responseMsg} bg="rgb(164, 237, 166)" borderColor="rgb(70, 143, 73)" color="rgb(70, 143, 73)"/> : null}
+				{(responseMsg && responseOk) ? <FormNotification msg={responseMsg} bg="rgb(164, 237, 166)" borderColor="rgb(70, 143, 73)" color="rgb(70, 143, 73)">
+						<span>. Click <Link to="/login" style={{color: 'var(--secondary-color)', textDecoration: 'underline'}}> Sign in</Link> to jump to the login page.</span>
+					</FormNotification> : null}
 				{(responseMsg && !responseOk) ? <FormNotification msg={responseMsg} bg="rgb(245, 233, 196)" borderColor="rgb(237, 222, 175)" color="rgb(82, 81, 11)" /> : null}
 				<Form onSubmit={handleRegisterSubmit}>
 					<Input 
