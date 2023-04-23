@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import DeckNameEditor from './DeckNameEditor';
 import styles from '../../assets/styles.module.css';
+import { DeckCard } from '../../components/styles/Deck.styled'
 import { ButtonSm } from '../../components/styles/Button.styled';
 import { Badge } from '../../components/styles/Badge.styled';
 import textTruncation from '../../utils/textTruncation';
@@ -18,58 +19,42 @@ export default function Deck({ deck}) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [name, setName] = useState(deck.deckName);
 
-
 	const handlePracticeClick = (e) => {
 		navigate(`/practice/${deck._id}`);
 	};
 	const handleEditClick = (e) => {
 		navigate(`/edit/${deck._id}`);
 	};
-	const handleUpdateClick = async(e) => {
-		const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/deck/${deck._id}`, {
-			method: 'POST',
-			headers: {
-				'Content-type': 'application/json',
-				'Authorization': `Bearer ${authContext.auth.token}`
-			},
-			body: JSON.stringify({details: { 'deckName': name }})
-		});
-		const data = await res.json();
-		console.log(data);
-		setIsEditing(!isEditing);
-
-	};
-	let editButton = (isEditing) 
-		? <button 
-			className={styles['deck-button']}
-			onClick={handleUpdateClick}
-		>
-			Update
-		</button>
-		: <button 
-			className={styles['deck-button']}
-			onClick={handleEditClick}
-		>
-			Edit
-		</button>;
 
 	// Function uses the current deck image and extracts the dominant color
 	// Used to set the background color of a component if deck image doesn't
 	// fill the entire component.
 	const extractDominantColor = () => {
 		let rgb = [0,0,0]
-		if(deck?.deckImage) {
+		if(deck?.deckImage.length > 0) {
 			const img = document.createElement('img')
 			img.src = `${deck?.deckImage}`
-			rgb = colorthief.getColor(img)
-			return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			// function may run without a size which will produce an error.
+			// checks if size if greater than 0.
+			if(img.width > 0) {
+				rgb = colorthief.getColor(img)
+				return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			}
+			// waits for image to load before calling getcolor.
+			// img.addEventListener('onload', () => {
+			// 	rgb = colorthief.getColor(img)
+			// 	return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			// })
+			
+			
 		}
 		return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 	}
-
-	let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`, backgroundColor: extractDominantColor()} : {backgroundColor: "darkseagreen"}
+	// broken: extractDominantColor
+	// let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`, backgroundColor: extractDominantColor()} : {backgroundColor: "darkseagreen"}
+	let backgroundImage = (deck?.deckImage) ? {backgroundImage: `url(${deck?.deckImage})`, backgroundColor: 'rgb(40,40,40)'} : {backgroundColor: "darkseagreen"}
 	return(
-		<div className={styles['deck']} style={backgroundImage}>
+		<DeckCard style={backgroundImage}>
 			<div>
 				<div>
 					<h3 className={styles['deck-name']}>{textTruncation(name, 20)}</h3>
@@ -105,6 +90,6 @@ export default function Deck({ deck}) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</DeckCard>
 	);
 }
