@@ -3,7 +3,7 @@ import AuthContext from '../../context/AuthContext';
 import styles from '../../common/assets/styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import FormNotification from '../../common/components/FormNotification';
-
+import { POST_LOGIN_ENDPOINT } from '../../utils/api';
 import {Input} from '../../components/styles/Input.styled';
 import {FormContainer, Form} from '../../components/styles/Form.styled';
 import { Button } from '../../components/styles/Button.styled';
@@ -30,7 +30,7 @@ export default function LoginPage() {
 			return; 
 		}
 		try {
-			const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/login`, {
+			const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${POST_LOGIN_ENDPOINT}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
