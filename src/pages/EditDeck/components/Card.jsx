@@ -31,21 +31,26 @@ export default function Card({id, front, back, setModifiedCards}) {
         setIsEdit(!isEdit)
 
     }
-    let cardComponent = (!isEdit) ? 
-            <div>
+    let cardComponent = 
+        (!isEdit) ? 
+
+                <>
                 <div>
-                    <span>Front:</span><span> {front}</span>
-                </div>
-                
-                <div>
-                    <span>back:</span><span> {back}</span>
+                    <div>
+                        <span style={{fontWeight: 'bold'}}> {front}</span>
+                    </div>
+                    
+                    <div>
+                        <span> {back}</span>
+                    </div>
                 </div>
 
                 <div>
                     <button onClick={handleDelete}>Delete</button>
                     <button onClick={handleEdit}>edit</button>
                 </div>
-            </div>
+                </>
+
             :
             <div>
                 <label>front:</label>
@@ -59,7 +64,16 @@ export default function Card({id, front, back, setModifiedCards}) {
                 </div>
             </div>
     return (
-        <div>
+        <div style={
+            {
+                width: '400px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '18px 8px',
+                margin: '6px 0',
+                borderRadius: '10px',
+                boxShadow: '0px 0px 0px 1px rgba(0, 0, 0, 0.2)',
+            }}>
             {cardComponent}
         </div>
     )

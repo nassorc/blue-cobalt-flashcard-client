@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const Group = styled.div`
+export const SettingsGroup = styled.div`
     box-sizing: border-box;
     margin: 4px 4px;
     padding: 8px 8px;

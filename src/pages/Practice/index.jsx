@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import { useNavigate } from "react-router-dom";
 import Card from './Card';
-import useFetchData from '../../hooks/useFetchData';
+import useFetchData from '../../common/hooks/useFetchData';
 import createReviewSession from './createReviewSession';
 import filterDeckById from '../../utils/filterDeckById';
 import {GET_DECKS_ENDPOINT, GRADE_CARD_ENDPOINT} from '../../utils/api';
 
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 
 // log:
 // Edit component pages contains better code to fetch deck data

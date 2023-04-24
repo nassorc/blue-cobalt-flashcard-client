@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import CardFront from './CardFront';
 import CardBack from './CardBack';
 import { Flashcard, FlashcardContainer } from '../../components/styles/Flashcard.styled';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 
 
 export default function Card({ cardDetails, gradeCard, handleEditClick, cards, setCards }) {

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import {Link, useNavigate } from 'react-router-dom';
-import styles from '../assets/styles.module.css';
+import styles from '../common/assets/styles.module.css';
 
 export default function Homepage() {
 	const authContext = useContext(AuthContext);

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 import { Link } from 'react-router-dom';
 import {Input} from '../../components/styles/Input.styled';
 import {FormContainer, Form} from '../../components/styles/Form.styled';
 import { Button } from '../../components/styles/Button.styled';
-import FormNotification from '../../components/FormNotification';
+import FormNotification from '../../common/components/FormNotification';
 
 export default function RegisterPage() { 
 	const [email, setEmail] = useState('');

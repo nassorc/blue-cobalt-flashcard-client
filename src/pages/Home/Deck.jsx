@@ -4,7 +4,7 @@ import AuthContext from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import DeckNameEditor from './DeckNameEditor';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 import { DeckCard } from '../../components/styles/Deck.styled'
 import { ButtonSm } from '../../components/styles/Button.styled';
 import { Badge } from '../../components/styles/Badge.styled';

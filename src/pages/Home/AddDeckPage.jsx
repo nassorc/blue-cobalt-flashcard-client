@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 
 function emulateServer(input) {
 	return [

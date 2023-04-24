@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 
 
 import Deck from './Deck';

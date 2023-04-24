@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
-import styles from '../../assets/styles.module.css';
+import styles from '../../common/assets/styles.module.css';
 import { useNavigate } from 'react-router-dom';
-import FormNotification from '../../components/FormNotification';
+import FormNotification from '../../common/components/FormNotification';
 
 import {Input} from '../../components/styles/Input.styled';
 import {FormContainer, Form} from '../../components/styles/Form.styled';
