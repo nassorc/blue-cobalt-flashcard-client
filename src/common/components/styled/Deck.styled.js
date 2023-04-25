@@ -5,7 +5,8 @@ export const DeckCard = styled.div`
 
     background-position: top;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
+    background-position: center;
     box-sizing: border-box;
     padding-top: 100px;
     margin-block: 20px;
@@ -13,8 +14,6 @@ export const DeckCard = styled.div`
     width: 300px;
     background-color: white;
     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
-    // -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
-    // -moz-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
 
     display: flex;

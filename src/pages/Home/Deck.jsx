@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
-import DeckNameEditor from './DeckNameEditor';
 import styles from '../../common/assets/styles.module.css';
 import { DeckCard } from '../../common/components/styled/Deck.styled'
 import { ButtonSm } from '../../common/components/styled/Button.styled';
