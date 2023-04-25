@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import DeckNameEditor from './DeckNameEditor';
 import styles from '../../common/assets/styles.module.css';
-import { DeckCard } from '../../components/styles/Deck.styled'
-import { ButtonSm } from '../../components/styles/Button.styled';
-import { Badge } from '../../components/styles/Badge.styled';
+import { DeckCard } from '../../common/components/styled/Deck.styled'
+import { ButtonSm } from '../../common/components/styled/Button.styled';
+import { Badge } from '../../common/components/styled/Badge.styled';
 import textTruncation from '../../utils/textTruncation';
 import ColorThief from 'colorthief'
 
-export default function Deck({ deck}) {
+export default function Deck({ deck }) {
 	const colorthief = new ColorThief()
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();

@@ -1,5 +1,4 @@
-import styles from '../assets/styles.module.css';
-import { FormAlert } from '../../components/styles/Form.styled';
+import { FormAlert } from '../../common/components/styled/Form.styled';
 
 export default function FormNotification({msg, bg, borderColor, color, children}) {
     return (

@@ -12,7 +12,7 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 // Styled Comonents
 import InputCard from './components/InputCard';
-import {InputSm} from '../../components/styles/Input.styled'
+import {InputSm} from '../../common/components/styled/Input.styled'
 
 import { PageContainer } from '../../common/components/styled/Container.styled';
 import { SettingsGroup } from './components/styled/SettingsGroup.styled';
@@ -52,8 +52,6 @@ export default function EditDeckPage() {
                 return <Card id={card._id} front={card.front} back={card.back} setModifiedCards={setModifiedCards} key={card._id} />
             })
         : [];
-    
-    let DeckImageComponent = (deckImage) ? <img src={deckImage}/> : null
 
     const handleSaveDeck = async (e) => {
         let imageURL = '';
@@ -112,7 +110,7 @@ export default function EditDeckPage() {
             </SettingsGroup>
             <SettingsGroup>
                     <SettingsGroupItem>
-                        {(deckImage) ? <ImageIcon image={deckImage}/> : <div style={{backgroundColor: 'pink', width: '100%', height: '100%'}}></div>}                        
+                        <ImageIcon image={deckImage}/>
                         <div>
                             <label style={{fontWeight: 'bold'}}>Deck name: </label>
                             <InputSm value={deckName} onChange={(e) => {setDeckName(e.target.value)}}/>
@@ -158,59 +156,6 @@ export default function EditDeckPage() {
                 </div>
                 
             </SettingsGroup>
-            {/* <Group shadow={1} style={{flexDirection: 'column', paddingBottom: '100px'}}>
-                <div style={{position: 'relative', backgroundColor: 'darkseagreen', width: '100%', height: '10rem'}}>
-                <div style={
-                        {
-                            display: 'flex',
-                            alignItems: 'center',
-                            position: 'relative',
-                            top: '130px',
-                            left: '20px',
-                        }}>
-                    <div style={
-                        {
-                            width: '110px', 
-                            height: '110px',
-                            backgroundColor: 'brown',
-                            borderRadius: '50%',
-                            overflow: 'hidden',
-                            border: '10px solid white'
-                        }}>
-                        {
-                        (deck?.deckImage)
-                            ? <img src={deck?.deckImage} width="100%" alt="deck image"/>
-                            : <div style={{backgroundColor: 'pink', width: '100%', height: '100%'}}></div>
-                        }
-                    </div>
-                    <div style={{marginInline: '1rem', marginTop: '2rem'}}>
-                        <InputSm  
-                            type="text" 
-                            value={deckName} 
-                            onChange={(e) => {setDeckName(e.target.value); }}
-                            
-                        />
-                        <p>Deck description goes here.</p>
-                    </div>
-                    
-                </div>
-                <div style={
-                        {
-                            position: 'relative',
-                            left: '80%',
-                            top: '45px',
-                            maxWidth: '220px',
-                }}>
-                        
-                </div>
-            </div>
-
-                
-
-            
-
-            </Group> */}
-            
             <SettingsGroup>
                 <div>
                     <h3>Delete deck</h3>
@@ -219,7 +164,6 @@ export default function EditDeckPage() {
                 <div>
                     <button>Delete deck</button>
                 </div>
-                
             </SettingsGroup>
             
             <SettingsGroup style={{flexDirection: 'column'}}>

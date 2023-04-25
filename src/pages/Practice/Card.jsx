@@ -1,14 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import CardFront from './CardFront';
 import CardBack from './CardBack';
-import { Flashcard, FlashcardContainer } from '../../components/styles/Flashcard.styled';
-import styles from '../../common/assets/styles.module.css';
+import { Flashcard, FlashcardContainer } from '../../common/components/styled/Flashcard.styled';
 
 
 export default function Card({ cardDetails, gradeCard, handleEditClick, cards, setCards }) {
     const [showMeaning, setShowMeaning] = useState(false);  // if true, shows back of card
-
-
 
     return(
         <FlashcardContainer>

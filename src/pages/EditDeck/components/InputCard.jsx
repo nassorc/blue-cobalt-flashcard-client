@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
-import {InputSm} from '../../../components/styles/Input.styled';
+import {InputSm} from '../../../common/components/styled/Input.styled';
 
 export default function InputCard({ setModifiedCards }) {    
     const [front, setFront] = useState('');

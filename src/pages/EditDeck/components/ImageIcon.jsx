@@ -13,7 +13,10 @@ const Image = styled.img`
 export default function ImageIcon({image}) {
     return(
         <ImageIconContainer>
-            <Image src={image}/>
+            {(image) 
+            ? <Image src={image}/>
+            : <div style={{backgroundColor: 'darkseagreen', width: '100%', height: '100%'}}></div>
+            }
         </ImageIconContainer>
     );
 }

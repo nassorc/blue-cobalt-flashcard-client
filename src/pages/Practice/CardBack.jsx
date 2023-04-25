@@ -1,5 +1,5 @@
 import updateReviewList from './updateReviewList';
-import { Back } from '../../components/styles/Flashcard.styled';
+import { Back } from '../../common/components/styled/Flashcard.styled';
 
 export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, setShowMeaningProp, cards, setCards }) {
     const handleGradeButton = (grade) => {

@@ -1,4 +1,4 @@
-import { Front } from '../../components/styles/Flashcard.styled';
+import { Front } from '../../common/components/styled/Flashcard.styled';
 
 export default function CardFront({ cardDetails, showMeaningProp, setShowMeaningProp, handleEditClick }) {
     const handleShowClick = (e) => {

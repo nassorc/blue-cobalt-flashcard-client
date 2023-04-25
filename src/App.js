@@ -3,7 +3,7 @@ import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
-import AddDeckPage from './pages/Home/AddDeckPage';
+import AddDeckPage from './pages/AddDeck/';
 import UserDashboard from './pages/Home/UserDashboard';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Header from './components/Header';

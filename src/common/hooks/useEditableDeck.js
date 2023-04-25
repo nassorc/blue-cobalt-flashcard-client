@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { GET_DECK_ENDPOINT } from '../../../utils/api'
+import { GET_DECK_ENDPOINT } from '../../utils/api'
 
+// hook to fetch and manage deck information
 export default function useEditableDeck(shouldFetchDeck=false, deckId='', headers={}) {
     const [editableDeck, setEditableDeck] = useState(() => buildDeck())
 
