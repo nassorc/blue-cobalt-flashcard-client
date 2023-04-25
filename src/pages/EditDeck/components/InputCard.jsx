@@ -5,7 +5,7 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import {InputSm} from '../../../common/components/styled/Input.styled';
 
-export default function InputCard({ setDeck }) {    
+export function InputCard({ setDeck }) {    
     const [front, setFront] = useState('');
     const [back, setBack] = useState('');
 
