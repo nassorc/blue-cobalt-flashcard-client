@@ -18,38 +18,19 @@ import { PageContainer } from '../../common/components/styled/Container.styled';
 import { SettingsGroup } from './components/styled/SettingsGroup.styled';
 import { SettingsGroupItem } from './components/styled/SettingsGroupItem.styled';
 
+import useEditableDeck from '../../common/hooks/useEditableDeck';
+
 export default function EditDeckPage() {
     const authContext = useContext(AuthContext)
     const navigate = useNavigate();
     const { deckId } = useParams();
-    // fetch deck using url param
-    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECK_ENDPOINT(deckId)}`;
-    const deck = useFetchData(url, {
-        headers: {'Authorization': `Bearer ${authContext.auth.token}`}
-    });
 
-    // input data
-    const [deckName, setDeckName] = useState('')                        // deck name
-    const [newCardCount, setNewCardCount] = useState(0);                // number of type 'new' cards added to review session
-    const [reviewedCardCount, setReviewedCardCount] = useState(0);      // number of type 'reviewed' cards added to review session
-    const [deckImage, setDeckImage] = useState('');                     
-    const [deckImageName, setDeckImageName] = useState('');             // deck image name. Used to query image in firebase storage.
-    const [deckImageFile, setDeckImageFile] = useState('');             // image upload file
-    const [modifiedCards, setModifiedCards] = useState([]);             // contains the modified card list
-
-    // set intitial value of the fields when fetch returns data
-    useEffect(() => {
-        setDeckName(deck?.deckName)
-        setNewCardCount(deck?.deckSettings?.newCards)
-        setReviewedCardCount(deck?.deckSettings?.reviewCards)
-        setModifiedCards(deck?.cards);
-        setDeckImage(deck?.deckImage)
-    }, [deck])
+    let [deck, setDeck, originalDeck] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`})
 
     // creates a list of cards
-    let CardList = (modifiedCards)
-        ? modifiedCards?.map(card => {
-                return <Card id={card._id} front={card.front} back={card.back} setModifiedCards={setModifiedCards} key={card._id} />
+    let CardList = (deck?.modifiedCards)
+        ? deck?.modifiedCards?.map(card => {
+                return <Card id={card._id} front={card.front} back={card.back} setDeck={setDeck} key={card._id} />
             })
         : [];
 
@@ -57,27 +38,27 @@ export default function EditDeckPage() {
         let imageURL = '';
         // if user uploaded an image
         try {
-            if(deckImageFile) {  // upload to firebase
-                if(deck?.deckImage && deck?.deckImageName) {
+            if(deck?.deckImageFile) {  // user upload an image
+                if(originalDeck?.deckImage && originalDeck?.deckImageName) {  // delete existing image
                     const { deleteImage } = await import('./core/deleteImage')
-                    await deleteImage(deck?.deckImageName)
+                    await deleteImage(originalDeck?.deckImageName)
                 }
                 // upload to firebase
                 const {uploadImage} = await import('./core/uploadImage');
-                imageURL = await uploadImage(deckImageName, deckImageFile);            
+                imageURL = await uploadImage(deck?.deckImageName, deck?.deckImageFile);        
             }
             const updatedDeck = {
-                deckName,
+                deckName: deck?.deckName,
                 deckImage: (imageURL) ? imageURL : deck?.deckImage || '',
-                deckImageName: (deckImageName) ? deckImageName : deckImageName || '',
-                cards: modifiedCards,
+                deckImageName: (deck?.deckImageName) ? deck?.deckImageName : originalDeck?.deckImageName || '',
+                cards: deck?.modifiedCards,
                 deckSettings: {
-                    reviewCards: reviewedCardCount,
-                    newCards: newCardCount
+                    reviewCards: deck?.reviewedCardCount,
+                    newCards: deck?.newCardCount
                 }
             }
             // save to database
-            const { saveToDatabase } = require('./core/saveToDatabase');
+            const { saveToDatabase } = await import('./core/saveToDatabase');
             let res = await saveToDatabase(updatedDeck, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
             if (res) navigate('/');
             else throw new Error('Could not save deck to database')
@@ -110,19 +91,29 @@ export default function EditDeckPage() {
             </SettingsGroup>
             <SettingsGroup>
                     <SettingsGroupItem>
-                        <ImageIcon image={deckImage}/>
+                        <ImageIcon image={deck?.deckImage}/>
                         <div>
                             <label style={{fontWeight: 'bold'}}>Deck name: </label>
-                            <InputSm value={deckName} onChange={(e) => {setDeckName(e.target.value)}}/>
+                            <InputSm value={deck?.deckName} onChange={(e) => {
+                                setDeck(prevState => {
+                                    return {...prevState, deckName: e.target.value}
+                                })
+                            }
+                            }/>
                             <div>
                                 <label style={{fontWeight: 'bold'}}>Deck Image: </label>
                                 <input 
                                     type="file" accept=".jpg, .jpeg, .png" 
                                     id="img-field"
                                     onChange={async (e) => {
-                                        setDeckImageFile(e.target.files[0])
+                                        setDeck(prevState => {
+                                            return {
+                                                ...prevState,
+                                                deckImageFile: e.target.files[0]
+                                            }
+                                        })
                                         const {handleUploadImageEvent} = await import('./utils/uploadImage')
-                                        handleUploadImageEvent(e.target.files, setDeckImage, setDeckImageName)
+                                        handleUploadImageEvent(e.target.files, setDeck)
                                     }}
                                 />
                             </div>
@@ -140,8 +131,10 @@ export default function EditDeckPage() {
                             <label style={{fontWeight: 'bold'}}>new cards:</label>
                             <FontAwesomeIcon icon={faCircleInfo} style={{color: 'rgba(0,0,0,0.7)'}}/>
                         </div>
-                        <InputSm type="input" value={newCardCount} onChange={(e) => {
-                            setNewCardCount(e.target.value)
+                        <InputSm type="input" value={deck?.newCardCount} onChange={(e) => {
+                            setDeck(prevState => {
+                                return {...prevState, newCardCount: e.target.value}
+                            })
                         }}/>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -149,8 +142,10 @@ export default function EditDeckPage() {
                             <label style={{fontWeight: 'bold'}}>reviewed cards:</label>
                             <FontAwesomeIcon icon={faCircleInfo} style={{color: 'rgba(0,0,0,0.7)'}}/>
                         </div>
-                        <InputSm type="input" value={reviewedCardCount} onChange={(e) => {
-                        setReviewedCardCount(e.target.value)
+                        <InputSm type="input" value={deck?.reviewedCardCount} onChange={(e) => {
+                            setDeck(prevState => {
+                                return {...prevState, reviewedCardCount: e.target.value}
+                            })
                         }}/>
                     </div>
                 </div>
@@ -172,7 +167,7 @@ export default function EditDeckPage() {
             </SettingsGroup>
             <SettingsGroup >
                 <div style={{width: '100%'}}>
-                    <InputCard setModifiedCards={setModifiedCards}/>
+                    <InputCard setDeck={setDeck}/>
                     {CardList}
                 </div>
             </SettingsGroup>

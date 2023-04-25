@@ -1,13 +1,21 @@
 import { useState } from 'react'
 
-export default function Card({id, front, back, setModifiedCards}) {
+export default function Card({id, front, back, setDeck}) {
     const [isEdit, setIsEdit] = useState(false);
     const [frontField, setFrontField] = useState(front.slice());
     const [backField, setBackField] = useState(back.slice());
     const handleDelete = (e) => {
-        setModifiedCards(prevState => {
-            let updated = prevState.filter((card) => card._id !== id)
-            return [...updated]
+        // setModifiedCards(prevState => {
+        //     let updated = prevState.filter((card) => card._id !== id)
+        //     return [...updated]
+        // })
+        setDeck(prevState => {
+
+            let updated = prevState?.modifiedCards?.filter((card) => card._id !== id)
+            return {
+                ...prevState,
+                modifiedCards: [...updated]
+            }
         })
     }
     const handleEdit = (e) => {
@@ -16,15 +24,28 @@ export default function Card({id, front, back, setModifiedCards}) {
         setIsEdit(!isEdit)
     }
     const handleUpdate = (e) => {
-        setModifiedCards(prevState => {
+        // setModifiedCards(prevState => {
 
-            let card = prevState.reduce((current, elm) => (elm._id === id) ? elm : current);
+        //     let card = prevState.reduce((current, elm) => (elm._id === id) ? elm : current);
+        //     let temp = {...card}
+        //     temp.front = frontField;
+        //     temp.back = backField;
+
+        //     return [temp, ...prevState.filter((card) => card._id !== id)]
+        // })
+
+        setDeck(prevState => {
+            let card = prevState?.modifiedCards?.reduce((current, elm) => (elm._id === id) ? elm : current);
             let temp = {...card}
             temp.front = frontField;
             temp.back = backField;
-
-            return [temp, ...prevState.filter((card) => card._id !== id)]
+            let notCardList = prevState?.modifiedCards?.filter((card) => card._id !== id)
+            return {
+                ...prevState,
+                modifiedCards: [temp, ...notCardList]
+            }
         })
+
         setIsEdit(!isEdit)
     }
     const handleCancel = (e) => {

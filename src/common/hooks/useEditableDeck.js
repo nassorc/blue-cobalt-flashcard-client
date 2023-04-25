@@ -4,12 +4,13 @@ import { GET_DECK_ENDPOINT } from '../../utils/api'
 // hook to fetch and manage deck information
 export default function useEditableDeck(shouldFetchDeck=false, deckId='', headers={}) {
     const [editableDeck, setEditableDeck] = useState(() => buildDeck())
-
+    const [originalDeck, setOriginalDeck] = useState({});
     useEffect(() => {
         if(shouldFetchDeck) {
             
             (async function() {
                 const fetchedDeck = await fetchDeck(deckId, headers)
+                setOriginalDeck(fetchedDeck)
                 setEditableDeck(prevState => {
                     return {
                         ...prevState,
@@ -24,7 +25,7 @@ export default function useEditableDeck(shouldFetchDeck=false, deckId='', header
         }
     }, []);
     
-    return [editableDeck, setEditableDeck];
+    return [editableDeck, setEditableDeck, originalDeck];
 }
 
 async function fetchDeck(deckId, headers) {
