@@ -1,4 +1,4 @@
-import { storage } from '../../../services/firebase';
+import { storage } from '../../services/firebase';
 import { ref, deleteObject } from 'firebase/storage';
 export async function deleteImage(imageName) {
     const deleteImageRef = ref(storage, `decks/${imageName}`);

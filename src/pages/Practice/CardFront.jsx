@@ -7,6 +7,7 @@ export default function CardFront({ cardDetails, showMeaningProp, setShowMeaning
     }
     return(
         <Front>
+            <img src="https://picsum.photos/400/200"/>
             <div className="practice-header">
                     <div className="front">{cardDetails.front}</div>
                 </div>

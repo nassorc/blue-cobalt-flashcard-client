@@ -8,6 +8,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import Deck from './Deck';
+import Deck1 from './Deck1';
+
+import React from 'react'
+import styled from 'styled-components';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { Blurhash } from 'react-blurhash';
+import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
+import { ButtonSm } from '../../common/components/styled/Button.styled';
+import { Badge } from '../../common/components/styled/Badge.styled';
+
 
 export default function UserDashboard() {
 	const authContext = useContext(AuthContext);
@@ -34,7 +44,7 @@ export default function UserDashboard() {
 
 	// map data from fetch request to react component
 	deckElements = deckList.map(deck => {
-		return <Deck deck={deck} key={deck._id}/>;
+		return <Deck1 deck={deck} key={deck._id}/>;
 	});
 
 	const handleAddDeck = () => {
@@ -42,7 +52,7 @@ export default function UserDashboard() {
 	}
 
 	return(
-		<section className={styles['container']}>
+		<section className={styles['container']} style={{alignItems: 'center'}}>
 			<div>
 				<h3>Deck list</h3>
 				<p>Manage flashcards or create a new deck</p>
@@ -58,6 +68,7 @@ export default function UserDashboard() {
 				}
 				{deckElements}
 			</div>
+		
 		</section>
 	);
 }

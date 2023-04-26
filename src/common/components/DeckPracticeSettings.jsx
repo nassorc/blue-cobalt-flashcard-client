@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
-import {InputSm} from '../../../common/components/styled/Input.styled'
+import {InputSm} from './styled/Input.styled'
 
 export default function DeckPracticeSettings({deck, setDeck}) {
     return (

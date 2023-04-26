@@ -56,7 +56,10 @@ export default function Deck({ deck }) {
 		<DeckCard style={backgroundImage}>
 			<div>
 				<div>
-					<h3 className={styles['deck-name']}>{textTruncation(name, 20)}</h3>
+					{(name)
+						? <h3 className={styles['deck-name']}>{textTruncation(name, 20)}</h3>
+						: <h3 className={styles['deck-name']}>No Name</h3>
+					}
 				</div>
 				<div className={styles['deck-footer']}>
 					<div>

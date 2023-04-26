@@ -1,5 +1,5 @@
-import Card from '../components/Card';
-import {InputCard} from '../components/InputCard';
+import Card from '../../pages/EditDeck/components/Card';
+import {InputCard} from '../../pages/EditDeck/components/InputCard';
 
 export default function DeckCardlistSettings({ deck, setDeck }) {
     // creates a list of cards

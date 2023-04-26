@@ -12,6 +12,7 @@ export const DeckCard = styled.div`
     margin-block: 20px;
 
     width: 300px;
+    min-height: 200px;
     background-color: white;
     box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
     border-radius: 8px;

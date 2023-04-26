@@ -4,15 +4,16 @@ import AuthContext from '../../context/AuthContext';
 import useEditableDeck from '../../common/hooks/useEditableDeck';
 
 // Settings Components
-import DeckInformationSettings from './components/DeckInformationSettings';
-import DeckPracticeSettings from './components/DeckPracticeSettings';
-import DeckCardlistSettings from './components/DeckCardlistSettings';
-import DeckDeleteSettings from './components/DeckDeleteSettings';
+import DeckInformationSettings from '../../common/components/DeckInformationSettings';
+import DeckPracticeSettings from '../../common/components/DeckPracticeSettings';
+import DeckDeleteSettings from '../../common/components/DeckDeleteSettings';
+import DeckCardlistSettings from '../../common/components/DeckCardlistSettings';
+
 
 // Styled components
 import { PageContainer } from '../../common/components/styled/Container.styled';
 import { SettingsGroup } from './components/styled/SettingsGroup.styled';
-
+import {SettingsGroupItem} from './components/styled/SettingsGroupItem.styled'
 
 export default function EditDeckPage() {
     const authContext = useContext(AuthContext)
@@ -23,19 +24,25 @@ export default function EditDeckPage() {
 
     const handleSaveDeck = async (e) => {
         let imageURL = '';
+        let blurhash;
         try {
             if(deck?.deckImageFile) {  // if user upload an image
                 if(originalDeck?.deckImage && originalDeck?.deckImageName) {  // delete current image
-                    const { deleteImage } = await import('./core/deleteImage')
+                    const { deleteImage } = await import('../../common/core/deleteImage')
                     await deleteImage(originalDeck?.deckImageName)
                 }
-                const {uploadImage} = await import('./core/uploadImage');  // upload to firebase
-                imageURL = await uploadImage(deck?.deckImageName, deck?.deckImageFile);  // create image url to the image   
+                const {uploadImage} = await import('../../common/core/uploadImage');  // upload to firebase
+                imageURL = await uploadImage(deck?.deckImageName, deck?.deckImageFile);  // create image url to the image 
+
+                // blurhash
+                const { encodeImageToBlurhash } = await import('../../utils/encodeImageToBlurhash');
+                blurhash = await encodeImageToBlurhash(deck?.deckImage)
             }
             const updatedDeck = {
                 deckName: deck?.deckName,
                 deckImage: (imageURL) ? imageURL : deck?.deckImage || '',
                 deckImageName: (deck?.deckImageName) ? deck?.deckImageName : originalDeck?.deckImageName || '',
+                blurhash: blurhash,
                 cards: deck?.modifiedCards,
                 deckSettings: {
                     reviewCards: deck?.reviewedCardCount,
@@ -43,7 +50,7 @@ export default function EditDeckPage() {
                 }
             }
             // save to database
-            const { saveToDatabase } = await import('./core/saveToDatabase');
+            const { saveToDatabase } = await import('../../common/core/saveToDatabase');
             let res = await saveToDatabase(updatedDeck, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
             if (res) navigate('/');
             else throw new Error('Could not save deck to database')
@@ -56,7 +63,6 @@ export default function EditDeckPage() {
     const handleCancel = () => {
         navigate('/');
     }
-
     return(
         <PageContainer>
             <SettingsGroup style={{marginBottom: '1.2rem', justifyContent: 'space-between'}}>
@@ -71,7 +77,9 @@ export default function EditDeckPage() {
             </SettingsGroup>
 
             <SettingsGroup>
-                    <DeckInformationSettings deck={deck} setDeck={setDeck}/>
+                    <SettingsGroupItem>
+                        <DeckInformationSettings deck={deck} setDeck={setDeck}/>
+                    </SettingsGroupItem>
             </SettingsGroup>
 
             <SettingsGroup>

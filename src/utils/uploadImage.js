@@ -8,7 +8,7 @@ export function handleUploadImageEvent(upload, setDeck) {
     fileName = fileName.split(' ').join('');          // remove spaces
 
     new Compressor(file, {
-        quality: 0.2,
+        quality: 0.4,
         success(result) {
             const handleFile = (e) => {
                 const blob = e.target.result;
