@@ -23,9 +23,17 @@ export default function Homepage() {
 				<h2 className={styles['brand']}>BlueCobalt</h2>
 				<nav>
 					<ul>
-						<li><Link to="/">Decks</Link></li>
-						<li><Link to="/add">Add Deck</Link></li>
-						<li>Profile</li>
+						{
+							(JSON.stringify(authContext.auth) === '{}')
+							?null
+							:
+							<>
+							<li><Link to="/">Decks</Link></li>
+							<li><Link to="/add">Add Deck</Link></li>
+							<li>Profile</li>
+							</>
+							
+						}
 						{authButtons}
 					</ul>
 				</nav>

@@ -103,7 +103,7 @@ export default function Deck1({deck}) {
 								</Badge>
 								<Badge>
 									<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>
-									<p>{deck?.reviewList?.length}</p>
+									<p>{deck?.cards?.filter(card => card.status === 'reviewed').length}</p>
 								</Badge>
 							</div>
 							<div className={styles['button-container']}>
