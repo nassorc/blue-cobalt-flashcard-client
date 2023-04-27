@@ -21,10 +21,7 @@ export default function DeckInformationSettings({deck, dispatch, ACTIONS}) {
                     onChange={async (e) => {
                         const {handleUploadImageEvent} = await import('../../utils/uploadImage')
                         handleUploadImageEvent(e.target.files, (deckInformation) => {
-                            dispatch({ type: ACTIONS.UPDATE_DECK, payload: {
-                                deckImageFile: e.target.files[0],
-                                ...deckInformation
-                            }})
+                            dispatch({ type: ACTIONS.UPDATE_DECK, payload: {...deckInformation}})
                         })
                     }}
                 />

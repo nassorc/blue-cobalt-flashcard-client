@@ -56,7 +56,7 @@ export default function useEditableDeck(shouldFetchDeck=false, deckId='', header
         }
     }, [])
     
-
+    console.log(editableDeck)
     return [editableDeck, originalDeck, dispatch, ACTIONS];
 }
 

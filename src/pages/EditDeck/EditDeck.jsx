@@ -21,8 +21,8 @@ export default function EditDeckPage() {
     const { deckId } = useParams();
     let setDeck;
     let [deck, originalDeck, dispatch, ACTIONS] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
-    console.log(originalDeck)
     const handleSaveDeck = async (e) => {
+        console.log(deck?.deckImageFile)
         let imageURL = '';
         let blurhash;
         try {
