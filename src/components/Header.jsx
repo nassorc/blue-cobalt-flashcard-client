@@ -18,9 +18,9 @@ export default function Homepage() {
 		: <li><button onClick={handleLogout}>Logout</button></li>;
 
 	return(
-		<header>
+		<header style={{marginBottom: '1rem'}}>
 			<div className={styles['container']}>      
-				<h2 className={styles['brand']}>Brand</h2>
+				<h2 className={styles['brand']}>BlueCobalt</h2>
 				<nav>
 					<ul>
 						<li><Link to="/">Decks</Link></li>

@@ -9,11 +9,11 @@ export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, 
     }
     return(
         <Back>
-            <div className="practice-header">
-                    <div className="front">{cardDetails.front}</div> 
-                    <div className="back">{cardDetails.back}</div>
+            <div className="practice-header" style={{marginBottom: '1.4rem'}}>
+                    <div className="front" style={{ marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center', fontSize: '20px'}}>{cardDetails.front}</div> 
+                    <div className="back" style={{textAlign: 'center', fontSize: '18px'}}>{cardDetails.back}</div>
                 </div>
-                <div className="practice-buttons">
+                <div className="practice-buttons" style={{display: 'flex', gap: '4px', justifyContent: 'space-around'}}>
                     <button onClick={(e) => handleGradeButton(0)}>Blackout</button>
                     <button onClick={(e) => handleGradeButton(1)}>Very Hard</button>
                     <button onClick={(e) => handleGradeButton(2)}>Hard</button>

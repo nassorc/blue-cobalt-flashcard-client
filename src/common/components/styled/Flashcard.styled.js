@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const FlashcardContainer = styled.div`
     position: relative;
+    margin-inline: auto;
+    margin-top: 2rem;
     width: 600px;
 `
 
@@ -20,10 +22,15 @@ export const Flashcard = styled.div`
     `}
 `
 export const Front = styled.div`
+    margin-top: 2rem;
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;  // hides back face element when flipped
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 export const Back = styled(Front)`

@@ -50,6 +50,14 @@ import styles from '../../common/assets/styles.module.css';
 //          randomly select cards from the new pile
 //          maybe create a usecontext to
 
+import { PageContainer } from '../../common/components/styled/Container.styled';
+import { FlashcardContainer } from '../../common/components/styled/Flashcard.styled';
+import styled from 'styled-components';
+
+const PracticeContainer = styled.div`
+    marginInline: auto;
+    marginTop: 2rem;
+`
 
 export default function PracticePage() {
     const navigate = useNavigate();
@@ -106,9 +114,11 @@ export default function PracticePage() {
         : [];
 
     return(
-        <section className={styles['container']}>
-            <h1>{deck?.deckName}</h1>
-            {(CardComponents?.length > 0) ? CardComponents[0] : <p>You completed todays review list.</p>}
-        </section>
+        <PageContainer>
+            <FlashcardContainer>
+                <h1>{deck?.deckName}</h1>
+                {(CardComponents?.length > 0) ? CardComponents[0] : <p>You completed todays review list.</p>}
+            </FlashcardContainer>
+        </PageContainer>
     )
 }

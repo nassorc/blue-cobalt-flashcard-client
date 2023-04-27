@@ -8,7 +8,6 @@ export default function Card({ cardDetails, gradeCard, handleEditClick, cards, s
     const [showMeaning, setShowMeaning] = useState(false);  // if true, shows back of card
 
     return(
-        <FlashcardContainer>
             <Flashcard rotate={(showMeaning) ? 180 : null}>
                 {/* {showMeaning */}
                     {/* ?  */}
@@ -17,6 +16,5 @@ export default function Card({ cardDetails, gradeCard, handleEditClick, cards, s
                     <CardFront cardDetails={cardDetails} showMeaningProp={showMeaning} setShowMeaningProp={setShowMeaning} handleEditClick={handleEditClick}/>
                 {/* } */}
             </Flashcard>
-        </FlashcardContainer>
     )
 }
