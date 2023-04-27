@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext';
 import useEditableDeck from '../../common/hooks/useEditableDeck';
@@ -8,7 +8,7 @@ import DeckInformationSettings from '../../common/components/DeckInformationSett
 import DeckPracticeSettings from '../../common/components/DeckPracticeSettings';
 import DeckDeleteSettings from '../../common/components/DeckDeleteSettings';
 import DeckCardlistSettings from '../../common/components/DeckCardlistSettings';
-
+import { BarLoader } from 'react-spinners';
 
 // Styled components
 import { PageContainer } from '../../common/components/styled/Container.styled';
@@ -16,13 +16,15 @@ import { SettingsGroup } from './components/styled/SettingsGroup.styled';
 import {SettingsGroupItem} from './components/styled/SettingsGroupItem.styled'
 
 export default function EditDeckPage() {
+    const [isUploading, setUploading] = useState(false);
+
     const authContext = useContext(AuthContext)
     const navigate = useNavigate();
     const { deckId } = useParams();
     let setDeck;
     let [deck, originalDeck, dispatch, ACTIONS] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
     const handleSaveDeck = async (e) => {
-        console.log(deck?.deckImageFile)
+        setUploading(true);
         let imageURL = '';
         let blurhash;
         try {
@@ -59,6 +61,7 @@ export default function EditDeckPage() {
             else throw new Error('Could not save deck to database')
         }
         catch(err) {
+            setUploading(false);
             console.log(err.message)
         }
     }
@@ -68,43 +71,67 @@ export default function EditDeckPage() {
     }
     return(
         <PageContainer>
-            <SettingsGroup style={{marginBottom: '1.2rem', justifyContent: 'space-between'}}>
-                <div>
-                    <h1>Edit Deck</h1>
-                    <p>Edit deck and click the save button to save any changes.</p>
+            {
+                (isUploading)
+                ?
+                <div style={
+                    {
+                        width: '400px', 
+                        display: 'inline-grid', 
+                        placeItems: 'center', 
+                        marginInline: 'auto', 
+                        position: 'absolute', 
+                        left: '50%', 
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)'
+                    }
+                }> 
+                    <p style={{fontSize: '28px', marginBottom: '1rem'}}>Uploading your deck.</p>
+                    <BarLoader color="lightcoral" width="100%"/>
                 </div>
-                <div>
-                    <button onClick={handleSaveDeck} style={{marginRight: '4px'}}>Save</button>
-                    <button onClick={handleCancel} style={{marginRight: '4px'}}>Cancel</button>
-                </div>
-            </SettingsGroup>
+                :
+                <>
 
-            <SettingsGroup>
-                    <SettingsGroupItem>
-                        <DeckInformationSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-                    </SettingsGroupItem>
-            </SettingsGroup>
+                    <SettingsGroup style={{marginBottom: '1.2rem', justifyContent: 'space-between'}}>
+                        <div>
+                            <h1>Edit Deck</h1>
+                            <p>Edit deck and click the save button to save any changes.</p>
+                        </div>
+                        <div>
+                            <button onClick={handleSaveDeck} style={{marginRight: '4px'}}>Save</button>
+                            <button onClick={handleCancel} style={{marginRight: '4px'}}>Cancel</button>
+                        </div>
+                    </SettingsGroup>
 
-            <SettingsGroup>
-                <h3>Deck review session settings</h3>
-            </SettingsGroup>
+                    <SettingsGroup>
+                            <SettingsGroupItem>
+                                <DeckInformationSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
+                            </SettingsGroupItem>
+                    </SettingsGroup>
 
-            <SettingsGroup>
-                <DeckPracticeSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-            </SettingsGroup>
+                    <SettingsGroup>
+                        <h3>Deck review session settings</h3>
+                    </SettingsGroup>
 
-            <SettingsGroup>
-                <DeckDeleteSettings deckId={deckId} />
-            </SettingsGroup>
+                    <SettingsGroup>
+                        <DeckPracticeSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
+                    </SettingsGroup>
 
-            <SettingsGroup style={{flexDirection: 'column'}}>
-                <h3>Modify Flashcards</h3>
-                <p>Add, Edit, or Remove cards from the deck</p>
-            </SettingsGroup>
+                    <SettingsGroup>
+                        <DeckDeleteSettings deckId={deckId} />
+                    </SettingsGroup>
 
-            <SettingsGroup >
-                <DeckCardlistSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-            </SettingsGroup>
+                    <SettingsGroup style={{flexDirection: 'column'}}>
+                        <h3>Modify Flashcards</h3>
+                        <p>Add, Edit, or Remove cards from the deck</p>
+                    </SettingsGroup>
+
+                    <SettingsGroup >
+                        <DeckCardlistSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
+                    </SettingsGroup>
+                </>
+            }
+            
 
         </PageContainer>
     )
