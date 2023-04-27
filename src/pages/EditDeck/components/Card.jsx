@@ -1,22 +1,11 @@
 import { useState } from 'react'
 
-export default function Card({id, front, back, setDeck}) {
+export default function Card({id, front, back, dispatch, ACTIONS}) {
     const [isEdit, setIsEdit] = useState(false);
     const [frontField, setFrontField] = useState(front.slice());
     const [backField, setBackField] = useState(back.slice());
     const handleDelete = (e) => {
-        // setModifiedCards(prevState => {
-        //     let updated = prevState.filter((card) => card._id !== id)
-        //     return [...updated]
-        // })
-        setDeck(prevState => {
-
-            let updated = prevState?.modifiedCards?.filter((card) => card._id !== id)
-            return {
-                ...prevState,
-                modifiedCards: [...updated]
-            }
-        })
+        dispatch({ type: ACTIONS.DELETE_CARD, payload: {cardId: id}})
     }
     const handleEdit = (e) => {
         setFrontField(front)
@@ -24,27 +13,11 @@ export default function Card({id, front, back, setDeck}) {
         setIsEdit(!isEdit)
     }
     const handleUpdate = (e) => {
-        // setModifiedCards(prevState => {
 
-        //     let card = prevState.reduce((current, elm) => (elm._id === id) ? elm : current);
-        //     let temp = {...card}
-        //     temp.front = frontField;
-        //     temp.back = backField;
-
-        //     return [temp, ...prevState.filter((card) => card._id !== id)]
-        // })
-
-        setDeck(prevState => {
-            let card = prevState?.modifiedCards?.reduce((current, elm) => (elm._id === id) ? elm : current);
-            let temp = {...card}
-            temp.front = frontField;
-            temp.back = backField;
-            let notCardList = prevState?.modifiedCards?.filter((card) => card._id !== id)
-            return {
-                ...prevState,
-                modifiedCards: [temp, ...notCardList]
-            }
-        })
+        dispatch({ type: ACTIONS.UPDATE_CARD, payload: {cardId: id, updatedCard: {
+            front: frontField,
+            back: backField
+        }}})
 
         setIsEdit(!isEdit)
     }

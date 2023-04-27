@@ -5,7 +5,7 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import {InputSm} from '../../../common/components/styled/Input.styled';
 
-export function InputCard({ setDeck }) {    
+export function InputCard({ dispatch, ACTIONS }) {    
     const [front, setFront] = useState('');
     const [back, setBack] = useState('');
 
@@ -14,12 +14,8 @@ export function InputCard({ setDeck }) {
             front,
             back,
         }
-        setDeck(prevState => {
-            return {
-                ...prevState,
-                modifiedCards: [newCard, ...prevState?.modifiedCards]
-            }
-        })
+        dispatch({ type: ACTIONS.ADD_CARD, payload: {updatedCard: { front, back }}})
+
         setFront('')
         setBack('')
     }

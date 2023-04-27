@@ -19,15 +19,18 @@ export default function EditDeckPage() {
     const authContext = useContext(AuthContext)
     const navigate = useNavigate();
     const { deckId } = useParams();
-
-    let [deck, setDeck, originalDeck] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
-
+    let setDeck;
+    let [deck, originalDeck, dispatch, ACTIONS] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
+    console.log(originalDeck)
     const handleSaveDeck = async (e) => {
         let imageURL = '';
         let blurhash;
         try {
             if(deck?.deckImageFile) {  // if user upload an image
-                if(originalDeck?.deckImage && originalDeck?.deckImageName) {  // delete current image
+                console.log(originalDeck?.deckImage)
+                console.log(originalDeck?.deckImageName)
+                if(originalDeck?.deckImage && originalDeck?.deckImageName?.length > 0) {  // delete current image
+                    console.log('should be deleting')
                     const { deleteImage } = await import('../../common/core/deleteImage')
                     await deleteImage(originalDeck?.deckImageName)
                 }
@@ -78,7 +81,7 @@ export default function EditDeckPage() {
 
             <SettingsGroup>
                     <SettingsGroupItem>
-                        <DeckInformationSettings deck={deck} setDeck={setDeck}/>
+                        <DeckInformationSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
                     </SettingsGroupItem>
             </SettingsGroup>
 
@@ -87,7 +90,7 @@ export default function EditDeckPage() {
             </SettingsGroup>
 
             <SettingsGroup>
-                <DeckPracticeSettings deck={deck} setDeck={setDeck}/>
+                <DeckPracticeSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
             </SettingsGroup>
 
             <SettingsGroup>
@@ -100,7 +103,7 @@ export default function EditDeckPage() {
             </SettingsGroup>
 
             <SettingsGroup >
-                <DeckCardlistSettings deck={deck} setDeck={setDeck}/>
+                <DeckCardlistSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
             </SettingsGroup>
 
         </PageContainer>
