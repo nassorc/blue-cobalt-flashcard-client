@@ -28,8 +28,9 @@ export default function Homepage() {
 							?null
 							:
 							<>
-							<li><Link to="/">Decks</Link></li>
-							<li><Link to="/add">Add Deck</Link></li>
+							<li><Link to="/">Flashcards</Link></li>
+							<li><Link to="/add">Create Deck</Link></li>
+							<li><Link to="/explore">Explore</Link></li>
 							<li>Profile</li>
 							</>
 							

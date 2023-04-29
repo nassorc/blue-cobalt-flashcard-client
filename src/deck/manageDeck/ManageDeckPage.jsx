@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../shared/context/AuthContext';
 import styles from '../../shared/assets/styles.module.css';
 import { DisplayDeck, DisplayDeckGridContainer } from '../../shared/styled/DisplayDeck.styled';
-import { InputSm } from '../../shared/styled/Input.styled';
 import { GET_DECKLIST_ENDPOINT } from '../../utils/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -15,11 +14,6 @@ const SearchBox = styled.div`
 	margin: 1rem 0;
 	float: right;
 `
-
-function handleSearch(e) {
-	e.preventDefault();
-}
-
 const fuseOptions = {
 	isCaseSensitive: false,
 	includeScore: true,
@@ -29,7 +23,7 @@ const fuseOptions = {
 	keys: [
 		"deckName"
 	]
-	};
+};
 
 export default function ManageDeckPage() {
 	const authContext = useContext(AuthContext);
@@ -89,7 +83,7 @@ export default function ManageDeckPage() {
 				<p>Manage flashcards or create a new deck</p>
 			</div>
 			<SearchBox>
-				<form onSubmit={handleSearch}>
+				<form onSubmit={(e) => e.preventDefault()}>
 					<input 
 						type='text' 
 						placeholder='Search'
