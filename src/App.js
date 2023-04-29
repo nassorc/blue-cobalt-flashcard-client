@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from './context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
-import LoginPage from './auth/Login';
-import RegisterPage from './auth/Register';
+import {LoginPage} from './auth';
+import {RegisterPage} from './auth';
 import AddDeckPage from './pages/AddDeck/';
 import UserDashboard from './pages/Home/UserDashboard';
 import PrivateRoutes from './utils/PrivateRoutes';

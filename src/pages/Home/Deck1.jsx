@@ -4,10 +4,11 @@ import { Blurhash } from 'react-blurhash';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
 import { ButtonSm } from '../../common/components/styled/Button.styled';
 import { Badge } from '../../common/components/styled/Badge.styled';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, Children } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../common/assets/styles.module.css';
+
 const DeckImageContainer = styled.div`
 	margin: 0;
 	padding: 0;
@@ -55,6 +56,34 @@ const DeckCard1 = styled.div`
 		box-shadow: 0px 4px 0px 4px rgba(0, 0, 0, 0.2);
 	}
 ` 
+const StyledTooltipContainer = styled.span`
+
+`
+const StyledTooltip = styled.span`
+	position: absolute;
+	z-index: 99;
+`
+function Tooltip({text, children}) {
+	const [isHovering, setHovering] = useState(false);
+	
+	return(
+		<StyledTooltipContainer
+			onMouseEnter={() => {
+				setHovering(true);
+			}}
+			onMouseLeave={() => {
+				setHovering(false);
+			}}
+		>
+			{children}
+			{
+				(isHovering)
+				? <div>{text}</div>
+				: null
+			}
+		</StyledTooltipContainer>
+	)
+}
 export default function Deck1({deck}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
@@ -97,10 +126,12 @@ export default function Deck1({deck}) {
 						</div>
 						<div style={{display: 'flex', justifyContent: 'space-between'}}>
 							<div>
-								<Badge>
-									<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
-									<p>{deck?.cards?.length}</p>
-								</Badge>
+								<Tooltip text="halu">
+									<Badge>
+										<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
+										<p>{deck?.cards?.length}</p>
+									</Badge>
+								</Tooltip>
 								<Badge>
 									<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>
 									<p>{deck?.cards?.filter(card => card.status === 'reviewed').length}</p>

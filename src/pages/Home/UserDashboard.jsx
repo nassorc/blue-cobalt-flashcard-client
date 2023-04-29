@@ -58,14 +58,10 @@ export default function UserDashboard() {
 				<p>Manage flashcards or create a new deck</p>
 			</div>
 			<div className={styles['deck-list']}>
-				{(isLoading) 
-					? null
-					: 
-					<DeckCard onClick={(e) => {handleAddDeck()}}>
-						<FontAwesomeIcon icon={faPlus} style={{transform: 'scale(2)'}}/>
-					</DeckCard>
+				<DeckCard onClick={(e) => {handleAddDeck()}}>
+					<FontAwesomeIcon icon={faPlus} style={{transform: 'scale(2)'}}/>
+				</DeckCard>
 				
-				}
 				{deckElements}
 			</div>
 		
