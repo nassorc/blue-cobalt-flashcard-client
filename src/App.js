@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import AuthContext from './context/AuthContext';
+import AuthContext from './shared/context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
-import {LoginPage} from './auth';
-import {RegisterPage} from './auth';
-import AddDeckPage from './pages/AddDeck/';
-import UserDashboard from './pages/Home/UserDashboard';
+import {LoginPage, RegisterPage} from './auth';
+import {AddDeckPage, EditDeckPage, PracticeDeckPage, ManageDeckPage} from './deck';
 import PrivateRoutes from './utils/PrivateRoutes';
-import Header from './components/Header';
-import PracticePage from './pages/Practice';
-import EditDeckPage from './pages/EditDeck';
+import Header from './shared/components/Header';
 
 
 import './App.css';
@@ -33,9 +29,9 @@ function App() {
 					: 
 					<Routes>
 						<Route element={<PrivateRoutes />}>
-							<Route path="/" element={<UserDashboard />} exact/>
+							<Route path="/" element={<ManageDeckPage />} exact/>
 							<Route path="/add" element={<AddDeckPage />} exact />
-							<Route path="/practice/:id" element={<PracticePage />} exact />
+							<Route path="/practice/:id" element={<PracticeDeckPage />} exact />
 							<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
 						</Route>
 						<Route path="/login" element={<LoginPage/>} />

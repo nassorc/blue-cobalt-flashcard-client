@@ -1,13 +1,12 @@
 import { useState, useRef, useEffect, useContext } from 'react';
-import AuthContext from '../context/AuthContext';
-import styles from '../common/assets/styles.module.css';
+import AuthContext from '../shared/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import FormNotification from '../common/components/FormNotification';
+import FormNotification from '../shared/components/FormNotification';
 import { POST_LOGIN_ENDPOINT } from '../utils/api';
-import {Input} from '../common/components/styled/Input.styled';
-import {FormContainer, Form} from '../common/components/styled/Form.styled';
-import { Button } from '../common/components/styled/Button.styled';
-
+import {Input} from '../shared/styled/Input.styled';
+import {FormContainer, Form} from '../shared/styled/Form.styled';
+import { Button } from '../shared/styled/Button.styled';
+import styles from '../shared/assets/styles.module.css'
 
 export default function LoginPage() {
 	const authContext = useContext(AuthContext);
