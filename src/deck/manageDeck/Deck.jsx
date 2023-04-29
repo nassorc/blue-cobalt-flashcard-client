@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Blurhash } from 'react-blurhash';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
@@ -8,82 +7,8 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../shared/assets/styles.module.css';
+import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../shared/styled/DisplayDeck.styled';
 
-const DeckImageContainer = styled.div`
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	z-index: 1;
-`
-const DeckImage = styled.img`
-	display: block;
-	width: 100%;
-	max-width: 100%;
-	height: 100%;
-	object-fit: contain;
-`
-const DeckContent = styled.div`
-	padding: 0.8rem 1rem;
-	background-color: white;
-	position: relative;
-	z-index: 10;
-
-	& > *:not(:last-child) {
-		margin-bottom: 0.8rem;
-	}
-`
-const DeckCard1 = styled.div`
-	position: relative;
-	box-sizing: border-box;
-	width: 300px;
-	max-height: 200px;
-	min-height: 200px;
-    height: 200px;
-	background-color: white;
-	box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
-	border-radius: 8px;
-
-	display: flex;
-	justify-content: flex-end;
-	flex-direction: column;
-	overflow: hidden;
-
-	transition: 400ms;
-
-	&:hover {
-		box-shadow: 0px 4px 0px 4px rgba(0, 0, 0, 0.2);
-	}
-` 
-const StyledTooltipContainer = styled.span`
-
-`
-const StyledTooltip = styled.span`
-	position: absolute;
-	z-index: 99;
-`
-function Tooltip({text, children}) {
-	const [isHovering, setHovering] = useState(false);
-	
-	return(
-		<StyledTooltipContainer
-			onMouseEnter={() => {
-				setHovering(true);
-			}}
-			onMouseLeave={() => {
-				setHovering(false);
-			}}
-		>
-			{children}
-			{
-				(isHovering)
-				? <div>{text}</div>
-				: null
-			}
-		</StyledTooltipContainer>
-	)
-}
 export default function Deck1({deck}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
@@ -103,35 +28,33 @@ export default function Deck1({deck}) {
 	}, [deck])
 	
 	return(
-		<DeckCard1>
-			<DeckImageContainer>
+		<DisplayDeck>
+			<DisplayDeckImageContainer>
 				{/* {deckImage && <DeckImage loading="lazy" src={deckImage}/>} */}
 				{
 					!imageLoaded && 
 					<Blurhash 
 						hash={deck?.blurhash}
-						width={300}
-						height={200}
+						width={'100%'}
+						height={'100%'}
 						resolutionX={32}
 						resolutionY={32}
 						punch={1}
 					/>
 				}
 				{deck?.deckImage && <LazyLoadImage style={{objectFit: 'cover'}} width={'100%'} height={'100%'} effect="blur" src={deck?.deckImage}/>}
-			</DeckImageContainer>
-			<DeckContent>
+			</DisplayDeckImageContainer>
+			<DisplayDeckContent>
                     <>
 						<div>
 							<h3>{deck?.deckName}</h3>
 						</div>
 						<div style={{display: 'flex', justifyContent: 'space-between'}}>
 							<div>
-								<Tooltip text="halu">
-									<Badge>
-										<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
-										<p>{deck?.cards?.length}</p>
-									</Badge>
-								</Tooltip>
+								<Badge>
+									<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
+									<p>{deck?.cards?.length}</p>
+								</Badge>
 								<Badge>
 									<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>
 									<p>{deck?.cards?.filter(card => card.status === 'reviewed').length}</p>
@@ -157,7 +80,7 @@ export default function Deck1({deck}) {
                             </div>
 						</div>
 					</>
-			</DeckContent>
-		</DeckCard1>
+			</DisplayDeckContent>
+		</DisplayDeck>
 	)
 } 
