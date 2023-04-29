@@ -1,4 +1,4 @@
-import { UPDATE_DECK_ENDPOINT } from '../../../utils/api';
+import { ADD_DECK_ENDPOINT, UPDATE_DECK_ENDPOINT } from '../../../utils/api';
 export async function saveToDatabase(deck, deckId='', header) {
     let res={};
     try {
@@ -17,7 +17,7 @@ export async function saveToDatabase(deck, deckId='', header) {
 
 async function updateDeck(deck, deckId, header) {
     try {
-        const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${UPDATE_DECK_ENDPOINT(deckId)}`, {
+        const res = await fetch(UPDATE_DECK_ENDPOINT(deckId), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ async function updateDeck(deck, deckId, header) {
 
 async function addNewDeck(deck, header) {
     try {
-        const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/deck`, {
+        const res = await fetch( ADD_DECK_ENDPOINT() , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

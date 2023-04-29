@@ -21,16 +21,14 @@ export default function EditDeckPage() {
     const authContext = useContext(AuthContext)
     const navigate = useNavigate();
     const { deckId } = useParams();
-    let setDeck;
     let [deck, originalDeck, dispatch, ACTIONS] = useEditableDeck(true, deckId, {'Authorization': `Bearer ${authContext.auth.token}`});
+
     const handleSaveDeck = async (e) => {
         setUploading(true);
         let imageURL = '';
         let blurhash;
         try {
             if(deck?.deckImageFile) {  // if user upload an image
-                console.log(originalDeck?.deckImage)
-                console.log(originalDeck?.deckImageName)
                 if(originalDeck?.deckImage && originalDeck?.deckImageName?.length > 0) {  // delete current image
                     console.log('should be deleting')
                     const { deleteImage } = await import('../shared/core/deleteImage')

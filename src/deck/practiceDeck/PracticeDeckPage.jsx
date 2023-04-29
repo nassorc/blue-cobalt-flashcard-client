@@ -6,7 +6,7 @@ import Card from './components/Card';
 import useFetchData from '../../shared/hooks/useFetchData';
 import createReviewSession from '../shared/utils/createReviewSession';
 import filterDeckById from '../../utils/filterDeckById';
-import {GET_DECKS_ENDPOINT, GRADE_CARD_ENDPOINT} from '../../utils/api';
+import { GET_DECKLIST_ENDPOINT, GRADE_CARD_ENDPOINT } from '../../utils/api';
 
 
 // log:
@@ -62,10 +62,9 @@ export default function PracticeDeckPage() {
     const navigate = useNavigate();
     const authContext = useContext(AuthContext);
     const { id } = useParams();
-    
-    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECKS_ENDPOINT(authContext.auth.userId)}`;
+
     const options = { method: 'GET', headers: {'Authorization': `Bearer ${authContext.auth.token}`}}
-    const deckList = useFetchData(url, options)
+    const deckList = useFetchData(GET_DECKLIST_ENDPOINT(authContext.auth.userId), options)
 
     const [deck, setDeck] = useState();
     const [cards, setCards] = useState([]);
@@ -86,7 +85,7 @@ export default function PracticeDeckPage() {
     const gradeCard = async (cardId, grade) => {
         // make request to api, send grade and card id
         try {
-            const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${GRADE_CARD_ENDPOINT()}`, {
+            const res = await fetch(GRADE_CARD_ENDPOINT(), {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',

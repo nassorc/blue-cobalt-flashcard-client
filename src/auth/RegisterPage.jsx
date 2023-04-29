@@ -5,6 +5,7 @@ import {Input} from '../shared/styled/Input.styled';
 import {FormContainer, Form} from '../shared/styled/Form.styled';
 import { Button } from '../shared/styled/Button.styled';
 import FormNotification from '../shared/components/FormNotification';
+import { POST_REGISTER_ENDPOINT } from '../utils/api';
 
 export default function RegisterPage() { 
 	const [email, setEmail] = useState('');
@@ -16,8 +17,7 @@ export default function RegisterPage() {
 
 	const handleRegisterSubmit = async (event) => {
 		event.preventDefault();
-		console.log(process.env.REACT_APP_SERVER_BASE_URL);
-		const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}/register`, {
+		const res = await fetch(POST_REGISTER_ENDPOINT(), {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

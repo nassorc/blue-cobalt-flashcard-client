@@ -61,10 +61,8 @@ export default function useEditableDeck(shouldFetchDeck=false, deckId='', header
 }
 
 async function fetchDeck(deckId, headers) {
-    const url =  `${process.env.REACT_APP_SERVER_BASE_URL}${GET_DECK_ENDPOINT(deckId)}`;
-
     try {
-        const res = await fetch(url, {
+        const res = await fetch(GET_DECK_ENDPOINT(deckId), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

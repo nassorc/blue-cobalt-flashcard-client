@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../shared/context/AuthContext';
 import styles from '../../shared/assets/styles.module.css';
 import { DeckCard } from '../../shared/styled/Deck.styled';
-
+import { GET_DECKLIST_ENDPOINT } from '../../utils/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +23,7 @@ export default function ManageDeckPage() {
 	// fetch user flashcards
 	useEffect(() => {
 		const id = localStorage.getItem('userId');
-		fetch(`http://localhost:3001/deck/${id}`, {
+		fetch(GET_DECKLIST_ENDPOINT(id), {
 			headers: {
 				'Authorization': `Bearer ${authContext.auth.token}`
 			}

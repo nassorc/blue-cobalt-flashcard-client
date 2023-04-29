@@ -29,7 +29,7 @@ export default function LoginPage() {
 			return; 
 		}
 		try {
-			const res = await fetch(`${process.env.REACT_APP_SERVER_BASE_URL}${POST_LOGIN_ENDPOINT()}`, {
+			const res = await fetch(POST_LOGIN_ENDPOINT(), {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
