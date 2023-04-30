@@ -5,3 +5,11 @@ export const PageContainer = styled.section`
     margin: 1rem auto;
     max-width: 1000px;
 `
+export const PageHeader = styled.div`
+    ${({split}) => split && `
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    `}
+`

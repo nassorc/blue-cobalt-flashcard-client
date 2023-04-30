@@ -7,13 +7,9 @@ import { GET_DECKLIST_ENDPOINT } from '../../utils/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Deck from './Deck';
-import styled from 'styled-components';
 import Fuse from 'fuse.js'
+import { SearchBox, SearchInput, SearchButton } from '../../shared/styled/Search.styled';
 
-const SearchBox = styled.div`
-	margin: 1rem 0;
-	float: right;
-`
 const fuseOptions = {
 	isCaseSensitive: false,
 	includeScore: true,
@@ -84,15 +80,15 @@ export default function ManageDeckPage() {
 			</div>
 			<SearchBox>
 				<form onSubmit={(e) => e.preventDefault()}>
-					<input 
+					<SearchInput
 						type='text' 
 						placeholder='Search'
 						value={query}
 						onChange={(e) => {setQuery(e.target.value)}}
 					/>
-					<button>
+					<SearchButton>
 						<FontAwesomeIcon icon={faMagnifyingGlass} />
-					</button>
+					</SearchButton>
 				</form>
 				
 			</SearchBox>

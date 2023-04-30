@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../shared/assets/styles.module.css';
 import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../shared/styled/DisplayDeck.styled';
 
-export default function Deck1({deck}) {
+export default function Deck({deck}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
     const handlePracticeClick = (e) => {
