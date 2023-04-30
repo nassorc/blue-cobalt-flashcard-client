@@ -20,7 +20,7 @@ function reducer(state, action) {
         case ACTIONS.UPDATE_CARD:
             let card = state?.modifiedCards?.reduce((current, elm) => (elm._id === action.payload.deckId) ? elm : current);
             let temp = {...card, ...action.payload.updatedCard}
-            let filteredCardlist = state?.modifiedCards?.filter((card) => card._id !== action.payload.deckId)
+            let filteredCardlist = state?.modifiedCards?.filter((card) => card._id !== action.payload.cardId)
             return {...state, modifiedCards: [temp, ...filteredCardlist]}
         case ACTIONS.DELETE_CARD:
             let updated = state?.modifiedCards?.filter((card) => card._id !== action.payload.cardId)
@@ -56,7 +56,6 @@ export default function useEditableDeck(shouldFetchDeck=false, deckId='', header
         }
     }, [])
     
-    console.log(editableDeck)
     return [editableDeck, originalDeck, dispatch, ACTIONS];
 }
 
