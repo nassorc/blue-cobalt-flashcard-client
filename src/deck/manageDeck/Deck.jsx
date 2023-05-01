@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../shared/assets/styles.module.css';
 import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../shared/styled/DisplayDeck.styled';
-
+import BadgeComponent from '../shared/components/BadgeComponent';
 export default function Deck({deck}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
@@ -51,14 +51,14 @@ export default function Deck({deck}) {
 						</div>
 						<div style={{display: 'flex', justifyContent: 'space-between'}}>
 							<div>
-								<Badge>
-									<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />
-									<p>{deck?.cards?.length}</p>
-								</Badge>
-								<Badge>
-									<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>
-									<p>{deck?.cards?.filter(card => card.status === 'reviewed').length}</p>
-								</Badge>
+								<BadgeComponent 
+									icon={<FontAwesomeIcon icon={faLayerGroup} style={{color: 'rgba(0, 0, 0, 0.7)'}} />}
+									info={deck?.cards?.length}
+								/>
+								<BadgeComponent 
+									icon={<FontAwesomeIcon icon={faGraduationCap} style={{color: 'rgba(0, 0, 0, 0.7)'}}/>}
+									info={deck?.cards?.filter(card => card.status === 'reviewed').length}
+								/>
 							</div>
 							<div className={styles['button-container']}>
                                 <ButtonSm
