@@ -21,6 +21,16 @@ export const Button = styled.button`
         opacity: 90%;
     }
 `
+export const ButtonMd = styled(Button)`
+    padding: 8px 8px;
+`
 export const ButtonSm = styled(Button)`
     padding: 3px 8px;
+`
+export const ButtonSquare = styled(Button)`
+    padding: 0;
+    width: 28px;
+    max-width: 28px;
+    height: 28px;
+    max-height: 28px;
 `
