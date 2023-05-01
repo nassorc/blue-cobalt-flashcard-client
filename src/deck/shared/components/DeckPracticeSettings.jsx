@@ -3,12 +3,28 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import {InputSm} from '../../../shared/styled/Input.styled'
 
+const styles = {
+    split: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '0.6rem'
+    },
+    form: {
+        width: '400px'
+    },
+    fieldHeader: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginBottom: '1rem'
+    }
+}
+
 export default function DeckPracticeSettings({deck, dispatch, ACTIONS}) {
     return (
-        <div>
-            <p>Number of cards added each review session</p>
+        <div style={styles.form}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div style={styles.split}>
                     <label style={{fontWeight: 'bold'}}>new cards:</label>
                     <FontAwesomeIcon icon={faCircleInfo} style={{color: 'rgba(0,0,0,0.7)'}}/>
                 </div>
@@ -17,7 +33,7 @@ export default function DeckPracticeSettings({deck, dispatch, ACTIONS}) {
                 }}/>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div style={styles.split}>
                     <label style={{fontWeight: 'bold'}}>reviewed cards:</label>
                     <FontAwesomeIcon icon={faCircleInfo} style={{color: 'rgba(0,0,0,0.7)'}}/>
                 </div>

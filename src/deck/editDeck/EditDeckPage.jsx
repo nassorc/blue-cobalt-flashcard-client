@@ -4,6 +4,8 @@ import AuthContext from '../../shared/context/AuthContext';
 import useEditableDeck from '../../shared/hooks/useEditableDeck';
 
 // Settings Components
+import SettingsGroupContainer from '../shared/components/SettingsGroupContainer';
+import SettingsNavbar from '../shared/components/SettingsNavbar'
 import DeckInformationSettings from '../shared/components/DeckInformationSettings';
 import DeckPracticeSettings from '../shared/components/DeckPracticeSettings';
 import DeckDeleteSettings from '../shared/components/DeckDeleteSettings';
@@ -11,9 +13,11 @@ import DeckCardlistSettings from '../shared/components/DeckCardlistSettings';
 import { BarLoader } from 'react-spinners';
 
 // Styled components
-import { PageContainer } from "../../shared/styled/Container.styled"
-import { SettingsGroup } from '../shared/styled/SettingsGroup.styled';
+import { PageContainer, PageHeader } from "../../shared/styled/Container.styled";
+import { ButtonSm } from '../../shared/styled/Button.styled';
 import {SettingsGroupItem} from '../shared/styled/SettingsGroupItem.styled'
+
+import editStyles from '../shared/assets/deck.module.css'
 
 export default function EditDeckPage() {
     const [isUploading, setUploading] = useState(false);
@@ -90,43 +94,42 @@ export default function EditDeckPage() {
                 :
                 <>
 
-                    <SettingsGroup style={{marginBottom: '1.2rem', justifyContent: 'space-between'}}>
+                    <PageHeader>
+                        <h1>Deck Settings</h1>
                         <div>
-                            <h1>Edit Deck</h1>
-                            <p>Edit deck and click the save button to save any changes.</p>
+                            <SettingsNavbar />
                         </div>
-                        <div>
-                            <button onClick={handleSaveDeck} style={{marginRight: '4px'}}>Save</button>
-                            <button onClick={handleCancel} style={{marginRight: '4px'}}>Cancel</button>
+                        <div className={editStyles['group']}>
+                            <div>
+                                <h4>Save changes?</h4>
+                                <p>Edit deck and click the save button to save any changes.</p>
+                            </div>
+                            <div>
+                                <ButtonSm bg="white" color="var(--darkBlue-color)" borderColor="var(--shadow)" onClick={handleCancel} style={{marginRight: '4px'}}>Cancel</ButtonSm>
+                                <ButtonSm bg="var(--blue-color)" color="white" borderColor="var(--darkBlue-color)" onClick={handleSaveDeck} style={{marginRight: '4px'}}>Save changes</ButtonSm>
+                            </div>
                         </div>
-                    </SettingsGroup>
+                    </PageHeader>
 
-                    <SettingsGroup>
-                            <SettingsGroupItem>
-                                <DeckInformationSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-                            </SettingsGroupItem>
-                    </SettingsGroup>
+                    <div id="information-settings"></div>
+                    <SettingsGroupContainer title="Information Settings">
+                        <DeckInformationSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
+                    </SettingsGroupContainer>
 
-                    <SettingsGroup>
-                        <h3>Deck review session settings</h3>
-                    </SettingsGroup>
-
-                    <SettingsGroup>
+                    <div id="practice-settings"></div>
+                    <SettingsGroupContainer title="Practice settings" deck="Number cards added each review session">
                         <DeckPracticeSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-                    </SettingsGroup>
+                    </SettingsGroupContainer>
 
-                    <SettingsGroup>
-                        <DeckDeleteSettings deckId={deckId} />
-                    </SettingsGroup>
-
-                    <SettingsGroup style={{flexDirection: 'column'}}>
-                        <h3>Modify Flashcards</h3>
-                        <p>Add, Edit, or Remove cards from the deck</p>
-                    </SettingsGroup>
-
-                    <SettingsGroup >
-                        <DeckCardlistSettings deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
-                    </SettingsGroup>
+                    <div id="delete-deck"></div>
+                    <SettingsGroupContainer title="Delete deck" desc="By deleting this deck, you will lose all the cards of this deck.">
+                        <DeckDeleteSettings deck={deck} deckId={deckId}/>
+                    </SettingsGroupContainer>
+                    <div id="deck-list" style={{margin: '0'}}></div>
+                    <SettingsGroupContainer title="Modify Flashcards" desc="Add, Edit, or Remove cards from the deck">
+                        <DeckCardlistSettings style={{minHeight: '100vh'}} deck={deck} dispatch={dispatch} ACTIONS={ACTIONS}/>
+                    </SettingsGroupContainer>
+                    <div style={{minHeight: '60vh'}}></div>
                 </>
             }
             

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 export const SettingsGroup = styled.div`
     box-sizing: border-box;
-    margin: 4px 4px;
+    margin: 1rem 0;
     padding: 8px 8px;
     width: 100%;
     display: flex;

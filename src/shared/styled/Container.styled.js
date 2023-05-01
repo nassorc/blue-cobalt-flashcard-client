@@ -12,4 +12,8 @@ export const PageHeader = styled.div`
         justify-content: space-between;
         align-items: center;
     `}
+
+    & > h1 {
+        margin-bottom: 3rem;
+    }
 `

@@ -2,11 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from './shared/context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
 import {LoginPage, RegisterPage} from './auth';
-import {AddDeckPage, EditDeckPage, PracticeDeckPage, ManageDeckPage} from './deck';
+import {AddDeckPage, EditDeckPage, PracticeDeckPage, ManageDeckPage, ExploreDeckPage} from './deck';
 import PrivateRoutes from './utils/PrivateRoutes';
 import Header from './shared/components/Header';
-
-
 import './App.css';
 
 function App() {
@@ -33,6 +31,7 @@ function App() {
 							<Route path="/add" element={<AddDeckPage />} exact />
 							<Route path="/practice/:id" element={<PracticeDeckPage />} exact />
 							<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
+							<Route path="/explore" element={<ExploreDeckPage />} exact />
 						</Route>
 						<Route path="/login" element={<LoginPage/>} />
 						<Route path="/register" element={<RegisterPage />}/>
