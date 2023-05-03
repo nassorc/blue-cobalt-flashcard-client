@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 export const FormContainer = styled.section`
-    margin-top: 8rem;
+    margin-top: 3rem;
     margin-inline: auto;
     padding-block: 1rem;
     max-width: 380px;
 `
 export const Form = styled.form`
-    display: flex;
+  display: flex;
   flex-direction: column;
 `
 export const FormAlert = styled.div`

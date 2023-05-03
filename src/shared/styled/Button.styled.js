@@ -3,6 +3,9 @@ import styled from 'styled-components';
 export const Button = styled.button`
     --primary-color: rgb(35,35,35);
     --blue-color: rgb(74, 137, 232);
+    --lightblue-color: rgb(161, 233, 255);
+    --green-color: rgb(226, 252, 239);
+    --pink-color: rgb(245, 198, 228);
     --darkBlue-color: rgb(62, 107, 181);
     --red-color: rgb(204, 111, 88);
     --darkRed-color: rgb(181, 84, 60); 

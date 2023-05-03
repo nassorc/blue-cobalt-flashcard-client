@@ -10,6 +10,19 @@ import styles from '../shared/assets/styles.module.css'
 import { PageContainer } from '../shared/styled/Container.styled';
 import { flexbox } from '@chakra-ui/react';
 import PageLogo from './shared/components/PageLogo';
+import mascot from './shared/assets/monsta.png'
+import styled from 'styled-components';
+
+const Mascot = styled.img`
+	width: 100%;
+	display: block;
+	object-fit: contain;
+	margin: 0 auto;
+`
+
+const MascotContainer = styled.div`
+	width: 180px;
+`
 
 export default function LoginPage() {
 	const authContext = useContext(AuthContext);
@@ -66,6 +79,9 @@ export default function LoginPage() {
 			<PageLogo />
 			<FormContainer>
 				<div className={styles['formContainer-header']}>
+					<MascotContainer>
+						<Mascot src={mascot} />
+					</MascotContainer>
 					<h2>Welcome back</h2>
 					<p>Enter email and password to sign in</p>
 				</div>
@@ -92,8 +108,8 @@ export default function LoginPage() {
 						required
 					/>
 					<Button
-						bg="var(--primary-color)"
-						color= "white"
+						bg="var(--green-color)"
+						color= "black"
 						type="submit"
 						onSubmit={handleLoginSubmit}
 					>
@@ -101,8 +117,8 @@ export default function LoginPage() {
 					</Button>
 					<div className={styles['or']}>or</div>
 					<Button
-						bg="var(--secondary-color)"
-						color="white"
+						bg="var(--pink-color)"
+						color="black"
 						onClick={(e) => {
 							navigate('/register')
 						}}
