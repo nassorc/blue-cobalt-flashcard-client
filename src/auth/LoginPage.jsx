@@ -7,6 +7,9 @@ import {Input} from '../shared/styled/Input.styled';
 import {FormContainer, Form} from '../shared/styled/Form.styled';
 import { Button } from '../shared/styled/Button.styled';
 import styles from '../shared/assets/styles.module.css'
+import { PageContainer } from '../shared/styled/Container.styled';
+import { flexbox } from '@chakra-ui/react';
+import PageLogo from './shared/components/PageLogo';
 
 export default function LoginPage() {
 	const authContext = useContext(AuthContext);
@@ -59,7 +62,8 @@ export default function LoginPage() {
 		}
 	};
 	return (
-		<>
+		<PageContainer>
+			<PageLogo />
 			<FormContainer>
 				<div className={styles['formContainer-header']}>
 					<h2>Welcome back</h2>
@@ -107,6 +111,6 @@ export default function LoginPage() {
 					</Button>
 				</Form>
 			</FormContainer>
-		</>
+		</PageContainer>
 	);
 }
