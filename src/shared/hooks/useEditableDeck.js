@@ -49,6 +49,7 @@ export default function useEditableDeck(shouldFetchDeck=false, deckId='', header
                     modifiedCards: fetchedDeck?.cards,
                     deckImage: fetchedDeck?.deckImage,
                     deckImageName: fetchedDeck?.deckImageName,
+                    visibility: fetchDeck?.deckSettings?.visibility,
                 }
                 dispatch({ type: ACTIONS.SET_DECK, payload: data})
                 setOriginalDeck(buildDeck(data));
@@ -75,7 +76,7 @@ async function fetchDeck(deckId, headers) {
     }
 }
 
-function buildDeck({deckName='', newCardCount=0, reviewedCardCount=0, deckImage='', deckImageName='', deckImageFile='', modifiedCards=[]} = {}) {
+function buildDeck({deckName='', newCardCount=0, reviewedCardCount=0, deckImage='', deckImageName='', deckImageFile='', modifiedCards=[], visibility=''} = {}) {
     return new Object({
         deckName,
         newCardCount,
@@ -84,5 +85,6 @@ function buildDeck({deckName='', newCardCount=0, reviewedCardCount=0, deckImage=
         deckImageName,
         deckImageFile,
         modifiedCards,
+        visibility,
     })
 }
