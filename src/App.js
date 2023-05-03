@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from './shared/context/AuthContext';
 import { Route, Routes } from 'react-router-dom';
+
+// route components 
 import {LoginPage, RegisterPage} from './auth';
 import {AddDeckPage, EditDeckPage, PracticeDeckPage, ManageDeckPage, ExploreDeckPage} from './deck';
+import {ProfilePage} from './user'
+
+// private route handler
 import PrivateRoutes from './utils/PrivateRoutes';
 import Header from './shared/components/Header';
 import './App.css';
@@ -26,13 +31,16 @@ function App() {
 					? null
 					: 
 					<Routes>
-						<Route element={<PrivateRoutes />}>
+						{/* PRIVATE ROUTES */}
+						<Route element={<PrivateRoutes />}>  
 							<Route path="/" element={<ManageDeckPage />} exact/>
 							<Route path="/add" element={<AddDeckPage />} exact />
 							<Route path="/practice/:id" element={<PracticeDeckPage />} exact />
 							<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
 							<Route path="/explore" element={<ExploreDeckPage />} exact />
+							<Route path="/profile" element={<ProfilePage />} exact />
 						</Route>
+						{/* PUBLIC ROUTES */}
 						<Route path="/login" element={<LoginPage/>} />
 						<Route path="/register" element={<RegisterPage />}/>
 					</Routes>

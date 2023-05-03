@@ -32,7 +32,8 @@ export default function Homepage() {
 							<li><Link to="/">Flashcards</Link></li>
 							<li><Link to="/add">Create Deck</Link></li>
 							<li><Link to="/explore">Explore</Link></li>
-							<li>Profile</li>
+							<li><Link to="/profile">Profile</Link></li>
+
 							</>
 							
 						}
