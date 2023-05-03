@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import {Link, useNavigate } from 'react-router-dom';
 import styles from '../assets/styles.module.css';
+import { ButtonSm } from '../styled/Button.styled';
 
 export default function Homepage() {
 	const authContext = useContext(AuthContext);
@@ -14,13 +15,13 @@ export default function Homepage() {
 		navigate('/login');
 	};
 	const authButtons = (JSON.stringify(authContext.auth) === '{}') 
-		? <><li><Link to="/login">Login</Link></li><li><Link to="/register">Register</Link></li></>
+		? <><li><Link to="/login"><ButtonSm bg="var(--green-color)">Signin</ButtonSm></Link></li><li><Link to="/register"><ButtonSm bg="var(--pink-color)">Register</ButtonSm></Link></li></>
 		: <li><button onClick={handleLogout}>Logout</button></li>;
 
 	return(
 		<header style={{marginBottom: '1rem'}}>
 			<div className={styles['container']}>      
-				<h2 className={styles['brand']}>BlueCobalt</h2>
+				<h2 className={styles['brand']}>Blue<span style={{color: 'rgb(161, 233, 255)'}}>Cobalt</span></h2>
 				<nav>
 					<ul>
 						{
