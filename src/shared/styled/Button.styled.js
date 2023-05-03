@@ -34,3 +34,10 @@ export const ButtonSquare = styled(Button)`
     height: 28px;
     max-height: 28px;
 `
+
+export const ButtonCircle = styled(Button)`
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+`

@@ -1,15 +1,14 @@
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Blurhash } from 'react-blurhash';
 import { faLayerGroup, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
-import { ButtonSm } from '../../shared/styled/Button.styled';
-import { Badge } from '../../shared/styled/Badge.styled';
+import { ButtonSm } from '../../../shared/styled/Button.styled';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../shared/assets/styles.module.css';
-import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../shared/styled/DisplayDeck.styled';
-import BadgeComponent from '../shared/components/BadgeComponent';
-export default function Deck({deck}) {
+import styles from '../../../shared/assets/styles.module.css';
+import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../../shared/styled/DisplayDeck.styled';
+import BadgeComponent from './BadgeComponent';
+export default function Deck({deck, removeButtons}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
     const handlePracticeClick = (e) => {
@@ -30,9 +29,10 @@ export default function Deck({deck}) {
 	return(
 		<DisplayDeck>
 			<DisplayDeckImageContainer>
-				{/* {deckImage && <DeckImage loading="lazy" src={deckImage}/>} */}
 				{
 					!imageLoaded && 
+					(deck?.blurhash)
+					?
 					<Blurhash 
 						hash={deck?.blurhash}
 						width={'100%'}
@@ -41,6 +41,8 @@ export default function Deck({deck}) {
 						resolutionY={32}
 						punch={1}
 					/>
+					:
+					null
 				}
 				{deck?.deckImage && <LazyLoadImage style={{objectFit: 'cover'}} width={'100%'} height={'100%'} effect="blur" src={deck?.deckImage}/>}
 			</DisplayDeckImageContainer>
@@ -60,7 +62,13 @@ export default function Deck({deck}) {
 									info={deck?.cards?.filter(card => card.status === 'reviewed').length}
 								/>
 							</div>
-							<div className={styles['button-container']}>
+							<div className={styles['button-container']} 
+								style={
+									{
+										display: (removeButtons) ? 'none' : 'flex'
+									}
+								}
+							>
                                 <ButtonSm
                                     bg="white"
                                     color="black"

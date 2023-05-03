@@ -15,7 +15,6 @@ import { BarLoader } from 'react-spinners';
 // Styled components
 import { PageContainer, PageHeader } from "../../shared/styled/Container.styled";
 import { ButtonSm } from '../../shared/styled/Button.styled';
-import {SettingsGroupItem} from '../shared/styled/SettingsGroupItem.styled'
 
 import editStyles from '../shared/assets/deck.module.css'
 

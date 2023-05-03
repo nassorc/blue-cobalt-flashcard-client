@@ -6,7 +6,7 @@ import { DisplayDeck, DisplayDeckGridContainer } from '../../shared/styled/Displ
 import { GET_DECKLIST_ENDPOINT } from '../../utils/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import Deck from './Deck';
+import Deck from '../shared/components/Deck';
 import Fuse from 'fuse.js'
 import { SearchBox, SearchInput, SearchButton } from '../../shared/styled/Search.styled';
 

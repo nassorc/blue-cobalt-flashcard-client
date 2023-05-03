@@ -4,7 +4,7 @@ export default function BadgeComponent({icon, info}) {
     return(
         <Badge>
             {icon}
-            {(info) ? <p>{info}</p> : null }
+            {(info) ? <p>{info}</p> : 0 }
         </Badge>
     )
 }
