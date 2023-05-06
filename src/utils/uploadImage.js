@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import imageCompression from 'browser-image-compression';
 
 export async function handleUploadImageEvent(upload, callback) {
-    // set deckImage
+    // Extract data 
     let file = upload[0];
     let fileExt = file.name.split('.').pop();         // get file extension
     let fileName = file.name.split(`.${fileExt}`)[0]  // get file name
@@ -23,7 +23,9 @@ export async function handleUploadImageEvent(upload, callback) {
             // optimize size
             imageCompression(compressedQualityImageFile, options)
             .then((compressedSizeImageFile) => {
+                // create data url to display image after compression
                 const url = URL.createObjectURL(compressedSizeImageFile);
+                // package image as a file
                 const finalImageFile = new File([compressedSizeImageFile], uniqueFileName,{type: 'image/jpeg'})
 
                 let information = {

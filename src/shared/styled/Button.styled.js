@@ -25,10 +25,10 @@ export const Button = styled.button`
     }
 `
 export const ButtonMd = styled(Button)`
-    padding: 8px 8px;
+    padding: 8px 18px;
 `
 export const ButtonSm = styled(Button)`
-    padding: 3px 8px;
+    padding: 6px 12px;
 `
 export const ButtonSquare = styled(Button)`
     padding: 0;

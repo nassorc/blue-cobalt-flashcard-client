@@ -5,6 +5,7 @@ const ACTIONS = {
     SET_DECK: 'set_deck',
     UPDATE_DECK: 'update_deck',
     ADD_CARD: 'add_card',
+    ADD_CARDS: 'add_cards',
     UPDATE_CARD: 'update_card',
     DELETE_CARD: 'delete_card',
 }
@@ -17,6 +18,10 @@ function reducer(state, action) {
             return {...state, ...action?.payload}
         case ACTIONS.ADD_CARD:
             return {...state, modifiedCards: [action?.payload?.updatedCard, ...state?.modifiedCards]}
+        case ACTIONS.ADD_CARDS:
+            // console.log("payload", action?.payload?.newCards)
+            // return state
+            return {...state, modifiedCards: [...action?.payload.newCards, ...state?.modifiedCards]}
         case ACTIONS.UPDATE_CARD:
             let card = state?.modifiedCards?.reduce((current, elm) => (elm._id === action.payload.deckId) ? elm : current);
             let temp = {...card, ...action.payload.updatedCard}

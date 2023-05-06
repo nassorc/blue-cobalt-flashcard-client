@@ -33,7 +33,6 @@ export default function EditDeckPage() {
         try {
             if(deck?.deckImageFile) {  // if user upload an image
                 if(originalDeck?.deckImage && originalDeck?.deckImageName?.length > 0) {  // delete current image
-                    console.log('should be deleting')
                     const { deleteImage } = await import('../shared/core/deleteImage')
                     await deleteImage(originalDeck?.deckImageName)
                 }
