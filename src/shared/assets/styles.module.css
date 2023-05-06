@@ -18,7 +18,6 @@ p {
 }
 a,
 a:active {
-  color: white;
   text-decoration: none;
 }
 li {
@@ -65,27 +64,6 @@ select {
 
 /* Custom */
 
-nav {
-  display: flex;
-  align-items: center;
-}
-nav ul {
-  display: flex;
-}
-nav ul > * {
-  margin-right: 1rem;
-  cursor: pointer;
-}
-header {
-  width: 100%;
-  background-color: rgb(40, 40, 40);
-  color: white;
-}
-header > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 /* input {
   margin-bottom: 1rem;
   padding-block: 0.8rem;

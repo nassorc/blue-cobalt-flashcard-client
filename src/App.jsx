@@ -9,7 +9,7 @@ import {ProfilePage} from './user'
 
 // private route handler
 import PrivateRoutes from './utils/PrivateRoutes';
-import Header from './shared/components/Header';
+import Header from './shared/components/Header/Header';
 import './App.css';
 
 function App() {
