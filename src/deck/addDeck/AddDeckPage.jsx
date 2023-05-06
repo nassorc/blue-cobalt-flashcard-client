@@ -22,7 +22,7 @@ async function generateFlashcards(prompt, temperature) {
     try { 
         // create config
         const configuration = new Configuration({
-            apiKey: process.env.REACT_APP_OPENAI_API_KEY
+            apiKey: import.meta.env.VITE_OPENAI_API_KEY
         })
         // create instance of openai
         const openai = new OpenAIApi(configuration);
