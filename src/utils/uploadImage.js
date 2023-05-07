@@ -12,12 +12,12 @@ export async function handleUploadImageEvent(upload, callback) {
     let uniqueFileName = `${fileName}_id_${uuidv4()}.${fileExt}`
     // optimize quality
     new Compressor(file, {
-        quality: 0.4,
+        quality: 0.6,
         success(result) {
             const compressedQualityImageFile = new File([result], uniqueFileName, {type: 'image/jpeg'})
             const options = {
                 maxSizeMB: 1,
-                maxWidthOrHeight: 600,
+                maxWidthOrHeight: 800,
                 useWebWorker: true,
             }
             // optimize size
