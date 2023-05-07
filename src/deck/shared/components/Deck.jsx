@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../../shared/assets/styles.module.css';
 import { DisplayDeck, DisplayDeckImageContainer, DisplayDeckContent } from '../../../shared/styled/DisplayDeck.styled';
 import BadgeComponent from './BadgeComponent';
+
+import GraduateIcon from '../assets/graduate-icon.png'
+
 export default function Deck({deck, removeButtons}) {
     const [imageLoaded, setImageLoaded] = useState(false)
     const navigate = useNavigate();
@@ -49,7 +52,7 @@ export default function Deck({deck, removeButtons}) {
 			<DisplayDeckContent>
                     <>
 						<div>
-							<h3>{deck?.deckName}</h3>
+							<span className='cursor-auto font-bold text-lg'>{deck?.deckName}</span>
 						</div>
 						<div style={{display: 'flex', justifyContent: 'space-between'}}>
 							<div>

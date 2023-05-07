@@ -75,8 +75,8 @@ export default function ManageDeckPage() {
 	return(
 		<section className={styles['container']} style={{alignItems: 'center'}}>
 			<div>
-				<h3>Flashcard list</h3>
-				<p>Manage your flashcards or create a new deck</p>
+				<span className='font-bold text-xl cursor-auto'>Flashcard list</span>
+				<p className='text-[15px] text-slate-700'>Manage your flashcards or create a new deck</p>
 			</div>
 			<SearchBox>
 				<form onSubmit={(e) => e.preventDefault()}>

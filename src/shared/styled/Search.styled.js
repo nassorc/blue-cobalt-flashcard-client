@@ -5,9 +5,10 @@ export const SearchBox = styled.div`
 	position: relative;
 `
 export const SearchInput = styled.input`
+	position: relative;
 	padding: 12px 40px 12px 16px;
 	border: none;
-	background-color: rgba(0,0,0,0.09);
+	background-color: rgba(0,0,0,0.14);
 	border-radius: 6px;
 `
 export const SearchButton = styled.button`
