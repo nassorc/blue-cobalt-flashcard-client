@@ -44,7 +44,7 @@ export default function Deck({deck, removeButtons}) {
 					:
 					null
 				}
-				{deck?.deckImage && <LazyLoadImage style={{objectFit: 'cover'}} width={'100%'} height={'100%'} effect="blur" src={deck?.deckImage}/>}
+				{deck?.deckImage && <LazyLoadImage className='object-cover w-full h-full' src={deck?.deckImage}/>}
 			</DisplayDeckImageContainer>
 			<DisplayDeckContent>
                     <>
