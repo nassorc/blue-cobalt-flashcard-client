@@ -76,14 +76,13 @@ export default function LoginPage() {
 	};
 	return (
 		<PageContainer>
-			<PageLogo />
 			<FormContainer>
 				<div className={styles['formContainer-header']}>
 					<MascotContainer>
 						<Mascot src={mascot} />
 					</MascotContainer>
-					<h2>Welcome back</h2>
-					<p>Enter email and password to sign in</p>
+					<p className='text-2xl font-semibold'>Welcome back</p>
+					<p className='text-stone-700'>Enter email and password to sign in</p>
 				</div>
 				{responseMsg ? <FormNotification msg={responseMsg} bg="rgb(245, 233, 196)" borderColor="rgb(237, 222, 175)"/> : null}
 				<Form onSubmit={handleLoginSubmit}>
@@ -97,6 +96,7 @@ export default function LoginPage() {
 							setEmail(e.target.value);
 						}}
 						required
+						className='bg-gray-200 border-[1px] border-black/80 rounded-md'
 					/>
 					<Input 
 						type="password" 
@@ -106,6 +106,7 @@ export default function LoginPage() {
 							setPassword(e.target.value);
 						}}
 						required
+						className='bg-gray-200 border-[1px] border-black/80 rounded-md'
 					/>
 					<Button
 						bg="var(--green-color)"
