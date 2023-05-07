@@ -1,5 +1,4 @@
 import updateReviewList from '../../shared/utils/updateReviewList';
-import { Back } from '../../../shared/styled/Flashcard.styled';
 
 export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, setShowMeaningProp, cards, setCards }) {
     const handleGradeButton = (grade) => {
@@ -7,20 +6,34 @@ export default function CardBack({ cardDetails, gradeCardProp, showMeaningProp, 
         setShowMeaningProp(!showMeaningProp);
         updateReviewList(grade, cardDetails._id, cards, setCards)
     }
+    const BackButton = (props) => {
+        const {children, background, color, ...buttonProps} = props;
+        return (
+            <button 
+                {...buttonProps}
+                className={`px-2 py-1 ${(background) ? background : 'bg-sky-200'} ${(color) ? color : 'white'} border-[1px] border-black/50 rounded-md`}
+            >
+                {children}
+            </button>
+        )
+    }
     return(
-        <Back>
-            <div className="practice-header" style={{marginBottom: '1.4rem'}}>
-                    <div className="front" style={{ marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center', fontSize: '20px'}}>{cardDetails.front}</div> 
-                    <div className="back" style={{textAlign: 'center', fontSize: '18px'}}>{cardDetails.back}</div>
-                </div>
-                <div className="practice-buttons" style={{display: 'flex', gap: '4px', justifyContent: 'space-around'}}>
-                    <button onClick={(e) => handleGradeButton(0)}>Blackout</button>
-                    <button onClick={(e) => handleGradeButton(1)}>Very Hard</button>
-                    <button onClick={(e) => handleGradeButton(2)}>Hard</button>
-                    <button onClick={(e) => handleGradeButton(3)}>Easy but struggled a bit</button>
-                    <button onClick={(e) => handleGradeButton(4)}>Easy but hesitated</button>
-                    <button onClick={(e) => handleGradeButton(5)}>Flawless</button>
+        <>
+        <div  className='p-4 absolute w-full h-full flex flex-col items-center justify-around bg-slate-200 rounded-lg border border-sm border-slate-400' style={{backfaceVisibility: 'hidden', transform: 'rotateY(180deg)'}}>
+            <div>
+                <div className='m-0 font-bold text-lg'>{cardDetails.front}</div>
             </div>
-        </Back>
+            <div className='w-full h-0.5 bg-black'></div>
+            <div className="back" style={{textAlign: 'center', fontSize: '18px'}}>{cardDetails.back}</div>
+            <div className='[&>*]:mr-2'>
+                <BackButton background='bg-rose-600' color='text-white' onClick={(e) => handleGradeButton(0)}>Blackout</BackButton>
+                <BackButton background='bg-rose-800' color='text-white' onClick={(e) => handleGradeButton(1)}>Very Hard</BackButton>
+                <BackButton background='bg-rose-900' color='text-white' onClick={(e) => handleGradeButton(2)}>Hard</BackButton>
+                <BackButton background='bg-green-900' color='text-white' onClick={(e) => handleGradeButton(3)}>Easy</BackButton>
+                <BackButton background='bg-green-800' color='text-white' onClick={(e) => handleGradeButton(4)}>Good</BackButton>
+                <BackButton background='bg-green-600' color='text-white' onClick={(e) => handleGradeButton(5)}>Flawless</BackButton>
+            </div>
+        </div>
+        </>
     )
 }

@@ -1,21 +1,15 @@
-import { Front } from '../../../shared/styled/Flashcard.styled';
-
 export default function CardFront({ cardDetails, showMeaningProp, setShowMeaningProp, handleEditClick }) {
     const handleShowClick = (e) => {
         setShowMeaningProp(!showMeaningProp);
-
     }
     return(
-        <Front>
-            {/* <img src="https://picsum.photos/100/100"/> */}
-            <div className="practice-header">
-                    <div className="front" style={{ marginBottom: '1rem', fontWeight: 'bold', textAlign: 'center', fontSize: '20px'}}>{cardDetails.front}</div>
-                </div>
-                <div className="practice-buttons">
-                    <button onClick={handleShowClick}>Show</button>
-                    <span>  </span>
-                    <button onClick={handleEditClick}>Edit deck</button>
+        <div className='p-4 absolute w-full h-full flex flex-col items-center justify-between bg-slate-200 rounded-lg border border-sm border-slate-400' style={{backfaceVisibility: 'hidden'}}>
+            <div>
+                <div className='m-0 font-bold text-lg'>{cardDetails.front}</div>
             </div>
-        </Front>
+            <div className='w-full h-0.5 bg-black'></div>
+            <button className='py-2 px-8 w-full border border-slate-400 rounded-lg bg-white' onClick={handleShowClick}>show</button>
+
+        </div>
     );
 }

@@ -68,6 +68,7 @@ export default function PracticeDeckPage() {
 
     const [deck, setDeck] = useState();
     const [cards, setCards] = useState([]);
+    const [totalPracticeCards, setTotalPracticeCards] = useState(0);
 
     useEffect(() => {        
         // set deck and extract new and reviewed cards
@@ -78,9 +79,11 @@ export default function PracticeDeckPage() {
         let rCount = d?.deckSettings?.reviewCards || 10
         let nCount = d?.deckSettings?.newCards || 5
         setDeck(d);
-        setCards(createReviewSession(reviewCards, newCards, rCount, nCount));
-        
+        let session = createReviewSession(reviewCards, newCards, rCount, nCount)
+        setCards(session);
+        setTotalPracticeCards(session?.length)
     }, [deckList])
+
 
     const gradeCard = async (cardId, grade) => {
         // make request to api, send grade and card id
@@ -113,10 +116,30 @@ export default function PracticeDeckPage() {
 
     return(
         <PageContainer>
-            <FlashcardContainer>
-                <h1>{deck?.deckName}</h1>
-                {(CardComponents?.length > 0) ? CardComponents[0] : <p>You completed todays review list.</p>}
-            </FlashcardContainer>
+            <div className='relative mx-auto mb-32 w-full h-32 bg-gray-200 cursor-auto'>
+                <div className='w-full h-full overflow-hidden'>
+                    <img src={deck?.deckImage} className='block w-full h-full object-cover'/>
+                </div>
+                <div className='mx-auto my-2 w-fit h-fit flex flex-col gap-4'>
+                    <p className='font-bold text-2xl'>{deck?.deckName}</p>
+                    <button onClick={handleEditClick} className='px-3 py-1 border-[1px] border-black/80 rounded-md bg-white'>Edit</button>
+                </div>
+            </div> 
+            <div>
+                <div className='mb-4 relative mx-auto max-w-[680px]'>
+                    <span>Reviewed: </span><span>{totalPracticeCards - cards?.length}</span><span> / </span><span>{totalPracticeCards}</span>
+                </div>
+            </div>
+            <div className='relative mx-auto max-w-[680px]'>
+                {(CardComponents?.length > 0) 
+                    ? CardComponents[0] 
+                    : <div className='p-4 absolute w-full h-fit flex flex-col items-center justify-between bg-slate-200 rounded-lg border border-sm border-slate-400' style={{backfaceVisibility: 'hidden'}}>
+                        <p className='mb-2'>You completed todays review list.</p>
+                        <button onClick={() => {navigate('/');}} className='mb-2 w-60 px-3 py-1 border-[1px] border-black/80 rounded-md bg-white '>Go to Dashboard</button>
+                        <button onClick={(e) => {window.location.reload(false)}} className='w-60 px-3 py-1 border-[1px] border-black/80 rounded-md bg-white'>Review Again</button>
+                    </div>
+                }
+            </div>
         </PageContainer>
     )
 }
