@@ -134,22 +134,26 @@ export default function PracticeDeckPage() {
                         className="block w-full h-full object-cover"
                     />
                 </div>
-                <div className="absolute left-0 top-0 mx-6 my-10 w-fit h-fit flex gap-4">
-                    <p className="font-bold text-2xl">{deck?.deckName}</p>
-                    <button
-                        onClick={handleEditClick}
-                        className="px-3 py-1 border-[1px] border-black/80 rounded-md bg-white text-black"
-                    >
-                        Edit
-                    </button>
-                </div>
-            </div>
-            <div>
-                <div className="mb-4 relative mx-auto max-w-[680px]">
-                    <span>Reviewed: </span>
-                    <span>{totalPracticeCards - cards?.length}</span>
-                    <span> / </span>
-                    <span>{totalPracticeCards}</span>
+                <div className="absolute left-0 top-0 mx-6 my-10 w-fit h-fit flex gap-4 flex flex-col">
+                    <div className="flex [&>*]:mr-4">
+                        {" "}
+                        <p className="font-bold text-2xl">{deck?.deckName}</p>
+                        <button
+                            onClick={handleEditClick}
+                            className="px-3 py-1 border-[1px] border-black/80 rounded-md bg-white text-black"
+                        >
+                            Edit
+                        </button>
+                    </div>
+
+                    <div className="text-xl">
+                        <span className="uppercase">Reviewed: </span>
+                        <span className="text-green-400">
+                            {totalPracticeCards - cards?.length}
+                        </span>
+                        <span> / </span>
+                        <span>{totalPracticeCards}</span>
+                    </div>
                 </div>
             </div>
             <div className="relative mx-auto max-w-[680px]">
