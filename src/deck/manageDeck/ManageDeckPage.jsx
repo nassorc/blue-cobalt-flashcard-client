@@ -16,7 +16,6 @@ import {
 	SearchInput,
 	SearchButton,
 } from "../../shared/styled/Search.styled";
-
 import BackgroundImage from "/website-bg.jpg";
 
 const fuseOptions = {
