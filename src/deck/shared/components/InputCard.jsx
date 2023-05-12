@@ -62,11 +62,6 @@ export function InputCard({ dispatch, ACTIONS }) {
                         }}
                     />
                 </div>
-                <div>
-                    <label>Add flashcard Image</label>
-                    <input type="file" />
-                </div>
-
                 <ButtonMd
                     className="mt-2"
                     onClick={handleAdd}
