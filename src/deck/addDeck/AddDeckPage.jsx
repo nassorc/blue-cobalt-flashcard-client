@@ -61,12 +61,11 @@ function EditableCard(props) {
 }
 export default function AddDeckPage() {
     const [isUploading, setUploading] = useState(false);
-
+    const [lang, setLang] = useState("ENG");
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
     const { deckId } = useParams();
     let [deck, originalDeck, dispatch, ACTIONS] = useEditableDeck();
-
     // radio button
     const [selectedRadioBtn, setSelectedRadioBtn] = useState("private");
     const isRadioSelected = (value) => selectedRadioBtn === value; // if button value equals state value, return true. This checks the button
@@ -74,7 +73,7 @@ export default function AddDeckPage() {
         setSelectedRadioBtn(e.target.value);
     };
 
-    const [front, setFront] = useState("hello"); // New flashcard front input field
+    const [front, setFront] = useState(""); // New flashcard front input field
     const [back, setBack] = useState(""); // New flashcard back input field
     const [buildDeckField, setBuildDeckField] = useState(""); // text area value to auto build deck
     const handleSaveDeck = async (e) => {
@@ -305,6 +304,17 @@ export default function AddDeckPage() {
                                 text="Auto Deck Builder"
                                 desc="Got some large text or prompt? Let us build the deck for you!"
                             />
+                            <div className="my-4 flex items-center [&>*]:mr-4">
+                                <label>Translate results to Spanish</label>
+                                <Toggle
+                                    id="language-toggle"
+                                    defaultChecked={lang === "SPA" ? true : false}
+                                    onChange={() => {
+                                        if (lang === "ENG") setLang("SPA");
+                                        if (lang === "SPA") setLang("ENG");
+                                    }}
+                                />
+                            </div>
                             <textarea
                                 placeholder="Enter Text"
                                 className="mb-4 p-5 w-full h-[300px] text-lg resize-none leading-5 border border-black/60 rounded-md"
@@ -320,7 +330,8 @@ export default function AddDeckPage() {
                                     setUploading(true);
                                     const generatedCards = await generateFlashcards(
                                         buildDeckField,
-                                        0.6
+                                        0.6,
+                                        lang
                                     );
                                     // update modified deck
                                     if (!generatedCards || generatedCards?.length < 1) {
@@ -344,43 +355,6 @@ export default function AddDeckPage() {
                                 dispatch={dispatch}
                                 ACTIONS={ACTIONS}
                             />
-                            {/* <div className="flex flex-col"> */}
-                            {/*     <div */}
-                            {/*         style={{ */}
-                            {/*             display: "flex", */}
-                            {/*             flexDirection: "column", */}
-                            {/*             flexGrow: "1", */}
-                            {/*         }} */}
-                            {/*     > */}
-                            {/*         <label>Front</label> */}
-                            {/*         <Input */}
-                            {/*             value={front} */}
-                            {/*             onChange={(e) => { */}
-                            {/*                 setFront(e.target.value); */}
-                            {/*             }} */}
-                            {/*         /> */}
-                            {/*     </div> */}
-                            {/*     <div */}
-                            {/*         style={{ */}
-                            {/*             display: "flex", */}
-                            {/*             flexDirection: "column", */}
-                            {/*             flexGrow: "1", */}
-                            {/*         }} */}
-                            {/*     > */}
-                            {/*         <label>Back</label> */}
-                            {/*         <Input */}
-                            {/*             value={back} */}
-                            {/*             onChange={(e) => { */}
-                            {/*                 setBack(e.target.value); */}
-                            {/*             }} */}
-                            {/*         /> */}
-                            {/*     </div> */}
-                            {/* </div> */}
-                            {/* <Button style={{ width: "100%" }}>Add</Button> */}
-                            {/**/}
-                            {/* <div> */}
-                            {/*     <EditableCard /> */}
-                            {/* </div> */}
                         </div>
                     </div>
                 </>
