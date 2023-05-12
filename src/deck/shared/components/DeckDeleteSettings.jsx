@@ -33,7 +33,7 @@ function Dialog({ deck, setShowDialog, handleDelete }) {
         setShowDialog(false);
     };
     return (
-        <>
+        <div>
             <div
                 onClick={(e) => {
                     handleCloseDialog();
@@ -114,7 +114,7 @@ function Dialog({ deck, setShowDialog, handleDelete }) {
                     </ButtonSm>
                 </div>
             </DialogContainer>
-        </>
+        </div>
     );
 }
 
@@ -136,7 +136,7 @@ export default function DeckDeleteSettings({ deck, deckId }) {
     };
     console.log(showDialog);
     return (
-        <>
+        <div>
             {showDialog ? (
                 <Dialog
                     deck={deck}
@@ -149,6 +149,6 @@ export default function DeckDeleteSettings({ deck, deckId }) {
                     Delete deck
                 </ButtonSm>
             </div>
-        </>
+        </div>
     );
 }

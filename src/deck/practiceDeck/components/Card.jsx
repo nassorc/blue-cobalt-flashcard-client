@@ -13,7 +13,7 @@ export default function Card({
     let rotateStyle = showMeaning ? { transform: "rotateY(180deg)" } : {};
     return (
         <div
-            className="w-full h-48 absolute transition-all duration-500 ease bg-blue-200/40 border border-blue-600/50 rounded-lg"
+            className="w-full h-48 absolute transition-all duration-500 ease bg-white hover:bg-neutral-100/70 border border-black/50 rounded-lg"
             style={{
                 transformStyle: "preserve-3d",
                 backfaceVisibility: "hidden",

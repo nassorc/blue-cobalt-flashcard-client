@@ -111,7 +111,7 @@ export default function Homepage() {
 											Profile
 										</DropdownItemLink>
 										<DropdownItemLink
-											to="/profile"
+											to="/manage"
 											leftIcon={<FontAwesomeIcon icon={faUsersBetweenLines} />}
 										>
 											Manage Class

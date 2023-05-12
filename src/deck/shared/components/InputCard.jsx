@@ -10,6 +10,7 @@ export function InputCard({ dispatch, ACTIONS }) {
     const [back, setBack] = useState("");
 
     const handleAdd = (e) => {
+        // upload new image, delete current image, and create download url to save on database
         const newCard = {
             front,
             back,
@@ -60,6 +61,10 @@ export function InputCard({ dispatch, ACTIONS }) {
                             setBack(e.target.value);
                         }}
                     />
+                </div>
+                <div>
+                    <label>Add flashcard Image</label>
+                    <input type="file" />
                 </div>
 
                 <ButtonMd

@@ -11,7 +11,7 @@ import {
 	ManageDeckPage,
 	ExploreDeckPage,
 } from "./deck";
-import { ProfilePage } from "./user";
+import { ProfilePage, ManageClassPage } from "./user";
 
 // private route handler
 import PrivateRoutes from "./utils/PrivateRoutes";
@@ -42,6 +42,7 @@ function App() {
 						<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
 						<Route path="/explore" element={<ExploreDeckPage />} exact />
 						<Route path="/profile" element={<ProfilePage />} exact />
+						<Route path="/manage" element={<ManageClassPage />} exact />
 					</Route>
 					{/* PUBLIC ROUTES */}
 					<Route path="/login" element={<LoginPage />} />

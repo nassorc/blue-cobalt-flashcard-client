@@ -126,7 +126,7 @@ export default function PracticeDeckPage() {
 
     return (
         <PageContainer>
-            <div className="relative mx-auto mb-32 w-full h-32 cursor-auto text-white rounded-lg overflow-hidden">
+            <div className="relative mx-auto mb-32 w-full h-52 cursor-auto text-white rounded-lg overflow-hidden">
                 <div className="absolute w-full h-full bg-gradient-to-r from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.1)]"></div>
                 <div className="w-full h-full overflow-hidden">
                     <img
@@ -146,13 +146,36 @@ export default function PracticeDeckPage() {
                         </button>
                     </div>
 
-                    <div className="text-xl">
-                        <span className="uppercase">Reviewed: </span>
-                        <span className="text-green-400">
-                            {totalPracticeCards - cards?.length}
-                        </span>
-                        <span> / </span>
-                        <span>{totalPracticeCards}</span>
+                    <div className="text-lg">
+                        <div>
+                            <span>Current Session:</span>
+                        </div>
+                        <div>
+                            <span>
+                                New:{" "}
+                                {
+                                    cards?.filter((card) => {
+                                        return card.status === "new";
+                                    }).length
+                                }
+                            </span>
+                            <span>
+                                , Reviewed:{" "}
+                                {
+                                    cards?.filter((card) => {
+                                        return card.status === "reviewed";
+                                    }).length
+                                }
+                            </span>
+                        </div>
+                        <div>
+                            <span className="">Completed: </span>
+                            <span className="text-green-400">
+                                {totalPracticeCards - cards?.length}
+                            </span>
+                            <span> / </span>
+                            <span>{totalPracticeCards}</span>
+                        </div>
                     </div>
                 </div>
             </div>

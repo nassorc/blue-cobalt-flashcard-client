@@ -85,7 +85,9 @@ export default function ManageDeckPage() {
 					backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url(${BackgroundImage})`,
 				}}
 			>
-				<span className="font-bold text-2xl cursor-auto">Flashcard list</span>
+				<h1 className="pl-4 text-2xl font-bold border-l-4 border-red-400">
+					Flashcard list
+				</h1>
 				<p className="text-lg">Manage your flashcards or create a new deck</p>
 			</div>
 			<SearchBox>

@@ -14,7 +14,7 @@ export default async function generateFlashcards(prompt, temperature) {
         {
           role: "system",
           content:
-            'You are a consistent teacher. You can create flashcards from the information I provide. Please make a formatted text database of ten flashcards you create based on my input. Your response will strictly use the following JSON format:  [{front: "Flashcard question", back: "Flashcard correct answer"}, {front:"..", back: ".."}, ...]',
+            'You are a consistent teacher. You can create flashcards from the information I provide or based on a given topic. Please make a formatted text database of ten flashcards you create based on my input. Your response will strictly use the following JSON format:  [{front: "Flashcard question", back: "Flashcard correct answer"}, {front:"..", back: ".."}, ...]',
         },
         { role: "user", content: prompt },
       ],
@@ -22,8 +22,12 @@ export default async function generateFlashcards(prompt, temperature) {
     });
     // extract data
     const data = res?.data?.choices[0].message.content;
-    return JSON.parse(data);
+    if (data?.length > 0) {
+      return JSON.parse(data);
+    } else {
+      return [];
+    }
   } catch (error) {
-    console.log(error.message);
+    throw new Error(error.message);
   }
 }

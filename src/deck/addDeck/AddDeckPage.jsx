@@ -26,15 +26,7 @@ import DeckCardlistSettings from "../shared/components/DeckCardlistSettings";
 import Input from "../shared/components/Input/Input";
 
 import BackgroundImage from "/website-bg.jpg";
-
-function Label({ text, desc }) {
-    return (
-        <p className="mb-4 text-slate-600 font-semibold w-full block border-b border-slate-600">
-            <p className="text-lg">{text}</p>
-            <p className="text-black/90 text-md font-normal">{desc}</p>
-        </p>
-    );
-}
+import FormLabel from "../shared/components/Form/FormLabel";
 
 function EditableCard(props) {
     const { front, setFront, back, setBack } = props;
@@ -69,6 +61,7 @@ function EditableCard(props) {
 }
 export default function AddDeckPage() {
     const [isUploading, setUploading] = useState(false);
+
     const authContext = useContext(AuthContext);
     const navigate = useNavigate();
     const { deckId } = useParams();
@@ -158,9 +151,7 @@ export default function AddDeckPage() {
                         transform: "translate(-50%, -50%)",
                     }}
                 >
-                    <p style={{ fontSize: "28px", marginBottom: "1rem" }}>
-                        Uploading your deck.
-                    </p>
+                    <p style={{ fontSize: "28px", marginBottom: "1rem" }}>Creating...</p>
                     <BarLoader color="lightcoral" width="100%" />
                 </div>
             ) : (
@@ -168,14 +159,14 @@ export default function AddDeckPage() {
                     <div
                         className="px-4 py-8 bg-cover bg-left-bottom bg-no-repeat text-white rounded-lg"
                         style={{
+                            backgroundPosition: "80% 90%",
                             backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.1)), url(${BackgroundImage})`,
                         }}
                     >
                         <div className="flex justify-between">
-                            <span className="font-bold text-2xl cursor-auto">
-                                Create deck
-                            </span>
-
+                            <h1 className="pl-4 text-2xl font-bold border-l-4 border-green-400">
+                                Create Deck
+                            </h1>
                             <div>
                                 <ButtonMd
                                     bg="white"
@@ -210,7 +201,7 @@ export default function AddDeckPage() {
                             {/* </div> */}
                             <div>
                                 <div className="flex flex-col">
-                                    <Label text="Deck Information" />
+                                    <FormLabel text="Deck Information" />
                                     <label>Deck Name</label>
                                     <Input
                                         type="text"
@@ -248,7 +239,7 @@ export default function AddDeckPage() {
                                     />
                                 </div>
                                 <div className="mb-8 [&>p]:mb-4 [&>input]:mb-4 flex flex-col ">
-                                    <Label text="Practice Settings" />
+                                    <FormLabel text="Practice Settings" />
                                     <div className="flex justify-between items-center [&>*]:mr-2">
                                         <label>New cards</label>
                                         <Input
@@ -283,7 +274,7 @@ export default function AddDeckPage() {
                                     </p>
                                 </div>
                                 <div className="[&>*]:mb-4 [&>label]:mr-6 [&>input]:mr-2">
-                                    <Label text="Visibility Status" />
+                                    <FormLabel text="Visibility Status" />
                                     <input
                                         type="radio"
                                         value="private"
@@ -310,7 +301,7 @@ export default function AddDeckPage() {
 
                     <div>
                         <div className="py-8 px-16 [&>*]:mb-4">
-                            <Label
+                            <FormLabel
                                 text="Auto Deck Builder"
                                 desc="Got some large text or prompt? Let us build the deck for you!"
                             />
@@ -326,22 +317,28 @@ export default function AddDeckPage() {
                                 style={{ width: "100%" }}
                                 onClick={async (e) => {
                                     // auto generate deck
+                                    setUploading(true);
                                     const generatedCards = await generateFlashcards(
                                         buildDeckField,
                                         0.6
                                     );
                                     // update modified deck
-                                    dispatch({
-                                        type: ACTIONS.ADD_CARDS,
-                                        payload: { newCards: generatedCards },
-                                    });
+                                    if (!generatedCards || generatedCards?.length < 1) {
+                                        console.log("Something went wrong");
+                                    } else {
+                                        dispatch({
+                                            type: ACTIONS.ADD_CARDS,
+                                            payload: { newCards: generatedCards },
+                                        });
+                                    }
+                                    setUploading(false);
                                 }}
                             >
                                 Generate flashcards
                             </Button>
                         </div>
                         <div className="py-8 px-16 [&>*]:mb-4">
-                            <Label text="Add Card" />
+                            <FormLabel text="Add Card" />
                             <DeckCardlistSettings
                                 deck={deck}
                                 dispatch={dispatch}
