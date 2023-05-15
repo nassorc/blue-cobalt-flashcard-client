@@ -228,9 +228,14 @@ export default function AddDeckPage() {
                                             handleUploadImageEvent(
                                                 e.target.files,
                                                 (deckInformation) => {
+                                                    const payload = {
+                                                        deckImageFile: deckInformation.file,
+                                                        deckImageName: deckInformation.fileName,
+                                                        deckImage: deckInformation.url,
+                                                    };
                                                     dispatch({
                                                         type: ACTIONS.UPDATE_DECK,
-                                                        payload: { ...deckInformation },
+                                                        payload: { ...payload },
                                                     });
                                                 }
                                             );
@@ -324,7 +329,10 @@ export default function AddDeckPage() {
                                 }}
                             ></textarea>
                             <Button
-                                style={{ width: "100%" }}
+                                className="w-full"
+                                style={{
+                                    backgroundColor: "#e2fcef",
+                                }}
                                 onClick={async (e) => {
                                     // auto generate deck
                                     setUploading(true);
@@ -346,6 +354,9 @@ export default function AddDeckPage() {
                                 }}
                             >
                                 Generate flashcards
+                            </Button>
+                            <Button className="w-full" style={{ backgroundColor: "#f5c6e4" }}>
+                                Save Prompt and Results as .JSON
                             </Button>
                         </div>
                         <div className="py-8 px-16 [&>*]:mb-4">

@@ -42,7 +42,9 @@ export default function RegisterPage() {
 			<FormContainer>
 				<div className={styles["formContainer-header"]}>
 					<p className="text-2xl font-semibold">Register</p>
-					<p className="text-stone-700">Enter email and password to sign in</p>
+					<p className="text-stone-700">
+						Welcome to our Website. Enter information to create an account
+					</p>
 				</div>
 				{responseMsg && responseOk ? (
 					<FormNotification

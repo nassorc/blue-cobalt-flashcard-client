@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 export default async function generateFlashcards(prompt, temperature, lang) {
   const langPrompt = {
     ENG: 'You are a consistent teacher. You can create flashcards from the information I provide or based on the given topic or prompt. Please make a formatted text database of ten flashcards you create based on my input. Your response will strictly use the following JSON format: [{"front": "Flashcard question", "back": "Flashcard correct answer"}, {"front":"..", "back": ".."}, ...]',
-    SPA: 'You are a consistent elementary teacher fluent in Sonoran Spanish. Please create flashcards based on the give topic or prompt and translate the following questions and answers to Sonoran Spanish. Please make a formatted text database of ten flashcards you create based on my input. Your response will strictly use the following JSON format:  [{"front": "Flashcard question", "back": "Flashcard correct answer"}, {"front":"..", "back": ".."}, ...]',
+    SPA: 'You are a consistent elementary teacher fluent in Sonoran Spanish. Please create flashcards based on the give topic or prompt and translate both questions and answers to Sonoran Spanish. Please make a formatted text database of ten flashcards you create based on my input. Your response will strictly use the following JSON format:  [{"front": "Flashcard question", "back": "Flashcard correct answer"}, {"front":"..", "back": ".."}, ...]',
   };
   try {
     // create config
@@ -25,7 +25,6 @@ export default async function generateFlashcards(prompt, temperature, lang) {
     });
     // extract data
     const data = res?.data?.choices[0].message.content;
-    console.log(data);
     if (data?.length > 0) {
       return JSON.parse(data);
     } else {

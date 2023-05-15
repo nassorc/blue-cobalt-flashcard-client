@@ -1,6 +1,8 @@
 import { PageContainer } from "../../shared/styled/Container.styled";
 import ClassComponent from "./components/ClassComponent";
 import BackgroundImage from "/people-bg.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 export default function ManageClassPage() {
   return (
     <PageContainer>
@@ -21,6 +23,9 @@ export default function ManageClassPage() {
         </div>
       </div>
       <div className="my-8 [&>*]:mb-4">
+        <div className="w-full h-[110px] text-3xl flex justify-center items-center shadow-md shadow-black/30 rounded-lg transition-all ease duration-500 hover:bg-black/5">
+          <FontAwesomeIcon icon={faPlus} />
+        </div>
         <ClassComponent
           name="CIS-281"
           desc="System Analy/Des: Application"

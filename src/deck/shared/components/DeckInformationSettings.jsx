@@ -31,7 +31,6 @@ export default function DeckInformationSettings({ deck, dispatch, ACTIONS }) {
                                 "../../../utils/uploadImage"
                             );
                             handleUploadImageEvent(e.target.files, (deckInformation) => {
-                                console.log(deckInformation);
                                 const payload = {
                                     deckImageFile: deckInformation.file,
                                     deckImageName: deckInformation.fileName,
