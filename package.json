@@ -1,6 +1,7 @@
 {
   "name": "auth-app",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.6.0",
@@ -34,9 +35,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "migrate_files": "node /scripts/migrateTS.js"
   },
   "eslintConfig": {
     "extends": [
@@ -57,10 +59,13 @@
     ]
   },
   "devDependencies": {
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",
     "tailwindcss": "^3.3.2",
+    "typescript": "^5.1.6",
     "vite": "^4.3.5",
     "vite-plugin-svgr": "^3.2.0"
   }

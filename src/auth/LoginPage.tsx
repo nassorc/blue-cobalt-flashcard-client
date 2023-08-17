@@ -40,10 +40,7 @@ export default function LoginPage() {
 
 	const handleLoginSubmit = async (event) => {
 		event.preventDefault();
-		if(email.length < 1 || password.length < 1) {
-			console.log('working');
-			return; 
-		}
+    if(!email || !password) return;
 		try {
 			const res = await fetch(POST_LOGIN_ENDPOINT(), {
 				method: 'POST',
@@ -53,14 +50,13 @@ export default function LoginPage() {
 				body: JSON.stringify({email, password})
 			});
 			const data = await res.json();
-			const { message, details } = data;
 			if(res.ok) {
-				const { token, userId } = details; 
-				// // save token and user id
-				window.localStorage.setItem('userId', userId);
-				window.localStorage.setItem('token', token);
+				const { token, userId } = data.user; 
+				// save token and user id
+				localStorage.setItem('userId', userId);
+				localStorage.setItem('token', token);
 				// document.cookie = `accessToken=${token}`
-				// // redirect user
+				// redirect user
 				authContext.setAuth({ userId, token });
 				navigate('/');
 			}

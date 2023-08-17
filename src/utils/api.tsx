@@ -1,7 +1,7 @@
 // Interface for server endpoints
 // Authentication endpoints
-export const POST_LOGIN_ENDPOINT = () => `${import.meta.env.VITE_SERVER_BASE_URL}/login/`;
-export const POST_REGISTER_ENDPOINT  = () => `${import.meta.env.VITE_SERVER_BASE_URL}/register/`;
+export const POST_LOGIN_ENDPOINT = () => `${import.meta.env.VITE_SERVER_BASE_URL}/user/login/`;
+export const POST_REGISTER_ENDPOINT  = () => `${import.meta.env.VITE_SERVER_BASE_URL}/user/register/`;
 
 // Deck and Card endpoints
 // export const GET_DECKS_ENDPOINT = () => '/deck/';
