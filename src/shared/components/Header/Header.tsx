@@ -11,6 +11,7 @@ import {
 import HeaderIcon from "./header-icon.png";
 import NavLink from "./NavLink";
 import DropdownItemLink from "./DropdownItemLink";
+
 export default function Homepage() {
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
@@ -51,13 +52,9 @@ export default function Homepage() {
 					to="/"
 					className="flex justify-center items-center cursor-pointer"
 				>
+          <img src="./quick.png"/>
 					<div className="mr-3 text-3xl font-bold text-[rgb(40,40,40)] inline-block">
 						BlueCobalt
-					</div>
-					<div className="relative w-14 h-1/2 bg-gray-400 rounded-lg inline-block ">
-						<span className="absolute rounded-lg -top-0.5 hover:top-0 bottom-0 -left-0.5 hover:left-0 right-0 w-full h-full flex justify-center items-center bg-gray-100">
-							<img src={HeaderIcon} className="max-w-full block w-2/5" />
-						</span>
 					</div>
 				</Link>
 				<nav>
