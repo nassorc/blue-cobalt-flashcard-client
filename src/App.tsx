@@ -17,6 +17,9 @@ import { ProfilePage, ManageClassPage } from "./user";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Header from "./shared/components/Header/Header";
 import "./App.css";
+import { LandingPage } from "./landing";
+import AuthPage from "./auth/AuthPage";
+import A from "./components/a/A";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -36,17 +39,20 @@ function App() {
 				<Routes>
 					{/* PRIVATE ROUTES */}
 					<Route element={<PrivateRoutes />}>
-						<Route path="/" element={<ManageDeckPage />} exact />
-						<Route path="/add" element={<AddDeckPage />} exact />
-						<Route path="/practice/:id" element={<PracticeDeckPage />} exact />
-						<Route path="/edit/:deckId" element={<EditDeckPage />} exact />
-						<Route path="/explore" element={<ExploreDeckPage />} exact />
-						<Route path="/profile" element={<ProfilePage />} exact />
-						<Route path="/manage" element={<ManageClassPage />} exact />
+						<Route path="/" element={<ManageDeckPage />} />
+						<Route path="/add" element={<AddDeckPage />} />
+						<Route path="/practice/:id" element={<PracticeDeckPage />} />
+						<Route path="/edit/:deckId" element={<EditDeckPage />} />
+						<Route path="/explore" element={<ExploreDeckPage />} />
+						<Route path="/profile" element={<ProfilePage />} />
+						<Route path="/manage" element={<ManageClassPage />} />
 					</Route>
 					{/* PUBLIC ROUTES */}
-					<Route path="/login" element={<LoginPage />} />
-					<Route path="/register" element={<RegisterPage />} />
+
+          <Route path="/landing" element={<LandingPage />} />
+					<Route path="/login" element={<AuthPage />} />
+					<Route path="/register" element={<AuthPage />} />
+					<Route path="/a" element={<A />} />
 				</Routes>
 			)}
 		</section>
