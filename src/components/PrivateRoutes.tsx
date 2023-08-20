@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import AuthContext from '../shared/context/AuthContext';
 const PrivateRoutes = () => {
 	const authContext = useContext(AuthContext);
+  console.log("private routes", authContext)
 	return (
 		authContext.auth.token ? <Outlet /> : <Navigate to='/login' />
 	);

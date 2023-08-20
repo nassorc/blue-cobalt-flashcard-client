@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect, useContext } from 'react';
-import AuthContext from '../shared/context/AuthContext';
+import AuthContext from '../../shared/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import FormNotification from '../shared/components/FormNotification';
-import { POST_LOGIN_ENDPOINT } from '../utils/api';
-import {Input} from '../shared/styled/Input.styled';
-import {FormContainer, Form} from '../shared/styled/Form.styled';
-import { Button } from '../shared/styled/Button.styled';
+import FormNotification from '../../shared/components/FormNotification';
+import { POST_LOGIN_ENDPOINT } from '../../utils/api';
+import {Input} from '../../shared/styled/Input.styled';
+import {FormContainer, Form} from '../../shared/styled/Form.styled';
+import { Button } from '../../shared/styled/Button.styled';
 import styles from '../shared/assets/styles.module.css'
-import { PageContainer } from '../shared/styled/Container.styled';
+import { PageContainer } from '../../shared/styled/Container.styled';
 import { flexbox } from '@chakra-ui/react';
 import PageLogo from './shared/components/PageLogo';
 import mascot from './shared/assets/monsta.png'

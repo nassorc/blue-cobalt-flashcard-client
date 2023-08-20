@@ -33,6 +33,11 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    /* BEGIN: CUSTOM CSS VARIABLES ======================= */
+    --website-accent: #50e6ff;
+    --website-background: ##f6f6f6;
+    /* END: CUSTOM CSS VARIABLES ======================= */
   }
 
   .dark {

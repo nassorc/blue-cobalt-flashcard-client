@@ -3,7 +3,7 @@ import AuthContext from "./shared/context/AuthContext";
 import { Route, Routes } from "react-router-dom";
 
 // route components
-import { LoginPage, RegisterPage } from "./auth";
+import { LoginPage, RegisterPage } from "./app/auth";
 import {
 	AddDeckPage,
 	EditDeckPage,
@@ -14,12 +14,45 @@ import {
 import { ProfilePage, ManageClassPage } from "./user";
 
 // private route handler
-import PrivateRoutes from "./utils/PrivateRoutes";
+import PrivateRoutes from "./components/PrivateRoutes";
 import Header from "./shared/components/Header/Header";
 import "./App.css";
-import { LandingPage } from "./landing";
-import AuthPage from "./auth/AuthPage";
+import { LandingPage } from "./app/landing";
+import AuthPage from "./app/auth/AuthPage";
 import A from "./components/a/A";
+
+function Sketch() {
+  const [drawing, setDrawing] = useState(false);
+  return(
+    <div>
+      <canvas
+        onMouseMove={(e) => {
+          if (e.target.tagName === "CANVAS" && drawing) {
+            const rect = e.target.getBoundingClientRect()
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            const ctx = e.target.getContext("2d")
+            ctx.fillStyle = "black"
+            ctx.fillRect(x, y, 10, 10);
+          }
+        }}
+        onMouseDown={(e) => {
+          setDrawing(true)
+        }}
+        onMouseUp={(e) => {
+          setDrawing(false)
+        }}
+        onMouseLeave={(e) => {
+          setDrawing(false)
+        }}
+        className="shadow-lg border border-gray-200"
+        width="400px"
+        height="400px"
+      >
+      </canvas>
+    </div>
+  )
+}
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -33,7 +66,7 @@ function App() {
 		setIsLoading(!isLoading);
 	}, []);
 	return (
-		<section className="h-screen ">
+		<section className="min-h-screen bg-website-background">
 			<Header />
 			{isLoading ? null : (
 				<Routes>
@@ -49,10 +82,10 @@ function App() {
 					</Route>
 					{/* PUBLIC ROUTES */}
 
-          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/landing-page" element={<LandingPage />} />
 					<Route path="/login" element={<AuthPage />} />
 					<Route path="/register" element={<AuthPage />} />
-					<Route path="/a" element={<A />} />
+					<Route path="/a" element={<Sketch/>} />
 				</Routes>
 			)}
 		</section>

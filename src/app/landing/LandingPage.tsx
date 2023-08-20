@@ -5,10 +5,14 @@ export default function LandingPage() {
   return (
     <div className="container text-center space-y-5 flex flex-col items-center">
       <div className="flex flex-col items-center">
-        <img src="/quick-lg.png" alt="" />
+        <div className="relative">
+          <img src="/quick-lg.png" alt="website-logo" className="relative"/>
+          <img src="/quick-lg.png" alt="website-logo" className="absolute inset-0 z-40 opacity-0 hover:opacity-30 animate-ping"/>
+
+        </div>
         <h1
           className="text-5xl font-bold leading-snug"
-        ><span className="text-[#50e6ff]">Empower your learning with AI:</span><br/>Effortless flashcard creation</h1>
+        ><span className="text-website-accent">Empower your learning with AI:</span><br/>Effortless flashcard creation</h1>
       </div>
       <p
         className="text-lg text-gray-600"

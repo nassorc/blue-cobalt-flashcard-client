@@ -46,10 +46,10 @@ export default function Homepage() {
 	}, []);
 
 	return (
-		<header className="sticky top-0 z-[99] mb-8 w-full h-16 bg-white shadow-bottom shadow-sm shadow-slate-700/50 text-slate-700 transition-all">
+		<header className="sticky top-0 z-[99] mb-8 w-full h-header h-16 shadow-bottom shadow-sm shadow-slate-700/50 text-slate-700 transition-all">
 			<div className="max-w-5xl h-full mx-auto px-4 flex justify-between align-center">
 				<Link
-					to="/"
+					to="/landing-page"
 					className="flex justify-center items-center cursor-pointer"
 				>
           <img src="./quick.png"/>

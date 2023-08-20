@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styles from "../shared/assets/styles.module.css";
 import { Link } from "react-router-dom";
-import { Input } from "../shared/styled/Input.styled";
-import { FormContainer, Form } from "../shared/styled/Form.styled";
-import { Button } from "../shared/styled/Button.styled";
-import FormNotification from "../shared/components/FormNotification";
-import { POST_REGISTER_ENDPOINT } from "../utils/api";
+import { Input } from "../../shared/styled/Input.styled";
+import { FormContainer, Form } from "../../shared/styled/Form.styled";
+import { Button } from "../../shared/styled/Button.styled";
+import FormNotification from "../../shared/components/FormNotification";
+import { POST_REGISTER_ENDPOINT } from "../../utils/api";
 
 export default function RegisterPage() {
 	const [email, setEmail] = useState("");

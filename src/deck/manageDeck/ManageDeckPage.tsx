@@ -41,6 +41,8 @@ export default function ManageDeckPage() {
 
 	// fetch user flashcards
 	useEffect(() => {
+    async function getUserDecks() {
+    }
 		const id = localStorage.getItem("userId");
 		fetch(GET_DECKLIST_ENDPOINT(id), {
 			headers: {

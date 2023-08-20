@@ -16,7 +16,12 @@ module.exports = {
       },
     },
     extend: {
+      spacing: {
+        header: "80px"
+      },
       colors: {
+        "website-accent": "var(--website-accent)",
+        "website-background": "var(--website-background)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
