@@ -1,20 +1,21 @@
-const API = "http://localhost:3001"
+const API = import.meta.env.VITE_SERVER_API_URL || "http://localhost:3001";
 const config = {
   api: {
+    baseUrl: API,
     user: {
-      queryById: (id) => API + "/user/" + id,
+      queryById: (id: string) => API + "/user/" + id,
       register: () => API + "/user",
       login: () => API + "/user/login",
     },
     deck: {
-      getByUserId: (id) => API + "/deck/user/" + id ,
-      getByDeckId: (id) => API + "/deck" + id,
+      getByUserId: (id: string) => API + "/deck/user/" + id ,
+      getByDeckId: (id: string) => API + "/deck" + id,
       add: () => API + "/deck",
-      update: (id) => API + "/deck/update/" + id,
-      delete: (id) => API + "/deck/delete/" + id,
+      update: (id: string) => API + "/deck/update/" + id,
+      delete: (id: string) => API + "/deck/delete/" + id,
     },
     card: {
-      grade: (id) => API + "/card/" + id + "/grade"
+      grade: (id: string) => API + "/card/" + id + "/grade"
     }
 
   },
