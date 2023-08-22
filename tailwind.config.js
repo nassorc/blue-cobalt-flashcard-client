@@ -19,6 +19,9 @@ module.exports = {
       spacing: {
         header: "80px"
       },
+      boxShadow: {
+        card: "0px 4px 0px 4px rgba(0, 0, 0, 0.2)"
+      },
       colors: {
         "website-accent": "var(--website-accent)",
         "website-background": "var(--website-background)",
