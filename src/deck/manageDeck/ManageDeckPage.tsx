@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../../shared/context/AuthContext";
 import styles from "../../shared/assets/styles.module.css";
@@ -17,6 +17,9 @@ import {
 	SearchButton,
 } from "../../shared/styled/Search.styled";
 import BackgroundImage from "/website-bg.jpg";
+import FlashcardDeck from "@/components/FlashcardDeck";
+import { Input } from "@/components/ui/input";
+import { Icons } from "@/components/Icons";
 
 const fuseOptions = {
 	isCaseSensitive: false,
@@ -41,8 +44,22 @@ export default function ManageDeckPage() {
 
 	// fetch user flashcards
 	useEffect(() => {
-    async function getUserDecks() {
+    async function getUserDecklist() {
+      const res = await fetch('http://localhost:3001/deck/' + localStorage.getItem("userId"), {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      return await res.json()
     }
+    getUserDecklist()
+      .then(decks => {
+				setDeckList(decks?.deckList);
+				window.localStorage.setItem("decks", JSON.stringify(decks?.deckList));
+      })
+
 		const id = localStorage.getItem("userId");
 		fetch(GET_DECKLIST_ENDPOINT(id), {
 			headers: {
@@ -72,8 +89,8 @@ export default function ManageDeckPage() {
 	}, [deckList, filteredDeck]);
 
 	// map data from fetch request to react component
-	deckElements = displayDeck.map((deck) => {
-		return <Deck deck={deck} key={deck._id} />;
+	deckElements = displayDeck.map((deck: any) => {
+    return <FlashcardDeck key={deck._id} deck={deck} />
 	});
 
 	const handleAddDeck = () => {
@@ -92,21 +109,18 @@ export default function ManageDeckPage() {
 				</h1>
 				<p className="text-lg">Manage your flashcards or create a new deck</p>
 			</div>
-			<SearchBox>
-				<form onSubmit={(e) => e.preventDefault()}>
-					<SearchInput
-						type="text"
-						placeholder="Search"
-						value={query}
-						onChange={(e) => {
-							setQuery(e.target.value);
-						}}
-					/>
-					<SearchButton>
-						<FontAwesomeIcon icon={faMagnifyingGlass} />
-					</SearchButton>
-				</form>
-			</SearchBox>
+
+      <div className="my-4 ml-auto relative w-80">
+        <Input 
+          value={query}
+          placeholder="filter decks..."
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+        />
+        <Icons.search className="mx-3 absolute right-0 top-1/2 -translate-y-1/2"/>
+      </div>
+
 			<DisplayDeckGridContainer>
 				<DisplayDeck
 					onClick={(e) => {
@@ -126,6 +140,7 @@ export default function ManageDeckPage() {
 				</DisplayDeck>
 
 				{deckElements}
+        {/* <FlashcardDeck title="Data structures" id="645c42297525fe53f36bafcd" totalCards={72} completed={18} badges={[100, 101]}/> */}
 			</DisplayDeckGridContainer>
 		</section>
 	);

@@ -1,12 +1,22 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import { useContext } from 'react';
-import AuthContext from '../shared/context/AuthContext';
+import { useAuth } from '@/shared/context/auth';
+
 const PrivateRoutes = () => {
-	const authContext = useContext(AuthContext);
-  console.log("private routes", authContext)
+  const [authState, authDispatch, isUserAuthenticated] = useAuth();
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    const isAuthenticated = isUserAuthenticated();
+    setAuthenticated(isAuthenticated)
+  }, [])
+
+  if (authenticated === null) {
+    return <></>
+  }
+
 	return (
-		authContext.auth.token ? <Outlet /> : <Navigate to='/login' />
+		authenticated ? <Outlet /> : <Navigate to='/login' />
 	);
 };
 

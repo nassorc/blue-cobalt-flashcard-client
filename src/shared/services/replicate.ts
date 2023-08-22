@@ -2,11 +2,9 @@ interface ClassArgs {
   auth: string
 }
 interface RunFnInput {
-  input: {
-    image: string,
-    caption?: string
-    question?: string
-  }
+  image: string,
+  caption?: string
+  question?: string
 }
 interface RunFnOutput {
   output: string,
@@ -25,3 +23,5 @@ class MockReplicate {
     }
   }
 }
+
+export default MockReplicate

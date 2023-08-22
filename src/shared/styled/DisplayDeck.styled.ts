@@ -24,7 +24,7 @@ export const DisplayDeck = styled.div`
 	}
 ` 
 export const DisplayDeckGridContainer = styled.section`
-	margin: 2rem auto;
+	margin: 0 auto;
 	width: 100%;	
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));

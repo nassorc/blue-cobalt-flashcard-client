@@ -47,7 +47,6 @@ export default function SignInForm() {
   async function onSignin(values: SigninType) {
     try {
       const credentials = await signInUser(authDispatch, AUTH_ACTIONS, values);
-      console.log(credentials)
       if (credentials) {
         navigate('/');
       }
