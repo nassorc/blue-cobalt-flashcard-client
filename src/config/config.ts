@@ -6,6 +6,7 @@ const config = {
       queryById: (id: string) => API + "/user/" + id,
       register: () => API + "/user",
       login: () => API + "/user/login",
+      logout: () => API + "/user/logout"
     },
     deck: {
       getByUserId: (id: string) => API + "/deck/user/" + id ,
