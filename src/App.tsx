@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import AuthContext from "./shared/context/AuthContext";
 import { Route, Routes } from "react-router-dom";
 
@@ -15,42 +15,90 @@ import { ProfilePage, ManageClassPage } from "./user";
 
 // private route handler
 import PrivateRoutes from "./components/PrivateRoutes";
-import Header from "./shared/components/Header/Header";
+// import Header from "./shared/components/Header/Header";
+import Header from "./components/header/Header";
 import "./App.css";
 import { LandingPage } from "./app/landing";
 import AuthPage from "./app/auth/AuthPage";
 import A from "./components/a/A";
+import MockReplicate from "./shared/services/replicate";
+import { Input } from "./components/ui/input";
+import { Button } from "./components/ui/button";
+
+const replicate = new MockReplicate("auth")
 
 function Sketch() {
+  const sketchRef = useRef<HTMLCanvasElement | undefined>()
   const [drawing, setDrawing] = useState(false);
+  const [prevPoint, setPrevPoint] = useState<number[] | null>(null)
+  const [replicated, setReplicated] = useState<string | null>(null);
   return(
-    <div>
-      <canvas
-        onMouseMove={(e) => {
-          if (e.target.tagName === "CANVAS" && drawing) {
-            const rect = e.target.getBoundingClientRect()
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
-            const ctx = e.target.getContext("2d")
-            ctx.fillStyle = "black"
-            ctx.fillRect(x, y, 10, 10);
-          }
-        }}
-        onMouseDown={(e) => {
-          setDrawing(true)
-        }}
-        onMouseUp={(e) => {
-          setDrawing(false)
-        }}
-        onMouseLeave={(e) => {
-          setDrawing(false)
-        }}
-        className="shadow-lg border border-gray-200"
-        width="400px"
-        height="400px"
-      >
-      </canvas>
+    <>
+    <div 
+      className="mx-auto max-w-[800px] flex justify-center"
+    >
+      <div className="">
+        <div className="flex">
+          <Input placeholder="describe image"/>
+          <Button onClick={() => {
+            if(!sketchRef.current) return
+            // console.log(sketchRef.current.toDataURL())
+            const {output} = replicate.run('model1', {
+              image: 'image'
+            })
+            setReplicated(output)
+          }}>replicate</Button>
+          <Button>draw</Button>
+        </div>
+        <div className="bg-white">
+        <canvas
+          className="aspect-squar"
+          ref={sketchRef}
+          onMouseMove={(e) => {
+            if (e.target.tagName === "CANVAS" && drawing) {
+              const rect = e.target.getBoundingClientRect()
+              const ctx: CanvasRenderingContext2D = e.target.getContext("2d")
+
+              let x = e.clientX - rect.left;
+              let y = e.clientY - rect.top;
+              ctx.beginPath()
+              if(prevPoint === null) {
+                setPrevPoint([x, y])
+              }
+              ctx.moveTo(prevPoint[0], prevPoint[1]);
+              ctx.lineTo(x, y);
+              ctx.fill();
+              ctx.stroke()
+
+              setPrevPoint([x, y])
+
+              // ctx.fillStyle = "black"
+              // ctx.fillRect(x, y, 10, 10);
+            }
+          }}
+          onMouseDown={(e) => {
+            setDrawing(true)
+          }}
+          onMouseUp={(e) => {
+            setDrawing(false)
+            setPrevPoint(null)
+          }}
+          onMouseLeave={(e) => {
+            setDrawing(false)
+          }}
+          className="shadow-lg border border-gray-200"
+          width="400px"
+          height="400px"
+        >
+        </canvas>
+        </div>
+
+      </div>
     </div>
+    <div className="w-1/2 aspect-square">
+      {replicated && <img className="w-full min-h-full block object-cover" src={replicated}/>}
+    </div>
+    </>
   )
 }
 
@@ -77,7 +125,7 @@ function App() {
 						<Route path="/practice/:id" element={<PracticeDeckPage />} />
 						<Route path="/edit/:deckId" element={<EditDeckPage />} />
 						<Route path="/explore" element={<ExploreDeckPage />} />
-						<Route path="/profile" element={<ProfilePage />} />
+						{/* <Route path="/profile" element={<ProfilePage />} /> */}
 						<Route path="/manage" element={<ManageClassPage />} />
 					</Route>
 					{/* PUBLIC ROUTES */}

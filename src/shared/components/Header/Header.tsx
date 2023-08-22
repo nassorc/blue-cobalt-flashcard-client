@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import AuthContext from "../../context/AuthContext";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth, AUTH_ACTIONS, logoutUser } from "@/shared/context/auth";
 import { ButtonSm } from "../../styled/Button.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -8,23 +8,23 @@ import {
 	faArrowRightFromBracket,
 	faUsersBetweenLines,
 } from "@fortawesome/free-solid-svg-icons";
-import HeaderIcon from "./header-icon.png";
 import NavLink from "./NavLink";
 import DropdownItemLink from "./DropdownItemLink";
 
 export default function Homepage() {
-	const authContext = useContext(AuthContext);
+	// const authContext = useContext(AuthContext);
+  const [authState, authDispatch] = useAuth()
 	const navigate = useNavigate();
 	const linkRef = useRef(null);
 	const dropDownLinkRef = useRef(null);
 	const [showDropdown, setShowDropdown] = useState(false);
 	const handleLogout = () => {
-		localStorage.removeItem("userId");
-		localStorage.removeItem("token");
-		authContext.setAuth({});
-		navigate("/login");
+		// localStorage.removeItem("userId");
+		// localStorage.removeItem("token");
+		// authContext.setAuth({});
+		// navigate("/login");
 	};
-	const authButtons = JSON.stringify(authContext.auth) === "{}" && (
+	const authButtons = !authState.token && !authState.userId && (
 		<>
 			<li>
 				<Link to="/login">
@@ -46,7 +46,7 @@ export default function Homepage() {
 	}, []);
 
 	return (
-		<header className="sticky top-0 z-[99] mb-8 w-full h-header h-16 shadow-bottom shadow-sm shadow-slate-700/50 text-slate-700 transition-all">
+		<header className="sticky top-0 z-[99] mb-8 w-full h-header bg-white shadow-bottom shadow-sm shadow-slate-700/50 text-slate-700 transition-all">
 			<div className="max-w-5xl h-full mx-auto px-4 flex justify-between align-center">
 				<Link
 					to="/landing-page"
@@ -59,7 +59,7 @@ export default function Homepage() {
 				</Link>
 				<nav>
 					<ul
-						className="h-full flex justify-between items-center [&>*]:mr-4"
+						className="h-full flex justify-evenly items-center [&>*]:mr-4"
 						onClick={(e) => {
 							const styleClasses = [
 								"border-b-2",
@@ -85,7 +85,7 @@ export default function Homepage() {
 							}
 						}}
 					>
-						{JSON.stringify(authContext.auth) === "{}" ? null : (
+						{(!authState.token && !authState.userId) ? null : (
 							<>
 								<NavLink to="/">Flashcards</NavLink>
 								<NavLink to="/explore">Explore</NavLink>
@@ -117,7 +117,10 @@ export default function Homepage() {
 											leftIcon={
 												<FontAwesomeIcon icon={faArrowRightFromBracket} />
 											}
-											onClick={handleLogout}
+											onClick={() => {
+                        logoutUser(authDispatch, AUTH_ACTIONS)
+                        navigate("/login")
+                      }}
 										>
 											Logout
 										</DropdownItemLink>
