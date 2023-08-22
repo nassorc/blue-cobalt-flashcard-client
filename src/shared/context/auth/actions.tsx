@@ -60,7 +60,7 @@ export async function signInUser(dispatch: React.Dispatch<AuthActionType>, actio
       // localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
       dispatch({type: actions.LOGIN_SUCCESS, payload: {userId: userId, token: token}});
-      // return credentials;
+      return credentials;
     }
     catch(error: any) {
       throw error
@@ -82,7 +82,13 @@ export async function signUpUser(payload: {email: string, password: string}) {
   }
 }
 
-export function logoutUser(dispatch: React.Dispatch<AuthActionType>, actions: typeof AUTH_ACTIONS) {
-  dispatch({type: actions.LOGOUT});
+export async function logoutUser(dispatch: React.Dispatch<AuthActionType>, actions: typeof AUTH_ACTIONS) {
+  const res = await fetch(config.api.user.logout(), {
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
   localStorage.clear();
+  dispatch({type: actions.LOGOUT});
 }

@@ -1,5 +1,6 @@
 import { createContext, useReducer, useContext} from "react";
 import { AuthActionType, AuthStateType } from ".";
+import jwtDecode, {JwtPayload} from 'jwt-decode';
 
 const userId = localStorage.getItem("userId") ? localStorage.getItem("userId") : "";
 // const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
@@ -15,12 +16,30 @@ const initialValue: AuthStateType = {
 export const AuthStateContext = createContext<AuthStateType>(initialValue);
 export const AuthDispatchContext = createContext<React.Dispatch<AuthActionType>>(() => {return});
 
-export const useAuth  = (): [AuthStateType, React.Dispatch<AuthActionType>] => {
-  console.log("use auth use auth use auth")
+export const useAuth  = (): [AuthStateType, React.Dispatch<AuthActionType>, () => boolean] => {
   const authState = useContext<AuthStateType>(AuthStateContext);
   const authDispatch = useContext<React.Dispatch<AuthActionType>>(AuthDispatchContext);
   if(!authState || !authDispatch) throw new Error("useAuth must be consumed by child in AuthProvider");
-  return [authState, authDispatch];
+
+  // helper functions
+  const isUserAuthenticated = (): boolean => {
+    if(!authState.token) return false
+    const exp = (jwtDecode(authState.token) as JwtPayload).exp;
+    if(exp) {
+      if(exp < (new Date).getTime() / 1000) {
+        console.log("not authenticated")
+        return false
+      } else {
+        console.log("authenticated")
+        return true
+      }
+    } else {
+      console.log("authenticated")
+      return false
+    }
+  }
+
+  return [authState, authDispatch, isUserAuthenticated];
 }
 
 export const AUTH_ACTIONS = {
