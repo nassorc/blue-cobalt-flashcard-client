@@ -3,10 +3,12 @@ const config = {
   api: {
     baseUrl: API,
     user: {
-      queryById: (id: string) => API + "/user/" + id,
+      get: (id: string) => API + "/user/" + id,
       register: () => API + "/user",
       login: () => API + "/user/login",
-      logout: () => API + "/user/logout"
+      logout: () => API + "/user/logout",
+      delete: (id: string) => API + "/user/" + id + "/delete",
+      updateProfileImage: () => API + "/user/profile-image"
     },
     deck: {
       getByUserId: (id: string) => API + "/deck/user/" + id ,

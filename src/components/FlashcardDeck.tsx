@@ -7,6 +7,7 @@ import {Badges} from "./Badge"
 import { useEffect, useState } from "react";
 import { Blurhash } from "react-blurhash";
 import DeleteDeckDialog from "./DeleteDeckDialog";
+import FlashcardDeckShell from "./FlashcardDeckShell";
 
 interface Deck {
   _id: string
@@ -21,7 +22,7 @@ interface Deck {
 
 export default function FlashcardDeck({deck}: {deck: Deck}) {
   const [deckImageLoaded, setDeckImageLoaded] = useState(false)
-  const [deckHover, setDeckHover] = useState(false)
+
   useEffect(() => {
     const img = new Image()
     img.onload = () => {
@@ -49,14 +50,7 @@ export default function FlashcardDeck({deck}: {deck: Deck}) {
       />
     )
   return (
-    <div 
-      className="group relative overflow-hidden border border-black/30 rounded-lg transition-shadow"
-      onMouseEnter={() => setDeckHover(true)}
-      onMouseLeave={() => setDeckHover(false)}
-      style={{
-        boxShadow: deckHover ? "0px 4px 0px 4px rgba(0, 0, 0, 0.2)" : ""
-      }}
-    >
+    <FlashcardDeckShell>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
@@ -90,7 +84,7 @@ export default function FlashcardDeck({deck}: {deck: Deck}) {
           <Badges.powered />
         </div>
       </div>
-      <div className="px-5 py-4 bg-white">
+      <div className="px-5 py-4 bg-white overflow-hidden min-h-[90px] flex flex-col justify-end">
         <h2 className="font-semibold text-lg whitespace-nowrap">{deck.deckName}</h2>
         <div className="flex items-center">
           <div className="text-gray-500 flex space-x-2">
@@ -134,6 +128,6 @@ export default function FlashcardDeck({deck}: {deck: Deck}) {
             </Link>
         </div>
       </div>
-    </div>
+    </FlashcardDeckShell>
   )
 }

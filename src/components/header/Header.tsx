@@ -4,6 +4,7 @@ import { useAuth } from "@/shared/context/auth";
 import { Icons } from "../Icons";
 import NavLink from "./NavLink";
 import ProfileImage from "../ProfileImage";
+import { useUser } from "@/shared/context/user";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu, 
@@ -22,13 +23,14 @@ function NavLink2({linkName, to, selected}: {linkName: string, to: string, selec
 }
 
 export default function Header() {
+  const {user} = useUser();
   const location = useLocation();
   const [selectedLink, setSelectedLink] = useState<string | undefined>();
 
   const [authState, authDispatch] = useAuth();
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
-  const settingsDropdownRef = useRef(null);
+  const settingsDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSelectedLink(location.pathname)
@@ -78,7 +80,34 @@ export default function Header() {
                 selected={selectedLink === "/explore"}
               />
             </ul>
-            <NavLink 
+            <ProfileImage 
+              ref={settingsDropdownRef}
+              className="relative cursor-pointer hover:[&>*]:brightness-110 active:brightness-75 active:scale-95"
+              profileImage={user?.profileImage}
+              size="md"
+              rounded="full"
+              onClick={() => {
+                // setMenu("settings");
+                setShowSettings(!showSettings);
+              }}
+            >
+              <DropdownMenu show={showSettings}>
+                <a href="/profile">
+                  <DropdownItem
+                    leftIcon={<Icons.user />}
+                  >
+                    Profile
+                  </DropdownItem>
+                </a>
+                <DropdownItem 
+                  onClick={(e) => {
+                  }}
+                  leftIcon={<Icons.logout />}>
+                  Logout
+                </DropdownItem>
+              </DropdownMenu>
+            </ProfileImage>
+            {/* <NavLink 
               ref={settingsDropdownRef}
               selected={showSettings}
               icon={
@@ -110,7 +139,7 @@ export default function Header() {
                   Logout
                 </DropdownItem>
               </DropdownMenu>
-            </NavLink>  
+            </NavLink>   */}
             </>
           }
       </div>

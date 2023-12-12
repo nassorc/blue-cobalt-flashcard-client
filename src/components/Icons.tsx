@@ -1,4 +1,5 @@
 import { 
+  Plus,
   Check, 
   X,
   Circle,
@@ -16,9 +17,11 @@ import {
   MoreHorizontal,
   FileEdit,
   Layers,
-  GraduationCap
+  GraduationCap,
 } from "lucide-react"
+
 export const Icons = {
+  plus: Plus,
   x: X,
   circle: Circle,
   check: Check,

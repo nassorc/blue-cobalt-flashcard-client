@@ -4,7 +4,7 @@ import jwtDecode, {JwtPayload} from 'jwt-decode';
 
 const userId = localStorage.getItem("userId") ? localStorage.getItem("userId") : "";
 // const token = localStorage.getItem("token") ? localStorage.getItem("token") : ""
-const token = Object.fromEntries(document.cookie.split(';').map(c => c.split('=')))['accessToken']
+const token = Object.fromEntries(document.cookie.split(';').map(c => c.split('=')))['accessToken'] || ""
 
 const initialValue: AuthStateType = {
     userId: userId || "",
