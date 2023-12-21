@@ -6,8 +6,8 @@ function PoweredBadge(props: BadgeProps) {
   const {className, ...divProps} = props;
   return(
     <div className={cn("relative m-2 w-5", className)} >
-      <img className="absolute z-40 animate-ping scale-50" src="/quick.png" alt="" srcset="" />
-      <img className="relative z-50" src="/quick.png" alt="" srcset="" />
+      <img className="absolute z-40 animate-ping scale-50" src="/quick.png" alt="" />
+      <img className="relative z-50" src="/quick.png" alt=""/>
     </div>
   )
 }

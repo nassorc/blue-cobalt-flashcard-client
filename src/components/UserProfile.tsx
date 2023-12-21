@@ -15,7 +15,7 @@ interface PropType {
   onRemoveImage: () => void
 }
 export default function UserProfile(props: PropType) {
-  const {user: {_id, username, profileImage, email}, isUploading, onUploadImage, onRemoveImage} = props;
+  const {user: {_id, username, profileImage}, isUploading, onUploadImage, onRemoveImage} = props;
 
   return (
     <div className="flex space-x-4">
@@ -25,7 +25,7 @@ export default function UserProfile(props: PropType) {
           <div className="w-1/3 h-1/3 aspect-square border-8 border-white border-t-8 border-t-site-accent animate-spin rounded-full"></div>
         </div>
         )}
-        {/* <ProfileImage profileImage={profileImage} size="profile" ref={null}/> */}
+        {<ProfileImage profileImage={profileImage} size="profile" ref={null}/>}
 
         {profileImage.length > 0 && (
           <Button 

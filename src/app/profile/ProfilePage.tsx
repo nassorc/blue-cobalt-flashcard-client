@@ -20,14 +20,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useUser, UserType } from "@/shared/context/user";
-import useUploadImage from "@/shared/hooks/useUploadImage";
-import { logoutUser, AUTH_ACTIONS, useAuth } from "@/shared/context/auth";
-import config from "@/config/config";
+import { useUser, UserType } from "@/lib/context/user";
+import useUploadImage from "@/lib/hooks/useUploadImage";
+import { logoutUser, AUTH_ACTIONS, useAuth } from "@/lib/context/auth";
+import config from "@/lib/config";
 import { Badge } from "@/components/ui/badge";
+import { userAtom } from "@/lib/store/user";
+import { useAtom } from "jotai";
 
 export default function ProfilePage() {
-  const { user, setUser } = useUser();
+  const [user] = useAtom(userAtom);
+  
+  // const { user, setUser } = useUser();
   const [authState, authDispatch] = useAuth();
   const { upload, remove, loading } = useUploadImage();
 
@@ -42,11 +46,12 @@ export default function ProfilePage() {
       },
       body: JSON.stringify({ profileImage: url }),
     });
-    setUser((prevState: UserType) => ({
-      ...prevState,
-      profileImage: url,
-    }));
+    // setUser((prevState: UserType) => ({
+    //   ...prevState,
+    //   profileImage: url,
+    // }));
   };
+
   const onRemoveProfileImage = async () => {
     await remove(`profile_images/${user.username}`);
     await fetch(config.api.user.updateProfileImage(), {
@@ -57,11 +62,12 @@ export default function ProfilePage() {
       },
       body: JSON.stringify({ profileImage: "" }),
     });
-    setUser((prevState: UserType) => ({
-      ...prevState,
-      profileImage: "",
-    }));
+    // setUser((prevState: UserType) => ({
+    //   ...prevState,
+    //   profileImage: "",
+    // }));
   };
+
   const onDeleteAccount = async (e) => {
     await fetch(config.api.user.delete(user._id), {
       method: "POST",
@@ -69,6 +75,7 @@ export default function ProfilePage() {
     });
     logoutUser(authDispatch, AUTH_ACTIONS);
   };
+
   return (
     <section className="flex flex-col container">
       <div className="flex items-start justify-between">
@@ -119,9 +126,7 @@ export default function ProfilePage() {
         </DropdownMenu>
       </div>
       <div>
-        <Badge>Badge 1</Badge>
-        <Badge>Badge 2</Badge>
-        <Badge>Badge 3</Badge>
+        <div>badge 1</div>
       </div>
     </section>
   );
