@@ -53,7 +53,9 @@ export async function listUsers(args: { limit: number; skip: number }) {
   return await res.json();
 }
 
-export async function validateToken(token: string): Promise<{valid: boolean}> {
+export async function validateToken(
+  token: string,
+): Promise<{ valid: boolean }> {
   const res = await fetch("http://localhost:3001/user/token/validate", getOpts);
   return await res.json();
 }
@@ -61,9 +63,10 @@ export async function validateToken(token: string): Promise<{valid: boolean}> {
 export async function login(credentials: any) {
   let requestObj = { ...postOpts, body: JSON.stringify(credentials) };
   const res = await fetch("http://localhost:3001/user/login", requestObj);
-  if(!res.ok) {
+  console.log(res.headers)
+  if (!res.ok) {
     const code = res.status;
-    switch(code) {
+    switch (code) {
       case 400:
         throw new Error("Enter a valid email and password.");
       case 401:
@@ -86,16 +89,45 @@ export async function register(credentials: any) {
 }
 
 export async function gradeCard(args: any) {
-  const res = await fetch("http://localhost:3000/user/register");
+  const res = await fetch("http://localhost:3001/user/register");
   return await res.json();
+}
+
+export async function createDeck(deck: any) {
+  const formData = new FormData();
+  for (let [key, value] of Object.entries(deck)) {
+    if (key !== "deckImage") {
+      formData.append(key, JSON.stringify(value));
+    } else {
+      formData.append(key, value);
+    }
+  }
+  let requestObj = { ...postOpts, body: JSON.stringify(deck) };
+  const res = await fetch("http://localhost:3001/deck", {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+  const data = await res.json();
+  return data;
 }
 
 export async function addCard(args: any) {
-  const res = await fetch("http://localhost:3000/user/register");
+  const res = await fetch("http://localhost:3001/user/register");
   return await res.json();
 }
 
-export async function deleteCard(args: any) {
-  const res = await fetch("http://localhost:3000/user/register");
+export async function deleteDeck(deckId: string) {
+  await fetch(`http://localhost:3001/deck/delete/${deckId}`, {
+    method: "DELETE",
+    credentials: "include"
+  });
+}
+
+export async function getTask({ deckId }: { deckId: string }) {
+  const res = await fetch(`http://localhost:3001/deck/${deckId}/task`, {
+    method: "GET",
+    credentials: "include"
+  });
   return await res.json();
 }

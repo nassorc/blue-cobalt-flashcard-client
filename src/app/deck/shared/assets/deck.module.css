@@ -1,23 +1,22 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 .split {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .mb2 {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 .ml2 {
-    margin-left: 2rem;
-
+  margin-left: 2rem;
 }
 .group {
-    padding-block: 2rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-bottom: 2px solid rgba(0,0,0,0.2);
+  padding-block: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }

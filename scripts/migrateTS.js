@@ -1,7 +1,7 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
 
-let dirPath = path.join(__dirname, "..", "src")
+let dirPath = path.join(__dirname, "..", "src");
 
 run(dirPath);
 
@@ -9,24 +9,17 @@ run(dirPath);
 function run(path) {
   let files = fs.readdirSync(path);
   for (file of files) {
-    let info = fs.lstatSync(path + "/" + file)
-    if(info.isFile()) {
-      let [name, ext] = file.split(".")
+    let info = fs.lstatSync(path + "/" + file);
+    if (info.isFile()) {
+      let [name, ext] = file.split(".");
       if (ext.toUpperCase() === "JS") {
-        fs.renameSync(
-          path + "/" + file,
-          path + "/" + name + "." + "ts"
-        );
-      }
-      else if (ext.toUpperCase() === "JSX") {
-        fs.renameSync(
-          path + "/" + file, 
-          path + "/" + name + "." + "tsx"
-        );
+        fs.renameSync(path + "/" + file, path + "/" + name + "." + "ts");
+      } else if (ext.toUpperCase() === "JSX") {
+        fs.renameSync(path + "/" + file, path + "/" + name + "." + "tsx");
       }
     }
-    if(info.isDirectory()) {
-      run(path + "/" + file)
+    if (info.isDirectory()) {
+      run(path + "/" + file);
     }
   }
 }

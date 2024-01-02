@@ -8,5 +8,5 @@ export function cn(...inputs: ClassValue[]) {
 export function an(promise: (...args: any) => any) {
   return promise()
     .then((data: any) => [null, data])
-    .catch((err: Error) => [err])
+    .catch((err: Error) => [err]);
 }

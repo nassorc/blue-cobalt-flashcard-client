@@ -18,7 +18,7 @@ import { ProfilePage } from "./app/profile";
 import Header from "./components/Header";
 import { LandingPage } from "./app/landing";
 import AuthPage from "./app/auth/AuthPage";
-import {useUserManagement} from "./lib/useUserManagement"
+import { useUserManagement } from "./lib/useUserManagement";
 
 import "./App.css";
 
@@ -47,15 +47,14 @@ function App({}) {
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<ManageDeckPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/create" element={<AddDeckPage />} />
-            {/* <Route path="/add" element={<AddDeckPage />} />
             <Route path="/practice/:id" element={<PracticeDeckPage />} />
+            {/* 
             <Route path="/edit/:deckId" element={<EditDeckPage />} />
             <Route path="/explore" element={<ExploreDeckPage />} />
-            <Route path="/manage" element={<ManageClassPage />} /> */}
+            */}
           </Route>
           {/* PUBLIC ROUTES */}
-          <Route path="/landing-page" element={<LandingPage />} />
+          <Route path="/home" element={<LandingPage />} />
           <Route path="/login" element={<AuthPage />} />
           <Route path="/register" element={<AuthPage />} />
         </Routes>

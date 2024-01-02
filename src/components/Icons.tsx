@@ -1,6 +1,6 @@
-import { 
+import {
   Plus,
-  Check, 
+  Check,
   X,
   Circle,
   Bell,
@@ -18,7 +18,10 @@ import {
   FileEdit,
   Layers,
   GraduationCap,
-} from "lucide-react"
+  Github,
+  EyeOff,
+  Eye
+} from "lucide-react";
 
 export const Icons = {
   plus: Plus,
@@ -40,4 +43,7 @@ export const Icons = {
   fileEdit: FileEdit,
   layers: Layers,
   graduationCap: GraduationCap,
-}
+  github: Github,
+  eye: Eye,
+  eyeOff: EyeOff
+};

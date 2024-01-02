@@ -30,9 +30,9 @@ import { useAtom } from "jotai";
 
 export default function ProfilePage() {
   const [user] = useAtom(userAtom);
-  
+  console.log(user)
+
   // const { user, setUser } = useUser();
-  const [authState, authDispatch] = useAuth();
   const { upload, remove, loading } = useUploadImage();
 
   const onUploadImage = async (e: any) => {
@@ -79,12 +79,15 @@ export default function ProfilePage() {
   return (
     <section className="flex flex-col container">
       <div className="flex items-start justify-between">
-        <UserProfile
-          user={user}
-          isUploading={loading}
-          onUploadImage={onUploadImage}
-          onRemoveImage={onRemoveProfileImage}
-        />
+      {
+        // <UserProfile
+        //   user={user}
+        //   isUploading={loading}
+        //   onUploadImage={onUploadImage}
+        //   onRemoveImage={onRemoveProfileImage}
+        // />
+
+      }
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button>

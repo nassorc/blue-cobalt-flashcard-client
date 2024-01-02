@@ -1,14 +1,14 @@
 export interface AuthStateType {
-  userId: string,
-  token: string,
-  loading: boolean,
-  error?: string | null,
+  userId: string;
+  token: string;
+  loading: boolean;
+  error?: string | null;
 }
 export interface AuthActionType {
-  type: string,
+  type: string;
   payload?: {
-    userId?: string,
-    token?: string,
-    error?: string
-  }
+    userId?: string;
+    token?: string;
+    error?: string;
+  };
 }

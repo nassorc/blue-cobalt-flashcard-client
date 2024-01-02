@@ -7,6 +7,9 @@ import useFetchData from "../../../lib/hooks/useFetchData";
 import createReviewSession from "../shared/utils/createReviewSession";
 import filterDeckById from "../../../lib/filterDeckById";
 import { GET_DECKLIST_ENDPOINT, GRADE_CARD_ENDPOINT } from "../../../lib/api";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
+import Container from "@/components/Container";
 
 // log:
 // Edit component pages contains better code to fetch deck data
@@ -46,237 +49,91 @@ import { GET_DECKLIST_ENDPOINT, GRADE_CARD_ENDPOINT } from "../../../lib/api";
 //          Use reviewlist to display the cards that needs to be reviewed
 //          randomly select cards from the new pile
 //          maybe create a usecontext to
+//
 
-import { PageContainer } from "../../../lib/styled/Container.styled";
-import { FlashcardContainer } from "../../../lib/styled/Flashcard.styled";
-import styled from "styled-components";
-import { Button } from "@/components/ui/button";
-import { useDeck } from "@/lib/context/deck";
-
-const PracticeContainer = styled.div`
-  margininline: auto;
-  margintop: 2rem;
-`;
+// function
 
 export default function PracticeDeckPage() {
   const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
   const { id } = useParams();
 
-  const options = {
-    method: "GET",
-    credentials: "include",
-    headers: { Authorization: `Bearer ${authContext.auth.token}` },
-  };
-  const deckList = useDeck();
-  console.log(deckList);
-
-  const [deck, setDeck] = useState();
-  const [cards, setCards] = useState([]);
-  const [totalPracticeCards, setTotalPracticeCards] = useState(0);
-
-  useEffect(() => {
-    // set deck and extract new and reviewed cards
-    let d = filterDeckById(deckList, id);
-    let reviewCards = d?.cards?.filter((card) => card.status === "reviewed");
-    let newCards = d?.cards?.filter((card) => card.status === "new");
-    // set state
-    let rCount = d?.deckSettings?.reviewCards || 10;
-    let nCount = d?.deckSettings?.newCards || 5;
-    setDeck(d);
-    let session = createReviewSession(reviewCards, newCards, rCount, nCount);
-    setCards(session);
-    setTotalPracticeCards(session?.length);
-  }, [deckList]);
-
-  const gradeCard = async (cardId, grade) => {
-    // make request to api, send grade and card id
-    try {
-      const res = await fetch(GRADE_CARD_ENDPOINT(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authContext.auth.token}`,
-        },
-        body: JSON.stringify({ cardId, grade }),
-      });
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const handleEditClick = (e) => {
-    navigate(`/edit/${deck?._id}`);
-  };
-
-  // flashcard components
-  let CardComponents = cards
-    ? cards.map((card) => {
-        return (
-          <Card
-            cardDetails={card}
-            gradeCard={gradeCard}
-            handleEditClick={handleEditClick}
-            cards={cards}
-            setCards={setCards}
-            key={card?._id}
-          />
-        );
-      })
-    : [];
-
-  let [show, setShow] = useState(false);
-  let [rot, setRot] = useState(0);
-  console.log(rot);
-
   return (
-    <section>
-      <div
-        onClick={() => {
-          setShow(!show);
-          setRot(rot + 180);
-        }}
-        className="py-8 max-w-2xl min-h-[250px]  bg-white text-[#454443] text-3xl font-semibold cursor-pointer shadow-md border border-gray-300 rounded-md flex flex-col items-center justify-center transition-all duration-500"
-        style={{
-          height: show ? "400px" : "200px",
-          // transformStyle: "preserve-3d",
-          // WebkitPerspective: "500px",
-          // WebkitTransformStyle: "preserve-3d",
-          // perspective: "500px",
-          // transform: `rotateX(60deg)`,
-          // transform: `rotateZ(${rot}deg)`,
-          transform: show ? "rotateX(180deg)" : "rotateX(0deg)",
-          // backfaceVisibility: "hidden",
-        }}
-      >
-        <figure>
-          <h2>Describe the decorator pattern</h2>
-        </figure>
-      </div>
+    <Container>
 
-      <div
-        className="py-8 max-w-2xl bg-white text-[#454443] text-3xl font-semibold shadow-md border border-gray-300 rounded-md flex flex-col items-center"
-        style={{}}
-      >
-        <h2>Describe the decorator pattern</h2>
-        <div className="w-[200px] h-[200px] overflow-hidden">
-          <img
-            className="w-full max-h-full block object-fill"
-            src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2l0eXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60"
-            alt=""
-          />
-        </div>
-        <div className="w-full text-lg flex items-center">
-          Definition
-          <span className="mx-8 inline-block w-full h-[1px] bg-gray-400"></span>
-        </div>
-        <p className="text-lg">
-          The decortor pattern allows us to extend the functionality of code
-          without modifying a class
-        </p>
-        <div className="w-full text-lg flex items-center">
-          Examples
-          <span className="mx-8 inline-block w-full h-[1px] bg-gray-400"></span>
-        </div>
-        <p className="text-lg">Some example</p>
-        <div className="w-full text-lg flex items-center">
-          Image
-          <span className="mx-8 inline-block w-full h-[1px] bg-gray-400"></span>
-        </div>
-        <div className="w-full text-lg flex items-center">
-          Grade Card
-          <span className="mx-8 inline-block w-full h-[1px] bg-gray-400"></span>
-        </div>
+      <div className="flex items-center gap-4 mb-16">
+        <div className="w-24 h-16 bg-[slateblue]"></div>
         <div>
-          <Button>Hard</Button>
-          <Button>Easy</Button>
-          <Button>somesome</Button>
+          <h1 className="text-lg font-semibold">
+            Programming I
+          </h1>
+          <div>
+            <span>50</span>
+            <span> </span>
+            <span>cards</span>
+            <span> </span>
+            <span className="inline-block w-28 h-3 bg-gray-400 rounded-lg">
+              <span className="absolute inline-block w-16 h-3 bg-green-400 rounded-lg"></span>
+            </span>
+            <img src="/complete-badge.png" className="inline scale-75"/>
+          </div>
+        </div>
+        <Button className="ml-auto">
+          <Icons.settings />
+          edit
+        </Button>
+      </div>
+
+      <div className="flex justify-evenly gap-2 mb-16">
+        <div className="flex flex-col items-center ">
+          <div className="w-4 h-4 rounded-full bg-red-400"></div>
+          <div>new</div>
+          <div>5</div>
+        </div>
+        <div className="flex flex-col items-center ">
+          <div className="w-4 h-4 rounded-full bg-sky-400"></div>
+          <div>reviewing</div>
+          <div>10</div>
+        </div>
+        <div className="flex flex-col items-center ">
+          <div className="w-4 h-4 rounded-full bg-green-400"></div>
+          <div>mastered</div>
+          <div>2</div>
         </div>
       </div>
-    </section>
 
-    // <PageContainer>
-    //   <div className="relative mx-auto mb-32 w-full h-52 cursor-auto text-white rounded-lg overflow-hidden">
-    //     <div className="absolute w-full h-full bg-gradient-to-r from-[rgba(0,0,0,0.7)] to-[rgba(0,0,0,0.1)]"></div>
-    //     <div className="w-full h-full overflow-hidden">
-    //       <img
-    //         src={deck?.deckImage}
-    //         className="block w-full h-full object-cover"
-    //       />
-    //     </div>
-    //     <div className="absolute left-0 top-0 mx-6 my-10 w-fit h-fit flex gap-4 flex flex-col">
-    //       <div className="flex [&>*]:mr-4">
-    //         {" "}
-    //         <p className="font-bold text-2xl">{deck?.deckName}</p>
-    //         <button
-    //           onClick={handleEditClick}
-    //           className="px-3 py-1 border-[1px] border-black/80 rounded-md bg-white text-black"
-    //         >
-    //           Edit
-    //         </button>
-    //       </div>
+      <div className="flex justify-center mb-16">
+        <div className="w-[390px] h-[280px] bg-white">
+          card
+        </div>
+      </div>
 
-    //       <div className="text-lg">
-    //         <div>
-    //           <span>Current Session:</span>
-    //         </div>
-    //         <div>
-    //           <span>
-    //             New:{" "}
-    //             {
-    //               cards?.filter((card) => {
-    //                 return card.status === "new";
-    //               }).length
-    //             }
-    //           </span>
-    //           <span>
-    //             , Reviewed:{" "}
-    //             {
-    //               cards?.filter((card) => {
-    //                 return card.status === "reviewed";
-    //               }).length
-    //             }
-    //           </span>
-    //         </div>
-    //         <div>
-    //           <span className="">Completed: </span>
-    //           <span className="text-green-400">
-    //             {totalPracticeCards - cards?.length}
-    //           </span>
-    //           <span> / </span>
-    //           <span>{totalPracticeCards}</span>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="relative mx-auto max-w-[680px]">
-    //     {CardComponents?.length > 0 ? (
-    //       CardComponents[0]
-    //     ) : (
-    //       <div
-    //         className="p-4 absolute w-full h-fit flex flex-col items-center justify-between bg-slate-200 rounded-lg border border-sm border-slate-400"
-    //         style={{ backfaceVisibility: "hidden" }}
-    //       >
-    //         <p className="mb-2">You completed todays review list.</p>
-    //         <button
-    //           onClick={() => {
-    //             navigate("/");
-    //           }}
-    //           className="mb-2 w-60 px-3 py-1 border-[1px] border-black/80 rounded-md bg-white "
-    //         >
-    //           Go to Dashboard
-    //         </button>
-    //         <button
-    //           onClick={(e) => {
-    //             window.location.reload(false);
-    //           }}
-    //           className="w-60 px-3 py-1 border-[1px] border-black/80 rounded-md bg-white"
-    //         >
-    //           Review Again
-    //         </button>
-    //       </div>
-    //     )}
-    //   </div>
-    // </PageContainer>
+      <div className="flex gap-5 justify-center mb-16">
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+      </div>
+
+      <div className="flex gap-5 justify-center mb-16">
+      </div>
+
+      <div className="flex flex-col gap-5 items-center mb-16">
+        <div>
+          <Button size="icon" className="bg-amber-200 text-black"><Icons.eyeOff /></Button>
+        </div>
+        <div className="flex gap-2">
+          <Button>easy</Button>
+          <Button>good</Button>
+          <Button>hard</Button>
+          <Button>again</Button>
+        </div>
+      </div>
+      
+    </Container>
   );
 }

@@ -1,31 +1,45 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/context/auth";
 import { useUserManagement } from "@/lib/useUserManagement";
-import { useAtom } from "jotai";
-import { userAtom } from "@/lib/store/user";
+import { useAtom, Provider as AtomProvider } from "jotai";
+import { userAtom, decksStore, decksAtom } from "@/lib/store/user";
+import { useQuery } from "react-query";
+import { getUserProfile } from "@/lib/api";
 
-const PrivateRoutes = () => {
+function AuthRoute() {
+  const [user, setUser] = useAtom(userAtom);
+  const [decks, setDecks] = useAtom(decksAtom);
+  const [temp, setTemp] = useState({});
+  const query = useQuery({ queryKey: ["user"], queryFn: getUserProfile, onSuccess: (data) => {
+      setUser({...data});
+      setDecks(data);
+  }})
+
+  return <AtomProvider store={decksStore}>
+    <Outlet />
+  </AtomProvider>;
+}
+
+function PrivateRoutes() {
+  const navigate = useNavigate();
+  const [user] = useAtom(userAtom);
+  const { isAuthenticated } = useUserManagement();
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
 
-  const navigate = useNavigate();
-  const {isAuthenticated} = useUserManagement();
-
-  const [user] = useAtom(userAtom);
-
   useEffect(() => {
-    const f = async () => {
+    const checkIfAuthenticated = async () => {
       const is = await isAuthenticated();
       setAuthenticated(!!is);
-    }
-    f();
+    };
+    checkIfAuthenticated();
   }, []);
 
-  if(authenticated == null) {
-    return <></>
+  if (authenticated == null) {
+    return <></>;
   }
 
-  return authenticated ? <Outlet /> : <Navigate to="/login" />;
-};
+  return authenticated ? <AuthRoute /> : <Navigate to="/login" />;
+}
 
 export default PrivateRoutes;

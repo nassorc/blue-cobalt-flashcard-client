@@ -33,18 +33,18 @@ import FlashcardDeck from "@/components/FlashcardDeck";
 export default function AddDeckPage() {
   return (
     <Container className="flex justify-end">
-    {
-      // <div className="bg-rose-400 w-full">
-      //   <FlashcardDeck deck={{
-      //     _id: "1",
-      //     deckName: "test",
-      //     blurhash: "1B18x1jf",
-      //     deckImage: "",
-      //     deckImageName: "",
-      //     owner: "",
-      //     cards: []
-      //   }}/>
-      // </div>
+      {
+        // <div className="bg-rose-400 w-full">
+        //   <FlashcardDeck deck={{
+        //     _id: "1",
+        //     deckName: "test",
+        //     blurhash: "1B18x1jf",
+        //     deckImage: "",
+        //     deckImageName: "",
+        //     owner: "",
+        //     cards: []
+        //   }}/>
+        // </div>
       }
       <div className="flex flex-col">
         <Input type="text" placeholder="deck name" />
@@ -55,14 +55,14 @@ export default function AddDeckPage() {
         <Input type="text" placeholder="Describe Image to be generated" />
         <label>
           <Input type="checkbox" />
-           Let AI generate the flashcards for you?
+          Let AI generate the flashcards for you?
         </label>
         <label>
           <textarea />
         </label>
       </div>
     </Container>
-  )
+  );
 }
 
 function EditableCard(props) {
