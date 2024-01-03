@@ -20,7 +20,8 @@ import {
   GraduationCap,
   Github,
   EyeOff,
-  Eye
+  Eye,
+  Menu,
 } from "lucide-react";
 
 export const Icons = {
@@ -45,5 +46,6 @@ export const Icons = {
   graduationCap: GraduationCap,
   github: Github,
   eye: Eye,
-  eyeOff: EyeOff
+  eyeOff: EyeOff,
+  menu: Menu,
 };
