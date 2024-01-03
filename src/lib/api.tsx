@@ -1,26 +1,3 @@
-// Interface for server endpoints
-// Authentication endpoints
-export const POST_LOGIN_ENDPOINT = () =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/user/login/`;
-export const POST_REGISTER_ENDPOINT = () =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/user/register/`;
-
-// Deck and Card endpoints
-// export const GET_DECKS_ENDPOINT = () => '/deck/';
-export const GET_DECKLIST_ENDPOINT = (userId) =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck/${userId}`;
-export const GET_DECK_ENDPOINT = (deckId) =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck/get/${deckId}`;
-export const ADD_DECK_ENDPOINT = () =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck`;
-export const UPDATE_DECK_ENDPOINT = (deckId) =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck/update/${deckId}`;
-export const DELETE_DECK_ENDPOINT = (deckId) =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck/delete/${deckId}`;
-
-export const GRADE_CARD_ENDPOINT = () =>
-  `${import.meta.env.VITE_SERVER_BASE_URL}/deck/cards/grade`;
-
 // GET OPTIONS
 const getOpts: RequestInit = {
   method: "GET",
@@ -63,7 +40,7 @@ export async function validateToken(
 export async function login(credentials: any) {
   let requestObj = { ...postOpts, body: JSON.stringify(credentials) };
   const res = await fetch("http://localhost:3001/user/login", requestObj);
-  console.log(res.headers)
+  console.log(res.headers);
   if (!res.ok) {
     const code = res.status;
     switch (code) {
@@ -88,8 +65,26 @@ export async function register(credentials: any) {
   return await fetch("http://localhost:3001/user/", requestObj);
 }
 
-export async function gradeCard(args: any) {
-  const res = await fetch("http://localhost:3001/user/register");
+export async function gradeCard({
+  cardId,
+  deckId,
+  grade,
+}: {
+  cardId: string;
+  deckId: string;
+  grade: number;
+}) {
+  const res = await fetch(
+    `http://localhost:3001/deck/${deckId}/card/${cardId}/grade`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ grade }),
+    },
+  );
   return await res.json();
 }
 
@@ -99,7 +94,9 @@ export async function createDeck(deck: any) {
     if (key !== "deckImage") {
       formData.append(key, JSON.stringify(value));
     } else {
-      formData.append(key, value);
+      if (typeof value === "string" || value instanceof Blob) {
+        formData.append(key, value);
+      }
     }
   }
   let requestObj = { ...postOpts, body: JSON.stringify(deck) };
@@ -120,14 +117,14 @@ export async function addCard(args: any) {
 export async function deleteDeck(deckId: string) {
   await fetch(`http://localhost:3001/deck/delete/${deckId}`, {
     method: "DELETE",
-    credentials: "include"
+    credentials: "include",
   });
 }
 
 export async function getTask({ deckId }: { deckId: string }) {
   const res = await fetch(`http://localhost:3001/deck/${deckId}/task`, {
     method: "GET",
-    credentials: "include"
+    credentials: "include",
   });
   return await res.json();
 }

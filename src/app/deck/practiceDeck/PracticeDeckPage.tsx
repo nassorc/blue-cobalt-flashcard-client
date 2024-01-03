@@ -1,139 +1,222 @@
-import { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import AuthContext from "../../../lib/context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import Card from "./components/Card";
-import useFetchData from "../../../lib/hooks/useFetchData";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import createReviewSession from "../shared/utils/createReviewSession";
-import filterDeckById from "../../../lib/filterDeckById";
-import { GET_DECKLIST_ENDPOINT, GRADE_CARD_ENDPOINT } from "../../../lib/api";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
+import { useAtom } from "jotai";
+import { decksAtom } from "@/lib/store/user";
+import { cn } from "@/lib/utils";
+import { gradeCard } from "@/lib/api";
 
-// log:
-// Edit component pages contains better code to fetch deck data
+function FlashCard({ card }: { card: any }) {
+  let cardBgColor: string = "";
+  if (card.status === "new") {
+    cardBgColor = "bg-red-300";
+  } else if (card.status === "learning") {
+    cardBgColor = "bg-blue-300";
+  } else if (card.status === "completed") {
+    cardBgColor = "bg-green-300";
+  } else {
+    cardBgColor = "bg-white";
+  }
 
-// TODO:
-//        (4) add card image to reviewing process.
-//            * prerequisites: must implement way to store images as URLS.
-// COMPLETE ===========================================================================
-//       (2) extract cards from review list
-//       (3) depending on user settings (right now using hardcoded values),
-//           combined N review cards and N new cards.
-//            * why? review customization. They can priortize cards they've seen
-//              or they can prioritize exposure to all cards
-//            * by defining a list that contains the reviewed card list, we can
-//              sort them by due date. So cards that have shorter due dates, meaning
-//              they struggle with the card, will be priortize in the list. Allowing
-//              users to see flashcards that are considered hard for them.
-//        (5) Add logic that compiles the review cards and new cards.
-//            * User schema should have a settings object field
-//            * when user logs in, we query the user settings and set it with context
-//            * use context to provide global access to the review process settings.
-//        (6) add links to edit and add cards
-//        (7) use user settings from database
-
-// sorting
-//          Create a sort algorithm that sorts the due dates of the review list cards.
-//          randomly inject or introduce cards that are flagged as 'new'.
-//          step 1: get reviewList cards and new cards. new cards are slice depending on the amount of
-//                  new cards added per review session.
-//          step 2: before combining the reviewlist and new cards, sort the reviewlist by due date, then
-//                  slice depending on the amount of review cards added per review session
-//          step 3: combine review and new
-//          Grading:
-//          step 4: if grade is [0|1|2], add to list, 0 closer to the top, 1 at the middle, 2 and the back
-//          step 5: if grade is [3|4|5], a complete review, removed from the reviewlist
-
-//          Use reviewlist to display the cards that needs to be reviewed
-//          randomly select cards from the new pile
-//          maybe create a usecontext to
-//
-
-// function
+  return (
+    <div className={cn("flex justify-center mb-16")}>
+      <div className="w-[390px] h-[280px] bg-white shadow-lg rounded-md overflow-hidden">
+        <div>{card.front}</div>
+        <div>{card.back}</div>
+      </div>
+    </div>
+  );
+}
 
 export default function PracticeDeckPage() {
-  const navigate = useNavigate();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [decks] = useAtom(decksAtom);
+  const [deck, setDeck] = useState(decks?.find((d) => d._id === id));
+  const [cards, setCards] = useState(deck?.cards);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [progressCompleteWidth, setProgressCompleteWidth] = useState(1);
+  const [cardIdx, setCardIdx] = useState(0);
+
+  useEffect(() => {
+    if (progressRef !== null && progressRef.current !== null) {
+      setProgressCompleteWidth(
+        (1 / deck.cards.length) *
+          progressRef.current.getBoundingClientRect().width,
+      );
+    }
+  }, []);
+
+  useEffect(() => {}, [progressCompleteWidth]);
+
+  const makeGradeFn = (grade: number) => {
+    return async function (cardId: string, deckId: string) {
+      await gradeCard({ cardId, deckId, grade });
+    };
+  };
+
+  console.log(cards);
 
   return (
     <Container>
-
       <div className="flex items-center gap-4 mb-16">
-        <div className="w-24 h-16 bg-[slateblue]"></div>
+        <div className="w-24 h-16 bg-[slateblue] overflow-hidden flex justify-center items-center rounded-md">
+          <img src={deck.deckImage} alt="" />
+        </div>
         <div>
-          <h1 className="text-lg font-semibold">
-            Programming I
-          </h1>
+          <h1 className="text-lg font-semibold">Programming I</h1>
           <div>
-            <span>50</span>
+            <span>{deck?.cards?.length}</span>
             <span> </span>
             <span>cards</span>
             <span> </span>
-            <span className="inline-block w-28 h-3 bg-gray-400 rounded-lg">
-              <span className="absolute inline-block w-16 h-3 bg-green-400 rounded-lg"></span>
+            <span
+              ref={progressRef}
+              className="inline-block w-28 h-3 bg-gray-400 rounded-lg"
+            >
+              <div
+                className={cn(
+                  "absolute inline-block h-3 bg-green-400 rounded-lg",
+                )}
+                style={{
+                  width: `${progressCompleteWidth}px`,
+                }}
+              ></div>
             </span>
-            <img src="/complete-badge.png" className="inline scale-75"/>
+            <img src="/complete-badge.png" className="inline scale-75" />
           </div>
         </div>
-        <Button className="ml-auto">
-          <Icons.settings />
-          edit
-        </Button>
+        <Link to={`/edit/${deck._id}`} className="ml-auto">
+          <Button>
+            <Icons.settings />
+            edit
+          </Button>
+        </Link>
       </div>
 
       <div className="flex justify-evenly gap-2 mb-16">
         <div className="flex flex-col items-center ">
           <div className="w-4 h-4 rounded-full bg-red-400"></div>
           <div>new</div>
-          <div>5</div>
+          <div>
+            {deck.cards.filter((card: any) => card.status === "new").length}
+          </div>
         </div>
         <div className="flex flex-col items-center ">
           <div className="w-4 h-4 rounded-full bg-sky-400"></div>
-          <div>reviewing</div>
-          <div>10</div>
+          <div>learning</div>
+          <div>
+            {
+              deck.cards.filter((card: any) => card.status === "learning")
+                .length
+            }
+          </div>
         </div>
         <div className="flex flex-col items-center ">
           <div className="w-4 h-4 rounded-full bg-green-400"></div>
           <div>mastered</div>
-          <div>2</div>
+          <div>
+            {
+              deck.cards.filter((card: any) => card.status === "mastered")
+                .length
+            }
+          </div>
         </div>
       </div>
 
-      <div className="flex justify-center mb-16">
+      {/* <div className="flex justify-center mb-16">
         <div className="w-[390px] h-[280px] bg-white">
-          card
+          <div>{deck.cards[cardIdx].front}</div>
+          <div>{deck.cards[cardIdx].back}</div>
         </div>
-      </div>
+      </div> */}
+      {cards.length > 0 ? (
+        <FlashCard card={cards[0]} />
+      ) : (
+        <div>completed todays review</div>
+      )}
 
       <div className="flex gap-5 justify-center mb-16">
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
-        <span className="inline-block w-2 h-2 rounded-full bg-black"></span>
+        {cards.map((card: any, idx: number) => (
+          <span
+            key={idx}
+            className="inline-block w-2 h-2 rounded-full bg-gray-500"
+          ></span>
+        ))}
       </div>
 
-      <div className="flex gap-5 justify-center mb-16">
-      </div>
+      <div className="flex gap-5 justify-center mb-16"></div>
 
       <div className="flex flex-col gap-5 items-center mb-16">
         <div>
-          <Button size="icon" className="bg-amber-200 text-black"><Icons.eyeOff /></Button>
+          <Button size="icon" className="bg-amber-200 text-black">
+            <Icons.eyeOff />
+          </Button>
         </div>
         <div className="flex gap-2">
-          <Button>easy</Button>
-          <Button>good</Button>
-          <Button>hard</Button>
-          <Button>again</Button>
+          <Button
+            onClick={async () => {
+              // await gradeCard({
+              //   deckId: deck._id,
+              //   cardId: deck.cards[0]._id,
+              //   grade: 0,
+              // });
+              let temp: any[] = cards.slice();
+              temp.shift();
+              setCards(temp);
+            }}
+          >
+            easy
+          </Button>
+          <Button
+            onClick={async () => {
+              // await gradeCard({
+              //   deckId: deck._id,
+              //   cardId: deck.cards[0]._id,
+              //   grade: 1,
+              // });
+              let temp: any[] = cards.slice();
+              temp.shift();
+              setCards(temp);
+            }}
+          >
+            good
+          </Button>
+          <Button
+            onClick={async () => {
+              // await gradeCard({
+              //   deckId: deck._id,
+              //   cardId: deck.cards[0]._id,
+              //   grade: 2,
+              // });
+              let temp: any[] = cards.slice();
+              let card: any;
+              card = temp.shift();
+              setCards([...temp, card]);
+            }}
+          >
+            hard
+          </Button>
+          <Button
+            onClick={async () => {
+              // await gradeCard({
+              //   deckId: deck._id,
+              //   cardId: deck.cards[cardIdx]._id,
+              //   grade: 5,
+              // });
+              let temp: any[] = cards.slice();
+              let card: any;
+              card = temp.shift();
+              setCards([...temp.slice(0, 1), card, ...temp.slice(1)]);
+            }}
+          >
+            again
+          </Button>
         </div>
       </div>
-      
     </Container>
   );
 }
