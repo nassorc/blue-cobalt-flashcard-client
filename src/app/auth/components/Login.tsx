@@ -97,10 +97,7 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full bg-website-accent hover:bg-website-accent hover:brightness-105 text-site-base py-6"
-          >
+          <Button type="submit" className="w-full py-6">
             Log In
           </Button>
         </form>
