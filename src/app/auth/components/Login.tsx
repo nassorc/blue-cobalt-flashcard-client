@@ -11,10 +11,9 @@ import {
   FormItem,
   FormMessage,
 } from "../../../components/ui/form";
-import FormShell from "./FormShell";
-import { accessTokenAtom, userAtom } from "@/lib/store/user";
-import { useAtom } from "jotai";
 import { useUserManagement } from "@/lib/useUserManagement";
+import { Icons } from "@/components/Icons";
+import AuthActionButton from "./AuthActionButton";
 
 const signinSchema = z.object({
   email: z
@@ -36,8 +35,8 @@ export default function SignInForm() {
   const form = useForm<SigninType>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "mat@gmail.com",
-      password: "mat123",
+      email: "",
+      password: "",
     },
   });
   const navigate = useNavigate();
@@ -51,8 +50,13 @@ export default function SignInForm() {
     }
   }
   return (
-    <FormShell>
-      <h1 className="text-start text-xl">Log in</h1>
+    <div>
+      <div className="flex flex-col text-center my-12 gap-2">
+        <h1 className="text-[2.7rem] font-medium">Sign in to BlueCobalt</h1>
+        <p className="text-zinc-600">
+          Login or register to start building flashcards.
+        </p>
+      </div>
       <Form {...form}>
         {error && <p>{error}</p>}
         <form
@@ -97,18 +101,22 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full py-6">
-            Log In
-          </Button>
+          <AuthActionButton>Log In</AuthActionButton>
         </form>
-        <hr className="mx-3" />
-        <p>
-          Don't have an account yet?{" "}
-          <Link to="/register">
-            <span className="inline-block text-website-accent">Sign up</span>
-          </Link>
-        </p>
       </Form>
-    </FormShell>
+      <div className="flex flex-col items-center justify-center">
+        <p className="my-4">or</p>
+
+        <div className="w-full">
+          <Button
+            className="w-full py-6 flex gap-2 cursor-not-allowed"
+            disabled
+          >
+            <Icons.github />
+            <span>Sign in with Github (coming soon)</span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

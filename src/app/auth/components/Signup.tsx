@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { POST_REGISTER_ENDPOINT } from "@/lib/api";
 import { Link, useNavigate } from "react-router-dom";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -9,14 +8,14 @@ import { Input } from "../../../components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../../../components/ui/form";
 import FormShell from "./FormShell";
 import { signUpUser } from "@/lib/context/auth";
+import { Icons } from "@/components/Icons";
+import AuthActionButton from "./AuthActionButton";
 
 const signupSchema = z.object({
   username: z
@@ -62,8 +61,13 @@ export default function SignUpForm() {
   }
 
   return (
-    <FormShell>
-      <h1 className="text-start text-xl">Register</h1>
+    <div>
+      <div className="flex flex-col text-center my-12 gap-2">
+        <h1 className="text-[2.7rem] font-medium">Sign Up to BlueCobalt</h1>
+        <p className="text-zinc-600">
+          Login or register to start building flashcards.
+        </p>
+      </div>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       {successMessage && (
         <p className="text-green-500">
@@ -88,8 +92,6 @@ export default function SignUpForm() {
                     className=""
                   />
                 </FormControl>
-                {/* <FormDescription>
-                </FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}
@@ -130,20 +132,27 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="flex mx-auto py-6 w-full">
-            Create account
-          </Button>
+          <AuthActionButton>Create account</AuthActionButton>
+          {/* <Button
+            type="submit"
+            className="w-full py-6 bg-black hover:bg-black/80 text-cyan-200"
+          >
+          </Button> */}
         </form>
-        <hr className="mx-3" />
-        <p>
-          Already have an account?{" "}
-          <Link to="/login">
-            <span className="inline-block text-website-accent ml-1">
-              Log in
-            </span>
-          </Link>
-        </p>
       </Form>
-    </FormShell>
+      <div className="flex flex-col items-center justify-center">
+        <p className="my-4">or</p>
+
+        <div className="w-full">
+          <Button
+            className="w-full py-6 flex gap-2 cursor-not-allowed"
+            disabled
+          >
+            <Icons.github />
+            <span>Sign up with Github (coming soon)</span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
