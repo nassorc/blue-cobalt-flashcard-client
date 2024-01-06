@@ -13,7 +13,7 @@ type LinkType = {
   action?: string;
 };
 
-const links: Array<LinkType> = [
+const links: LinkType[] = [
   {
     name: "My Flashcards",
     path: "/",
@@ -34,7 +34,6 @@ const links: Array<LinkType> = [
     path: "/register",
     protected: false,
   },
-  ,
   {
     name: "Logout",
     path: "/logout",

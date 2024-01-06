@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { Icons } from "@/components/Icons";
 // import PageShell from "@/components/PageShell";
 import UserProfile from "@/components/UserProfile";
@@ -21,7 +21,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useUser, UserType } from "@/lib/context/user";
-import useUploadImage from "@/lib/hooks/useUploadImage";
 import { logoutUser, AUTH_ACTIONS, useAuth } from "@/lib/context/auth";
 import config from "@/lib/config";
 import { Badge } from "@/components/ui/badge";
@@ -30,64 +29,27 @@ import { useAtom } from "jotai";
 
 export default function ProfilePage() {
   const [user] = useAtom(userAtom);
-  console.log(user)
+  console.log(user);
 
-  // const { user, setUser } = useUser();
-  const { upload, remove, loading } = useUploadImage();
-
-  const onUploadImage = async (e: any) => {
-    const file = e.target.files[0];
-    const url = await upload(file, `profile_images/${user.username}`);
-    await fetch(config.api.user.updateProfileImage(), {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ profileImage: url }),
-    });
-    // setUser((prevState: UserType) => ({
-    //   ...prevState,
-    //   profileImage: url,
-    // }));
-  };
-
-  const onRemoveProfileImage = async () => {
-    await remove(`profile_images/${user.username}`);
-    await fetch(config.api.user.updateProfileImage(), {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ profileImage: "" }),
-    });
-    // setUser((prevState: UserType) => ({
-    //   ...prevState,
-    //   profileImage: "",
-    // }));
-  };
-
-  const onDeleteAccount = async (e) => {
-    await fetch(config.api.user.delete(user._id), {
-      method: "POST",
-      credentials: "include",
-    });
-    logoutUser(authDispatch, AUTH_ACTIONS);
+  const onDeleteAccount = async (e: React.MouseEvent) => {
+    // await fetch(config.api.user.delete(user?._id), {
+    //   method: "POST",
+    //   credentials: "include",
+    // });
+    // logoutUser(authDispatch, AUTH_ACTIONS);
   };
 
   return (
     <section className="flex flex-col container">
       <div className="flex items-start justify-between">
-      {
-        // <UserProfile
-        //   user={user}
-        //   isUploading={loading}
-        //   onUploadImage={onUploadImage}
-        //   onRemoveImage={onRemoveProfileImage}
-        // />
-
-      }
+        {
+          // <UserProfile
+          //   user={user}
+          //   isUploading={loading}
+          //   onUploadImage={onUploadImage}
+          //   onRemoveImage={onRemoveProfileImage}
+          // />
+        }
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button>

@@ -65,7 +65,6 @@ export default function UserProfile(props: PropType) {
 
       <div className="space-y-2">
         <h1 className="text-3xl">{username}</h1>
-        <p className="text-lg">{email}</p>
       </div>
     </div>
   );

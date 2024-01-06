@@ -10,7 +10,7 @@ const ACTIONS = {
   DELETE_CARD: "delete_card",
 };
 
-function reducer(state, action) {
+function reducer(state: any, action: any) {
   switch (action.type) {
     case ACTIONS.SET_DECK:
       return { ...state, ...buildDeck(action?.payload) };
@@ -27,17 +27,17 @@ function reducer(state, action) {
         modifiedCards: [...action?.payload.newCards, ...state?.modifiedCards],
       };
     case ACTIONS.UPDATE_CARD:
-      let card = state?.modifiedCards?.reduce((current, elm) =>
+      let card = state?.modifiedCards?.reduce((current: any, elm: any) =>
         elm._id === action.payload.deckId ? elm : current,
       );
       let temp = { ...card, ...action.payload.updatedCard };
       let filteredCardlist = state?.modifiedCards?.filter(
-        (card) => card._id !== action.payload.cardId,
+        (card: any) => card._id !== action.payload.cardId,
       );
       return { ...state, modifiedCards: [temp, ...filteredCardlist] };
     case ACTIONS.DELETE_CARD:
       let updated = state?.modifiedCards?.filter(
-        (card) => card._id !== action.payload.cardId,
+        (card: any) => card._id !== action.payload.cardId,
       );
       return { ...state, modifiedCards: updated };
     default:
@@ -61,13 +61,13 @@ export default function useEditableDeck(
       (async function () {
         const fetchedDeck = await fetchDeck(deckId, headers);
         let data = {
-          deckName: fetchedDeck?.deckName,
-          newCardCount: fetchedDeck?.deckSettings?.newCards,
-          reviewedCardCount: fetchedDeck?.deckSettings?.reviewCards,
-          modifiedCards: fetchedDeck?.cards,
-          deckImage: fetchedDeck?.deckImage,
-          deckImageName: fetchedDeck?.deckImageName,
-          visibility: fetchDeck?.deckSettings?.visibility,
+          // deckName: fetchedDeck?.deckName,
+          // newCardCount: fetchedDeck?.deckSettings?.newCards,
+          // reviewedCardCount: fetchedDeck?.deckSettings?.reviewCards,
+          // modifiedCards: fetchedDeck?.cards,
+          // deckImage: fetchedDeck?.deckImage,
+          // deckImageName: fetchedDeck?.deckImageName,
+          // visibility: fetchDeck?.deckSettings?.visibility,
         };
         dispatch({ type: ACTIONS.SET_DECK, payload: data });
         setOriginalDeck(buildDeck(data));
@@ -78,20 +78,20 @@ export default function useEditableDeck(
   return [editableDeck, originalDeck, dispatch, ACTIONS];
 }
 
-async function fetchDeck(deckId, headers) {
-  try {
-    const res = await fetch(GET_DECK_ENDPOINT(deckId), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-    });
-    const data = await res.json();
-    return data?.details ? data.details : data;
-  } catch (err) {
-    throw new Error(err);
-  }
+async function fetchDeck(deckId: any, headers: any) {
+  // try {
+  //   const res = await fetch(GET_DECK_ENDPOINT(deckId), {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       ...headers,
+  //     },
+  //   });
+  //   const data = await res.json();
+  //   return data?.details ? data.details : data;
+  // } catch (err) {
+  //   throw new Error(err);
+  // }
 }
 
 function buildDeck({

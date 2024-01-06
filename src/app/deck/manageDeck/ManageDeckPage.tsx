@@ -9,6 +9,7 @@ import Container from "@/components/Container";
 import Dialog from "./Dialog";
 import FlashcardDeck from "@/components/FlashcardDeck";
 import FlashcardDeckAddCard from "@/components/FlashcardDeckAddCard";
+// @ts-ignore
 import BackgroundImage from "/website-bg.jpg";
 import { useStore } from "jotai";
 
@@ -31,9 +32,8 @@ export default function ManageDeckPage() {
   });
 
   useEffect(() => {
-    console.log("MANAGED DECK RERENDERED")
+    console.log("MANAGED DECK RERENDERED");
   }, [decks]);
-  
 
   return (
     <>

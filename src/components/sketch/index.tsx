@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 const replicate = new MockReplicate("auth");
 
 function Sketch() {
-  const sketchRef = useRef<HTMLCanvasElement | undefined>();
+  const sketchRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [prevPoint, setPrevPoint] = useState<number[] | null>(null);
   const [replicated, setReplicated] = useState<string | null>(null);
@@ -34,7 +34,8 @@ function Sketch() {
             <canvas
               className="aspect-squar"
               ref={sketchRef}
-              onMouseMove={(e) => {
+              onMouseMove={(e: any) => {
+                // @ts-ignore
                 if (e.target.tagName === "CANVAS" && drawing) {
                   const rect = e.target.getBoundingClientRect();
                   const ctx: CanvasRenderingContext2D =
@@ -45,6 +46,7 @@ function Sketch() {
                   ctx.beginPath();
                   if (prevPoint === null) {
                     setPrevPoint([x, y]);
+                    return;
                   }
                   ctx.moveTo(prevPoint[0], prevPoint[1]);
                   ctx.lineTo(x, y);
@@ -67,7 +69,6 @@ function Sketch() {
               onMouseLeave={(e) => {
                 setDrawing(false);
               }}
-              className="shadow-lg border border-gray-200"
               width="400px"
               height="400px"
             ></canvas>

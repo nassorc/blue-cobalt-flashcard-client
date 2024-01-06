@@ -1,4 +1,4 @@
-export default function Input(props) {
+export default function Input(props: any) {
   const { ...inputProps } = props;
   return (
     <input

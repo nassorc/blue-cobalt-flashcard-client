@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import createReviewSession from "../shared/utils/createReviewSession";
 import { Icons } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";

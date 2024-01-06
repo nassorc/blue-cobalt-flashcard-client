@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-export default function useLocalStorage(key, value) {
+export default function useLocalStorage(key: string, value: any) {
   const [storage, setStorage] = useState(() => {
     // if item exists in local storage, return it as the initial value
     const storedValue = localStorage.getItem(key);

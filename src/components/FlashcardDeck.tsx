@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -18,7 +12,7 @@ import { Badges } from "./Badge";
 import { Blurhash } from "react-blurhash";
 import DeleteDeckDialog from "./DeleteDeckDialog";
 import FlashcardDeckShell from "./FlashcardDeckShell";
-import { useQuery } from "react-query"; 
+import { useQuery } from "react-query";
 import { deleteDeck, getTask } from "@/lib/api";
 import { queryClient } from "./ContextProvider";
 import { cn } from "@/lib/utils";
@@ -32,19 +26,27 @@ interface Deck {
   owner: string;
   badges?: number[];
   cards: any[];
-  taskStatus: string
+  taskStatus: string;
 }
 
-function DeckActions({ deckId, deckName, show }: { deckId: string, deckName: string, show: boolean }) {
+function DeckActions({
+  deckId,
+  deckName,
+  show,
+}: {
+  deckId: string;
+  deckName: string;
+  show: boolean;
+}) {
   const [showActions, setShowActions] = useState(false);
 
   const handleShowActions = () => {
     setShowActions(!showActions);
-  }
+  };
 
   const handleDelete = async () => {
     await deleteDeck(deckId);
-  }
+  };
 
   return (
     <div className="relative bg-red-400">
@@ -58,18 +60,17 @@ function DeckActions({ deckId, deckName, show }: { deckId: string, deckName: str
         onClick={handleShowActions}
       >
         <Icons.moreHorizontal />
-        <div 
-          className={
-            cn(!showActions && "hidden", 
-              "m-1 p-1 absolute z-[100] right-0 top-full bg-white text-black rounded-sm overflow-hidden shadow-lg"
-            )
-          }
+        <div
+          className={cn(
+            !showActions && "hidden",
+            "m-1 p-1 absolute z-[100] right-0 top-full bg-white text-black rounded-sm overflow-hidden shadow-lg",
+          )}
         >
           <div className="px-4 py-[0.35rem] flex items-center gap-1 hover:bg-zinc-300 rounded-sm">
             <Icons.settings />
             <span>Edit</span>
           </div>
-          <div 
+          <div
             className="px-4 py-[0.35rem] flex items-center gap-1 hover:bg-zinc-300 rounded-sm text-red-500"
             onClick={handleDelete}
           >
@@ -77,10 +78,9 @@ function DeckActions({ deckId, deckName, show }: { deckId: string, deckName: str
             <span>Delete</span>
           </div>
         </div>
-
       </Button>
     </div>
-  )
+  );
 }
 
 function DeckBadges() {
@@ -92,7 +92,15 @@ function DeckBadges() {
   );
 }
 
-function DeckCoverImage({ deckImage, blurhash, deckImageName }: { deckImage: string, deckImageName: string, blurhash: string }) {
+function DeckCoverImage({
+  deckImage,
+  blurhash,
+  deckImageName,
+}: {
+  deckImage: string;
+  deckImageName: string;
+  blurhash: string;
+}) {
   const [deckImageLoaded, setDeckImageLoaded] = useState(false);
   useEffect(() => {
     const img = new Image();
@@ -123,60 +131,71 @@ function DeckCoverImage({ deckImage, blurhash, deckImageName }: { deckImage: str
     <div></div>
   );
 
-  return (
-    <>
-      {deckImageElm}
-    </>
-  );
+  return <>{deckImageElm}</>;
 }
 
-function PendingDeck({deckId, isPending, setIsPending}: { deckId: string, isPending: boolean, setIsPending: (...args: any) => void }) {
-  const {data} = useQuery("task", () => getTask({deckId}), {
+function PendingDeck({
+  deckId,
+  isPending,
+  setIsPending,
+}: {
+  deckId: string;
+  isPending: boolean;
+  setIsPending: (...args: any) => void;
+}) {
+  const { data } = useQuery("task", () => getTask({ deckId }), {
     onSuccess: (data) => {
       if (!data.isPending && data.success) {
         queryClient.invalidateQueries("user");
       }
     },
-    refetchInterval: 2000
-  })
+    refetchInterval: 2000,
+  });
   return (
     <FlashcardDeckShell>
       <div className="animate-pulse">
-      <div className="w-full grid place-items-center max-h-[120px] aspect-video overflow-hidden bg-slate-200">
-        { data?.tasks?.at(-1) }
-      </div>
-      <div className="my-4 m-6">
-        <div className="mb-2 w-1/2 h-5 bg-slate-200 rounded-md"></div>
-        <div className="flex justify-between">
-          <div className="mb-2 w-1/4 h-5 bg-slate-200 rounded-md"></div>
-          <div className="mb-2 w-[80px] h-8 bg-slate-200 rounded-md"></div>
+        <div className="w-full grid place-items-center max-h-[120px] aspect-video overflow-hidden bg-slate-200">
+          {data?.tasks?.at(-1)}
+        </div>
+        <div className="my-4 m-6">
+          <div className="mb-2 w-1/2 h-5 bg-slate-200 rounded-md"></div>
+          <div className="flex justify-between">
+            <div className="mb-2 w-1/4 h-5 bg-slate-200 rounded-md"></div>
+            <div className="mb-2 w-[80px] h-8 bg-slate-200 rounded-md"></div>
+          </div>
         </div>
       </div>
-      </div>
     </FlashcardDeckShell>
-  )
+  );
 }
-
 
 export default function FlashcardDeck({ deck }: { deck: Deck }) {
   const [showActions, setShowActions] = useState(false);
   // const [isPending, setIsPending] = useState(deck.taskProgress);
   const [taskStatus, setTaskStatus] = useState("complete");
   const totalCards = deck.cards.length;
-  const reviewedCount = deck.cards
-    .filter((card) => card.status === "reviewed")
-    .length
+  const reviewedCount = deck.cards.filter(
+    (card) => card.status === "reviewed",
+  ).length;
 
   return (
-      <>
-      { (taskStatus === "complete") ? (
-        <FlashcardDeckShell 
+    <>
+      {taskStatus === "complete" ? (
+        <FlashcardDeckShell
           onMouseEnter={() => setShowActions(true)}
           onMouseLeave={() => setShowActions(false)}
         >
-          <DeckActions deckName={deck.deckName} deckId={deck._id} show={showActions} />
+          <DeckActions
+            deckName={deck.deckName}
+            deckId={deck._id}
+            show={showActions}
+          />
           <div className="relative w-full max-h-[120px] aspect-video overflow-hidden">
-            <DeckCoverImage deckImage={deck.deckImage} deckImageName={deck.deckImageName} blurhash={deck.blurhash} />
+            <DeckCoverImage
+              deckImage={deck.deckImage}
+              deckImageName={deck.deckImageName}
+              blurhash={deck.blurhash}
+            />
             <DeckBadges />
           </div>
           <div className="px-5 py-4 bg-white overflow-hidden min-h-[90px] flex flex-col justify-end">
@@ -190,7 +209,7 @@ export default function FlashcardDeck({ deck }: { deck: Deck }) {
                     <TooltipTrigger asChild>
                       <div className="flex items-center space-x-1 text-sm">
                         <Icons.layers className="w-4" />
-                        <span className="font-semibold">{ totalCards }</span>
+                        <span className="font-semibold">{totalCards}</span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>info</TooltipContent>
@@ -198,9 +217,7 @@ export default function FlashcardDeck({ deck }: { deck: Deck }) {
                 </TooltipProvider>
                 <div className="flex items-center space-x-1 text-sm">
                   <Icons.graduationCap className="w-5" />
-                  <span className="font-semibold">
-                    { reviewedCount }
-                  </span>
+                  <span className="font-semibold">{reviewedCount}</span>
                 </div>
               </div>
               <Link to={"/practice/" + deck._id} className="block ml-auto">
@@ -211,10 +228,13 @@ export default function FlashcardDeck({ deck }: { deck: Deck }) {
             </div>
           </div>
         </FlashcardDeckShell>
-        ) : ( 
-          <PendingDeck deckId={deck._id} isPending={taskStatus !== "complete"} setIsPending={setTaskStatus}/>
-        )
-    }
+      ) : (
+        <PendingDeck
+          deckId={deck._id}
+          isPending={taskStatus !== "complete"}
+          setIsPending={setTaskStatus}
+        />
+      )}
     </>
   );
 }

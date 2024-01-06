@@ -88,6 +88,7 @@ function reducer(state: AuthStateType, action: AuthActionType) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactElement }) {
+  // @ts-ignore
   const [authState, dispatch] = useReducer(reducer, initialValue);
   return (
     <AuthStateContext.Provider value={authState}>

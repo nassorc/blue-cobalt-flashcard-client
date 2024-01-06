@@ -1,3 +1,4 @@
+// @ts-ignore
 const API = import.meta.env.VITE_SERVER_API_URL || "http://localhost:3001";
 const config = {
   api: {
