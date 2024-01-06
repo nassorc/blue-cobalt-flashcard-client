@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { useUserManagement } from "@/lib/useUserManagement";
 import Container from "@/components/Container";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { ShowerHead } from "lucide-react";
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 
@@ -50,7 +49,6 @@ function NavLink(props: {
   onClick?: (...args: any) => any;
 }) {
   const { pathname } = useLocation();
-  console.log(pathname);
   return (
     <li
       className={cn(
@@ -66,7 +64,26 @@ function NavLink(props: {
   );
 }
 
-function MobileNav({
+function UnauthenticatedNav() {
+  return (
+    <nav className="flex items-center">
+      <Link to="/login">
+        <Button variant="ghost" className="font-normal">
+          Sign in
+        </Button>
+      </Link>
+      <Link
+        to="/register"
+        className="font-normal text-[15px] cursor-pointer px-3 py-[2px] rounded-sm bg-black text-cyan-200"
+      >
+        {/* className="font-normal text-[15px] cursor-pointer px-3 py-[2px] rounded-sm bg-black text-cyan-200" */}
+        Try for free
+      </Link>
+    </nav>
+  );
+}
+
+function MobileNavAuthenticated({
   links,
   authenticated,
   actionHandler,
@@ -147,6 +164,7 @@ export default function Header() {
   const [showHeader, setShowHeader] = useState(true);
   const [showBurger, setShowBurger] = useState(true);
   const [pageSize, setPageSize] = useState(0);
+  const baseURL = window.location.origin;
 
   let nav: ReactElement;
 
@@ -189,13 +207,7 @@ export default function Header() {
   }, []);
 
   if (pageSize < 800) {
-    nav = (
-      <MobileNav
-        links={links}
-        authenticated={authenticated}
-        actionHandler={getAction}
-      />
-    );
+    nav = <UnauthenticatedNav />;
   } else {
     nav = (
       <DesktopNav
@@ -210,7 +222,7 @@ export default function Header() {
     <>
       <header
         className={cn(
-          "fixed w-full top-0 min-h-[80px] bg-transparent flex items-center z-[99] ease duration-300 shadow-sm",
+          "fixed w-full top-0 min-h-[72px] bg-transparent flex items-center z-[99] ease duration-300 shadow-sm",
           scrolled ? "bg-white/40 backdrop-blur-md" : "bg-white/0",
           showHeader ? "flex" : "hidden",
         )}
@@ -220,13 +232,10 @@ export default function Header() {
             href={authenticated ? "/" : "/home"}
             className="flex items-center gap-1"
           >
-            <div className="relative w-[38px]">
-              <img
-                src="http://localhost:3000/quick.png"
-                className="w-full max-h-max"
-              />
+            <div className="relative w-[34px]">
+              <img src={`${baseURL}/quick.png`} className="w-full max-h-max" />
             </div>
-            <div className="hidden md:inline-block mr-3 text-2xl font-semibold tracking-wide text-[rgb(40,40,40)]">
+            <div className="font-normal md:inline-block mr-3 md:text-2xl tracking-wide text-[rgb(40,40,40)]">
               BlueCobalt
             </div>
           </a>

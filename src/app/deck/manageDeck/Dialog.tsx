@@ -16,11 +16,11 @@ function getImageFileObjectURL(imageFile: File) {
 
 function loadImage(src: string) {
   return new Promise((resolve, reject) => {
-    const img = new Image;
+    const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("Could not load image"));
     img.src = src;
-  })
+  });
 }
 
 function getImageData(image: any) {
@@ -47,6 +47,134 @@ async function generateBlurhash(imageFile: File) {
   }
 }
 
+function ImageUploadGroup({
+  values,
+  setValues,
+}: {
+  values: any;
+  setValues: (...args: any) => any;
+}) {
+  return (
+    <label className="">
+      <div>Deck Image</div>
+      <input
+        name="deckImage"
+        id="deckImage"
+        type="file"
+        accept="image/png, image/jpeg"
+        onChange={setValues}
+      />
+    </label>
+  );
+}
+
+function CreateDeckForm({
+  values,
+  setValues,
+}: {
+  values: CreateDeckFormType;
+  setValues: (...args: any) => any;
+}) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div>
+        <div>Deck Info</div>
+        <hr />
+        <label className="w-full">
+          <div>Deck Name</div>
+          <input
+            type="text"
+            name="deckName"
+            placeholder=""
+            value={values.deckName}
+            onChange={setValues}
+            className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm w-full"
+          />
+        </label>
+
+        <ImageUploadGroup values={values} setValues={setValues} />
+      </div>
+
+      <div>
+        <label>
+          <span>turn on ai assist</span>
+          <input type="checkbox" />
+        </label>
+        <label>
+          <div>Enter a topic or text to build the flashcard deck off of.</div>
+          <textarea className="w-full border border-zinc-500" disabled />
+        </label>
+      </div>
+
+      <div>
+        <div>Deck Settings</div>
+        <hr className="border-slate-300" />
+        <label className="flex gap-3 items-center justify-end">
+          <input
+            type="radio"
+            value="public"
+            checked={values.isPublic}
+            name="isPublic"
+            onChange={setValues}
+          />
+          <div>
+            <span>Public</span>
+            <span>Anyone can see this deck.</span>
+          </div>
+        </label>
+        <label className="flex gap-3 items-center justify-end">
+          <input
+            type="radio"
+            value="private"
+            checked={!values.isPublic}
+            name="isPublic"
+            onChange={setValues}
+          />
+          <div>
+            <span>Private</span>
+            <span>Only you can see this deck.</span>
+          </div>
+        </label>
+      </div>
+      <label>Practice settings</label>
+      <hr className="border-slate-300" />
+      <p className="text-[0.96rem] text-slate-600 font-light">
+        Control the variation of cards added to a review session.
+      </p>
+      <label className="flex gap-3 items-center justify-end">
+        New cards
+        <input
+          type="text"
+          name="newCards"
+          value={values.newCards}
+          onChange={setValues}
+          className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm"
+        />
+      </label>
+      <label className="flex gap-3 items-center justify-end">
+        Reviewed cards
+        <input
+          type="text"
+          name="reviewCards"
+          value={values.reviewCards}
+          onChange={setValues}
+          className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm"
+        />
+      </label>
+    </div>
+  );
+}
+
+let formInitValues = {
+  deckName: "",
+  deckImage: null,
+  flashcardPrompt: "",
+  blurhash: "",
+  isPublic: false,
+  newCards: 5,
+  reviewCards: 10,
+};
+
 export default function CreateDeckDialog(props: DialogPropsType) {
   const { showDialog, setShowDialog } = props;
   const [taskId, setTaskId] = useState<string | null>(null);
@@ -54,23 +182,32 @@ export default function CreateDeckDialog(props: DialogPropsType) {
   const mutation = useMutation({
     mutationFn: createDeck,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["user"] })
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-  })
-
-  const [formValues, setFormValues] = useState<CreateDeckFormType>({
-    deckName: "",
-    deckImage: null,
-    blurhash: "",
-    isPublic: false,
-    newCards: 5,
-    reviewCards: 10,
   });
 
-  const handleFormInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [formValues, setFormValues] =
+    useState<CreateDeckFormType>(formInitValues);
+
+  const handleFormInputs = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const type = e.target.type;
-    if (type === "radio") {
+    if (type === "file") {
+      let file = e.target.files?.item(0) || null;
+      if (file) {
+        // if (formValues.deckImage === null) { return; }
+        const blurhash = await generateBlurhash(file);
+        if (!blurhash) {
+          console.log("could not encode blurhash");
+          return;
+        }
+        setFormValues((prev) => ({
+          ...prev,
+          blurhash: blurhash,
+          deckImage: file,
+        }));
+      }
+    } else if (type === "radio") {
       setFormValues((prev) => ({
         ...prev,
         [name]: e.target.value === "public" ? true : false,
@@ -93,6 +230,9 @@ export default function CreateDeckDialog(props: DialogPropsType) {
     // setTaskId(task.taskId);
     setShowDialog(false);
   };
+  const reset = () => {
+    setFormValues(formInitValues);
+  };
 
   return (
     <>
@@ -102,7 +242,7 @@ export default function CreateDeckDialog(props: DialogPropsType) {
           <div
             className="
               p-6 
-              absolute left-1/2 top-1/2 z-50 
+              absolute left-1/2 top-1/2 z-[99]
               -translate-x-1/2 -translate-y-1/2
               bg-white rounded-sm 
               border border-zinc-300 shadow-md
@@ -116,129 +256,17 @@ export default function CreateDeckDialog(props: DialogPropsType) {
               />
             </div>
             <p className="text-[0.96rem] text-slate-600 font-light">
-              Create a new flashcard Deck. Click add when you're done.
+              You can add flashcards manually after you create the deck. Click
+              create when you're done.
             </p>
-            {1 === 1 && (
-              <div className="mt-4">
-                <div>
-                  <div className="flex items-start justify-end">
-                    <input
-                      type="text"
-                      name="deckName"
-                      placeholder="Deck Name"
-                      value={formValues.deckName}
-                      onChange={handleFormInputs}
-                      className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm"
-                    />
-                    <label className="">
-                      <div className="aspect-video grid place-items-center bg-gray-200 text-gray-500 border-dashed border-2 border-gray-400">
-                        PREVIEW
-                      </div>
-                      <input
-                        name="deckImage"
-                        id="deckImage"
-                        type="file"
-                        accept="image/png, image/jpeg"
-                        onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
-                          let file = e.target.files?.item(0) || null;
-                          if (file) {
-                            // if (formValues.deckImage === null) { return; }
-                            const blurhash = await generateBlurhash(file);
-                            if (!blurhash) { 
-                              console.log("could not encode blurhash");
-                              return;
-                            }
-                            setFormValues((prev) => ({
-                              ...prev,
-                              blurhash: blurhash,
-                              deckImage: file,
-                            }));
-                          }
-                        }}
-                      />
-                    </label>
-                  </div>
-                  <div>Deck Settings</div>
-                  <hr className="border-slate-300" />
-                  <label className="flex gap-3 items-center justify-end">
-                    <input
-                      type="radio"
-                      value="public"
-                      checked={formValues.isPublic}
-                      name="isPublic"
-                      onChange={handleFormInputs}
-                    />
-                    <div>
-                      <span>Public</span>
-                      <span>Anyone can see this deck.</span>
-                    </div>
-                  </label>
-                  <label className="flex gap-3 items-center justify-end">
-                    <input
-                      type="radio"
-                      value="private"
-                      checked={!formValues.isPublic}
-                      name="isPublic"
-                      onChange={handleFormInputs}
-                    />
-                    <div>
-                      <span>Private</span>
-                      <span>Only you can see this deck.</span>
-                    </div>
-                  </label>
 
-                  <label>Practice settings</label>
-                  <hr className="border-slate-300" />
-                  <p className="text-[0.96rem] text-slate-600 font-light">
-                    Control the variation of cards added to the practice
-                    session.
-                  </p>
-                  <label className="flex gap-3 items-center justify-end">
-                    New cards
-                    <input
-                      type="text"
-                      name="newCards"
-                      value={formValues.newCards}
-                      onChange={handleFormInputs}
-                      className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm"
-                    />
-                  </label>
-                  <label className="flex gap-3 items-center justify-end">
-                    Reviewed cards
-                    <input
-                      type="text"
-                      name="reviewCards"
-                      value={formValues.reviewCards}
-                      onChange={handleFormInputs}
-                      className="px-4 py-[0.4rem] border border-zinc-300 rounded-sm"
-                    />
-                  </label>
-                </div>
-
-                <div>
-                  <label>
-                    Let AI assist you with creating auto generating flashcards?
-                    <Input type="checkbox" />
-                  </label>
-                  <label>
-                    <div>
-                      Enter a topic or paste in some text to build the flashcard
-                      deck off of.
-                    </div>
-                    <textarea
-                      className="w-full border border-zinc-500"
-                      disabled
-                    />
-                  </label>
-                </div>
-              </div>
-            )}
+            <CreateDeckForm values={formValues} setValues={handleFormInputs} />
 
             <div className="flex gap-2 justify-end">
-              <Button className="bg-website-accent bg-cyan-200 hover:bg-cyan-300 text-black">
-                AI Assist
+              <Button className="bg-rose-500 hover:bg-rose-600" onClick={reset}>
+                Cancel
               </Button>
-              <Button onClick={handleFormSubmit}>Add</Button>
+              <Button onClick={handleFormSubmit}>Create</Button>
             </div>
           </div>
         </>

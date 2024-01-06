@@ -21,6 +21,7 @@ import AuthPage from "./app/auth/AuthPage";
 import { useUserManagement } from "./lib/useUserManagement";
 
 import "./App.css";
+import Container from "./components/Container";
 
 function App({}) {
   const authContext = useContext(AuthContext);
@@ -59,6 +60,27 @@ function App({}) {
           <Route path="/register" element={<AuthPage />} />
         </Routes>
       )}
+      {/* <Container className="absolute bottom-0">
+        <div className="absolute">
+          <div className="flex items-center">
+            <img src="http://localhost:3000/quick.png" className="scale-75" />
+            <span>Blue Cobalt</span>
+          </div>
+          <div>
+            Built by{" "}
+            <a href="https://github.com/nassorc" className="underline">
+              Matthew Crossan
+            </a>{" "}
+            | member2 | member3 | member4
+          </div>
+          <div>
+            <span>Icons by </span>
+            <a href="https://icons8.com" className="underline">
+              Icons8
+            </a>
+          </div>
+        </div>
+      </Container> */}
     </section>
   );
 }

@@ -1,7 +1,8 @@
 export type CreateDeckFormType = {
   deckName: string;
   deckImage: File | null;
-  blurhash: string,
+  flashcardPrompt: string;
+  blurhash: string;
   isPublic: boolean;
   newCards: number;
   reviewCards: number;
